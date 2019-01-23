@@ -4,7 +4,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -14,85 +17,84 @@ import com.example.lenovo.englishstudy.fragment.HomeFragment;
 import com.example.lenovo.englishstudy.fragment.SearchFragment;
 import com.example.lenovo.englishstudy.fragment.UserFragment;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
-    private HomeFragment homeFragment;
-    private SearchFragment searchFragment;
-    private ChatroomFragment chatroomFragment;
-    private UserFragment userFragment;
+    private BottomNavigationView bottomNavigationView;
+    private ViewPager viewPager;
 
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    showNav(R.id.navigation_home);
-                    return true;
-                case R.id.navigation_search:
-                    showNav(R.id.navigation_search);
-                    return true;
-                case R.id.navigation_chatroom:
-                    showNav(R.id.navigation_chatroom);
-                    return true;
-                case R.id.navigation_user:
-                    showNav(R.id.navigation_user);
-                    return true;
-            }
-            return false;
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        init();
-        BottomNavigationView navigation = findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-    }
+        bottomNavigationView = findViewById(R.id.navigation);
+        viewPager = findViewById(R.id.viewPager);
 
-    private void init(){
-        homeFragment = new HomeFragment();
-        searchFragment = new SearchFragment();
-        chatroomFragment = new ChatroomFragment();
-        userFragment = new UserFragment();
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.frameLayout,homeFragment).add(R.id.frameLayout,searchFragment).add(R.id.frameLayout,chatroomFragment).add(R.id.frameLayout,userFragment);
-        fragmentTransaction.hide(homeFragment).hide(searchFragment).hide(chatroomFragment).hide(userFragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
-    }
+        //设置点击监听
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId())
+                {
+                    //根据navagatin.xml中item的id进行case
+                    case R.id.navigation_home:
+                        viewPager.setCurrentItem(0);
+                        //跳到对应ViewPager的page
+                        break;
+                    case R.id.navigation_search:
+                        viewPager.setCurrentItem(1);
 
-    private void showNav(int navid){
-        FragmentTransaction beginTransaction = getSupportFragmentManager().beginTransaction();
-        switch (navid){
-            case R.id.navigation_home:
-                beginTransaction.hide(searchFragment).hide(chatroomFragment).hide(userFragment);
-                beginTransaction.show(homeFragment);
-                beginTransaction.addToBackStack(null);
-                beginTransaction.commit();
-                break;
-            case R.id.navigation_search:
-                beginTransaction.hide(homeFragment).hide(chatroomFragment).hide(userFragment);
-                beginTransaction.show(searchFragment);
-                beginTransaction.addToBackStack(null);
-                beginTransaction.commit();
-                break;
-            case R.id.navigation_chatroom:
-                beginTransaction.hide(homeFragment).hide(searchFragment).hide(userFragment);
-                beginTransaction.show(chatroomFragment);
-                beginTransaction.addToBackStack(null);
-                beginTransaction.commit();
-                break;
-            case R.id.navigation_user:
-                beginTransaction.hide(homeFragment).hide(searchFragment).hide(chatroomFragment);
-                beginTransaction.show(userFragment);
-                beginTransaction.addToBackStack(null);
-                beginTransaction.commit();
-                break;
-        }
+                        break;
+                    case R.id.navigation_chatroom:
+                        viewPager.setCurrentItem(2);
+
+                        break;
+                    case R.id.navigation_user:
+                        viewPager.setCurrentItem(3);
+                }
+                return false;
+            }
+        });
+
+        //底部导航栏有几项就有几个Fragment
+        final ArrayList<Fragment> fragments = new ArrayList<>(4);
+        fragments.add(new HomeFragment());
+        fragments.add(new SearchFragment());
+        fragments.add(new ChatroomFragment());
+        fragments.add(new UserFragment());
+
+        FragmentStatePagerAdapter mPagerAdapter=new FragmentStatePagerAdapter(getSupportFragmentManager()) {
+            @Override
+            public Fragment getItem(int position) {
+                return fragments.get(position);  //得到Fragment
+            }
+
+            @Override
+            public int getCount() {
+                return fragments.size();  //得到数量
+            }
+        };
+        viewPager.setAdapter(mPagerAdapter);   //设置适配器
+        viewPager.setOffscreenPageLimit(3); //预加载剩下三页
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                bottomNavigationView.getMenu().getItem(position).setChecked(true);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
     }
 
 }
