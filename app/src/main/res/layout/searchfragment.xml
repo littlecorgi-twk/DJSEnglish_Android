@@ -1,6 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-</android.support.constraint.ConstraintLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#11CDB5"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="选词造句"
+            android:textColor="#ffffff"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/search"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="10">
+
+        <Button
+            android:id="@+id/word1"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/button_shape"
+            android:text="where"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/word2"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            android:layout_toRightOf="@+id/word1"
+            android:background="@drawable/button_shape"
+            android:text="are"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/word3"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            android:layout_toRightOf="@+id/word2"
+            android:background="@drawable/button_shape"
+            android:text="you"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/word4"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            android:layout_toRightOf="@+id/word3"
+            android:background="@drawable/button_shape"
+            android:text="y"
+            android:textAllCaps="false" />
+
+    </RelativeLayout>
+    <ImageView
+        android:id="@+id/hezi"
+        android:layout_weight="1"
+        android:scaleType="centerCrop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/ic_hezi"
+        android:layout_marginBottom="50dp"/>
+    </LinearLayout>
+
+</LinearLayout>
