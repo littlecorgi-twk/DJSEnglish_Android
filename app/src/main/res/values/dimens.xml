@@ -6,5 +6,6 @@
 
     <dimen name="fixed_label_active">14dp</dimen>
     <dimen name="fixed_label_inactive">14dp</dimen>
+    <dimen name="card_padding">60dp</dimen>
 
 </resources>
