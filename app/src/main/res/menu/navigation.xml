@@ -14,7 +14,7 @@
     <item
         android:id="@+id/navigation_chatroom"
         android:icon="@drawable/ic_chatroom"
-        android:title="@string/title_chatroom" />
+        android:title="@string/title_chatRoom" />
 
     <item
         android:id="@+id/navigation_user"

@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
         bottomNavigationBar
                 .addItem(new BottomNavigationItem(R.drawable.ic_home2, "Home").setInactiveIconResource(R.drawable.ic_home))
                 .addItem(new BottomNavigationItem(R.drawable.ic_search2, "Search").setInactiveIconResource(R.drawable.ic_search))
-                .addItem(new BottomNavigationItem(R.drawable.ic_chatroom2, "Chatroom").setInactiveIconResource(R.drawable.ic_chatroom))
+                .addItem(new BottomNavigationItem(R.drawable.ic_chatroom2, "ChatRoom").setInactiveIconResource(R.drawable.ic_chatroom))
                 .addItem(new BottomNavigationItem(R.drawable.ic_user2, "User").setInactiveIconResource(R.drawable.ic_user))
                 .setFirstSelectedPosition(lastSelectedPosition)
                 .initialise(); //initialise 一定要放在 所有设置的最后一项
@@ -83,7 +83,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
         userFragment = new UserFragment();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.frameLayout, homeFragment).add(R.id.frameLayout, searchFragment).add(R.id.frameLayout, chatroomFragment).add(R.id.frameLayout, userFragment);
-        fragmentTransaction.hide(homeFragment).hide(searchFragment).hide(chatroomFragment).hide(userFragment);
+        // fragmentTransaction.hide(homeFragment).hide(searchFragment).hide(chatroomFragment).hide(userFragment);
+        fragmentTransaction.hide(searchFragment).hide(chatroomFragment).hide(userFragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
