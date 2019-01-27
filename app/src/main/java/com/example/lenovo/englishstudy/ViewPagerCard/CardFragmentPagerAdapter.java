@@ -24,9 +24,9 @@ public class CardFragmentPagerAdapter extends FragmentStatePagerAdapter implemen
         this.mFragments = new ArrayList<>();
         this.mBaseElevation = baseElevation;
 
-        for (int i = 0; i < 5; i++) {
-            addCardFragment(new CardFragment());
-        }
+        // for (int i = 0; i < 5; i++) {
+        //     addCardFragment(new CardFragment());
+        // }
     }
 
     @Override
@@ -57,7 +57,7 @@ public class CardFragmentPagerAdapter extends FragmentStatePagerAdapter implemen
         return fragment;
     }
 
-    public void addCardFragment(CardFragment fragment) {
-        mFragments.add(fragment);
-    }
+    // public void addCardFragment(CardFragment fragment) {
+    //     mFragments.add(fragment);
+    // }
 }
