@@ -1,5 +1,8 @@
 package com.example.lenovo.englishstudy.fragment;
 
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.graphics.PointF;
 import android.os.Bundle;
@@ -9,6 +12,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -41,7 +46,7 @@ public class SearchFragment extends Fragment{
 
                 //2.自定义ImageView 继承ImageView
                 MoveImageView img = new MoveImageView(getContext());
-                img.setImageResource(R.mipmap.heart1);
+                img.setImageResource(R.mipmap.ic_heart);
                 //3.设置img在父布局中的坐标位置
                 img.setX(childCoordinate[0] - parentCoordinate[0]);
                 img.setY(childCoordinate[1] - parentCoordinate[1]);
@@ -76,6 +81,30 @@ public class SearchFragment extends Fragment{
     }
 
 
+//    @Override
+//    public Animator onCreateAnimator(int transit, boolean enter, int nextAnim) {
+//        final Animator anim = AnimatorInflater.loadAnimator(getActivity(), nextAnim);
+//        anim.addListener(new AnimatorListenerAdapter()
+//        {
+//            @Override
+//            public void onAnimationStart(Animator animation)
+//            {
+//                //动画开始
+//            }
+//
+//            @Override
+//            public void onAnimationEnd(Animator animation)
+//            {
+//                //动画结束后 父布局移除 img
+//                Object target = ((ObjectAnimator) animation).getTarget();
+//                contain.removeView((View) target);
+//                //shopImg 开始一个放大动画
+//                Animation scaleAnim = AnimationUtils.loadAnimation(getContext(), R.anim.anim);
+//                hezi.startAnimation(scaleAnim);
+//            }
+//        });
+//        return anim;
+//    }
 }
 
 
