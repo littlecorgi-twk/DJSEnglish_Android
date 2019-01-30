@@ -83,9 +83,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
         userFragment = new UserFragment();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.frameLayout, homeFragment).add(R.id.frameLayout, searchFragment).add(R.id.frameLayout, chatroomFragment).add(R.id.frameLayout, userFragment);
-        // fragmentTransaction.hide(homeFragment).hide(searchFragment).hide(chatroomFragment).hide(userFragment);
         fragmentTransaction.hide(searchFragment).hide(chatroomFragment).hide(userFragment);
-        fragmentTransaction.addToBackStack(null);
+        // fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 
@@ -100,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
             case 0:
                 beginTransaction.hide(searchFragment).hide(chatroomFragment).hide(userFragment);
                 beginTransaction.show(homeFragment);
-                beginTransaction.addToBackStack(null);
+                // beginTransaction.addToBackStack(null);
                 beginTransaction.commit();
                 break;
             case 1:

@@ -1,13 +1,17 @@
 package com.example.lenovo.englishstudy.ViewPagerCard;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.lenovo.englishstudy.R;
+import com.example.lenovo.englishstudy.WordsDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +26,12 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
     private List<CardView> mViews;
     private List<CardItem> mData;
     private float mBaseElevation;
+    private Context context;
 
-    public CardPagerAdapter() {
+    public CardPagerAdapter(Context context) {
         mData = new ArrayList<>();
         mViews = new ArrayList<>();
+        this.context = context;
     }
 
     public void addCardItem(CardItem item) {
@@ -53,12 +59,20 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(final ViewGroup container, int position) {
         View view = LayoutInflater.from(container.getContext())
                 .inflate(R.layout.adapter, container, false);
         container.addView(view);
         bind(mData.get(position), view);
-        CardView cardView = (CardView) view.findViewById(R.id.cardView);
+        CardView cardView = view.findViewById(R.id.cardView);
+        cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, WordsDetailActivity.class);
+                Toast.makeText(context, "click", Toast.LENGTH_SHORT).show();
+                context.startActivity(intent);
+            }
+        });
 
         if (mBaseElevation == 0) {
             mBaseElevation = cardView.getCardElevation();
