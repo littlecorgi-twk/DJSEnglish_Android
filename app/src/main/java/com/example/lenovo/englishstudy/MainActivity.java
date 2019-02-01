@@ -11,8 +11,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
@@ -84,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.frameLayout, homeFragment).add(R.id.frameLayout, searchFragment).add(R.id.frameLayout, chatroomFragment).add(R.id.frameLayout, userFragment);
         fragmentTransaction.hide(searchFragment).hide(chatroomFragment).hide(userFragment);
-        // fragmentTransaction.addToBackStack(null);
+        //fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 
@@ -99,13 +101,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
             case 0:
                 beginTransaction.hide(searchFragment).hide(chatroomFragment).hide(userFragment);
                 beginTransaction.show(homeFragment);
-                // beginTransaction.addToBackStack(null);
+                //beginTransaction.addToBackStack(null);
                 beginTransaction.commit();
                 break;
             case 1:
                 beginTransaction.hide(homeFragment).hide(chatroomFragment).hide(userFragment);
                 beginTransaction.show(searchFragment);
-               // beginTransaction.addToBackStack(null);
+              //  beginTransaction.addToBackStack(null);
                 beginTransaction.commit();
                 break;
             case 2:
@@ -137,6 +139,29 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
     @Override
     public void onTabReselected(int position) {
 
+    }
+
+    //退出时的时间
+    private long mExitTime;
+    //对返回键进行监听
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            exit();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    public void exit() {
+        if ((System.currentTimeMillis() - mExitTime) > 2000) {
+            Toast.makeText(MainActivity.this, "再按一次退出", Toast.LENGTH_SHORT).show();
+            mExitTime = System.currentTimeMillis();
+        } else {
+         //   MyConfig.clearSharePre(this, "users");
+            finish();
+            System.exit(0);
+        }
     }
 
 }
