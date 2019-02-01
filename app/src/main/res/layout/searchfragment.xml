@@ -48,7 +48,8 @@
             android:layout_margin="10dp"
             android:layout_toRightOf="@+id/word1"
             android:background="@drawable/ic_button"
-            android:text="wherevereeeee"
+            android:text="experience"
+            android:textSize="15sp"
             android:textAllCaps="false" />
 
         <Button
@@ -59,6 +60,7 @@
             android:layout_toRightOf="@+id/word2"
             android:background="@drawable/ic_button"
             android:text="you"
+            android:textSize="15sp"
             android:textAllCaps="false" />
 
         <Button
@@ -69,6 +71,7 @@
             android:layout_toRightOf="@+id/word3"
             android:background="@drawable/ic_button"
             android:text="y"
+            android:textSize="15sp"
             android:textAllCaps="false" />
 
     </RelativeLayout>
