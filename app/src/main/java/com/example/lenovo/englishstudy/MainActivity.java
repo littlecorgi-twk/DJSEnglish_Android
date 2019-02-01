@@ -25,8 +25,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationBar.OnTabSelectedListener {
     private BottomNavigationBar bottomNavigationBar;
-    private int lastSelectedPosition = 0;
-    private String TAG = MainActivity.class.getSimpleName();
+  //  private int lastSelectedPosition = 0;
+  //  private String TAG = MainActivity.class.getSimpleName();
     private HomeFragment homeFragment;
     private SearchFragment searchFragment;
     private ChatroomFragment chatroomFragment;
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
                 .addItem(new BottomNavigationItem(R.drawable.ic_search2, "Search").setInactiveIconResource(R.drawable.ic_search))
                 .addItem(new BottomNavigationItem(R.drawable.ic_chatroom2, "ChatRoom").setInactiveIconResource(R.drawable.ic_chatroom))
                 .addItem(new BottomNavigationItem(R.drawable.ic_user2, "User").setInactiveIconResource(R.drawable.ic_user))
-                .setFirstSelectedPosition(lastSelectedPosition)
+            //    .setFirstSelectedPosition(lastSelectedPosition)
                 .initialise(); //initialise 一定要放在 所有设置的最后一项
 
         init();
@@ -105,19 +105,19 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
             case 1:
                 beginTransaction.hide(homeFragment).hide(chatroomFragment).hide(userFragment);
                 beginTransaction.show(searchFragment);
-                beginTransaction.addToBackStack(null);
+               // beginTransaction.addToBackStack(null);
                 beginTransaction.commit();
                 break;
             case 2:
                 beginTransaction.hide(homeFragment).hide(searchFragment).hide(userFragment);
                 beginTransaction.show(chatroomFragment);
-                beginTransaction.addToBackStack(null);
+               // beginTransaction.addToBackStack(null);
                 beginTransaction.commit();
                 break;
             case 3:
                 beginTransaction.hide(homeFragment).hide(searchFragment).hide(chatroomFragment);
                 beginTransaction.show(userFragment);
-                beginTransaction.addToBackStack(null);
+               // beginTransaction.addToBackStack(null);
                 beginTransaction.commit();
                 break;
         }
