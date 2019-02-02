@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,14 +18,15 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.example.lenovo.englishstudy.MoveImageView;
 import com.example.lenovo.englishstudy.PointFTypeEvaluator;
 import com.example.lenovo.englishstudy.R;
 
-public class SearchFragment extends Fragment{
+public class SearchFragment extends Fragment {
     private ImageView hezi;
-    private LinearLayout contain;
+    private RelativeLayout contain;
     private Button button;
 
     @Override
@@ -44,12 +46,15 @@ public class SearchFragment extends Fragment{
                 contain.getLocationInWindow(parentCoordinate);
                 hezi.getLocationInWindow(shopCoordinate);
 
+                Log.d("1234",shopCoordinate[1] + " ");
+
                 //2.自定义ImageView 继承ImageView
                 MoveImageView img = new MoveImageView(getContext());
                 img.setImageResource(R.mipmap.ic_heart);
                 //3.设置img在父布局中的坐标位置
-                img.setX(childCoordinate[0] - parentCoordinate[0]);
-                img.setY(childCoordinate[1] - parentCoordinate[1]);
+                img.setX(childCoordinate[0] - parentCoordinate[0] );
+                img.setY(childCoordinate[1] - parentCoordinate[1] );
+                Log.d("12345",shopCoordinate[1] + " ");
                 //4.父布局添加该Img
                 contain.addView(img);
 
@@ -58,53 +63,53 @@ public class SearchFragment extends Fragment{
                 PointF endP = new PointF();
                 PointF controlP = new PointF();
                 //开始的数据点坐标就是 addV的坐标
-                startP.x = childCoordinate[0] - parentCoordinate[0];
+                startP.x = childCoordinate[0] - parentCoordinate[0] ;
                 startP.y = childCoordinate[1] - parentCoordinate[1];
                 //结束的数据点坐标就是 shopImg的坐标
-                endP.x = shopCoordinate[0] - parentCoordinate[0];
-                endP.y = shopCoordinate[1] - parentCoordinate[1];
+                endP.x = shopCoordinate[0] - parentCoordinate[0] + 150;
+                endP.y = shopCoordinate[1] - parentCoordinate[1] + 80;
                 //控制点坐标 x等于 购物车x；y等于 addV的y
                 controlP.x = endP.x;
                 controlP.y = startP.y;
+                Log.d("123456",shopCoordinate[1] + " ");
 
                 //启动属性动画
                 ObjectAnimator animator = ObjectAnimator.ofObject(img, "mPointF",
                         new PointFTypeEvaluator(controlP), startP, endP);
                 animator.setDuration(1000);
-            //    animator.addListener(this);
+                Log.d("1234567",shopCoordinate[1] + " ");
                 animator.start();
+                animator.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        //动画结束后 父布局移除 img
+                        Object target = ((ObjectAnimator) animation).getTarget();
+                        contain.removeView((View) target);
+                        //shopImg 开始一个放大动画
+                        Animation scaleAnim = AnimationUtils.loadAnimation(getContext(), R.anim.anim);
+                        hezi.startAnimation(scaleAnim);
+                    }
+
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                });
             }
-
-
         });
         return view;
     }
 
-
-//    @Override
-//    public Animator onCreateAnimator(int transit, boolean enter, int nextAnim) {
-//        final Animator anim = AnimatorInflater.loadAnimator(getActivity(), nextAnim);
-//        anim.addListener(new AnimatorListenerAdapter()
-//        {
-//            @Override
-//            public void onAnimationStart(Animator animation)
-//            {
-//                //动画开始
-//            }
-//
-//            @Override
-//            public void onAnimationEnd(Animator animation)
-//            {
-//                //动画结束后 父布局移除 img
-//                Object target = ((ObjectAnimator) animation).getTarget();
-//                contain.removeView((View) target);
-//                //shopImg 开始一个放大动画
-//                Animation scaleAnim = AnimationUtils.loadAnimation(getContext(), R.anim.anim);
-//                hezi.startAnimation(scaleAnim);
-//            }
-//        });
-//        return anim;
-//    }
 }
 
 
