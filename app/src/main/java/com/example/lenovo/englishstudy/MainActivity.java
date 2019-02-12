@@ -22,7 +22,6 @@ import com.example.lenovo.englishstudy.fragment.ChatroomFragment;
 import com.example.lenovo.englishstudy.fragment.HomeFragment;
 import com.example.lenovo.englishstudy.fragment.SearchFragment;
 import com.example.lenovo.englishstudy.fragment.UserFragment;
-
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationBar.OnTabSelectedListener {
