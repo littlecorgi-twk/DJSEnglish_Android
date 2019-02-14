@@ -1,6 +1,7 @@
-package com.example.lenovo.englishstudy.animation;
+package com.example.lenovo.englishstudy;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.PointF;
 import android.widget.ImageView;
 
