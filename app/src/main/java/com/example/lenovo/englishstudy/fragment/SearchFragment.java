@@ -148,6 +148,8 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
             case R.id.word4:
                 if(flag) {
                     beginAnimation1(view);
+                } else {
+                    end.setVisibility(View.GONE);
                 }
                 break;
 
