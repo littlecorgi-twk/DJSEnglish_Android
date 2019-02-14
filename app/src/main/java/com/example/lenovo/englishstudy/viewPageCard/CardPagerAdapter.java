@@ -1,4 +1,4 @@
-package com.example.lenovo.englishstudy.ViewPagerCard;
+package com.example.lenovo.englishstudy.viewPageCard;
 
 import android.content.Context;
 import android.content.Intent;

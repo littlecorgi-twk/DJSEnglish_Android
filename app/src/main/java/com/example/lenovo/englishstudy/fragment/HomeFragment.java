@@ -12,9 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.lenovo.englishstudy.R;
-import com.example.lenovo.englishstudy.ViewPagerCard.CardItem;
-import com.example.lenovo.englishstudy.ViewPagerCard.CardPagerAdapter;
-import com.example.lenovo.englishstudy.ViewPagerCard.ShadowTransformer;
+import com.example.lenovo.englishstudy.viewPageCard.CardItem;
+import com.example.lenovo.englishstudy.viewPageCard.CardPagerAdapter;
+import com.example.lenovo.englishstudy.viewPageCard.ShadowTransformer;
 
 public class HomeFragment extends Fragment {
     private ViewPager mViewPager;

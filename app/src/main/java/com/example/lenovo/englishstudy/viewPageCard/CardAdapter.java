@@ -1,4 +1,4 @@
-package com.example.lenovo.englishstudy.ViewPagerCard;
+package com.example.lenovo.englishstudy.viewPageCard;
 
 import android.support.v7.widget.CardView;
 
