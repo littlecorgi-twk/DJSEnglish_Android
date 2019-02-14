@@ -1,4 +1,4 @@
-package com.example.lenovo.englishstudy;
+package com.example.lenovo.englishstudy.animation;
 
 import android.animation.ValueAnimator;
 import android.graphics.Bitmap;
@@ -8,6 +8,8 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.view.View;
+
+import com.example.lenovo.englishstudy.animation.ParticleModel;
 
 public class ExplosionAnimation  extends ValueAnimator {
     private static final int DEFAULT_DURATION = 1500;
