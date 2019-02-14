@@ -1,6 +1,4 @@
-package com.example.lenovo.englishstudy.ViewPagerCard;
-
-import android.view.View;
+package com.example.lenovo.englishstudy.viewPageCard;
 
 /**
  * @author littlecorgi
