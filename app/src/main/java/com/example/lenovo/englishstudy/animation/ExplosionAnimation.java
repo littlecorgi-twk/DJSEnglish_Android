@@ -1,4 +1,4 @@
-package com.example.lenovo.englishstudy;
+package com.example.lenovo.englishstudy.animation;
 
 import android.animation.ValueAnimator;
 import android.graphics.Bitmap;
