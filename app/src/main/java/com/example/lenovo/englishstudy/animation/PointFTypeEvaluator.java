@@ -1,4 +1,4 @@
-package com.example.lenovo.englishstudy;
+package com.example.lenovo.englishstudy.animation;
 
 import android.animation.TypeEvaluator;
 import android.graphics.PointF;
