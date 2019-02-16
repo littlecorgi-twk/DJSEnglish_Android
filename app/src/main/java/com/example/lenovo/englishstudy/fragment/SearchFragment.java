@@ -3,6 +3,8 @@ package com.example.lenovo.englishstudy.fragment;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.content.Context;
+import android.graphics.Color;
 import android.graphics.PointF;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -21,72 +23,82 @@ import android.view.animation.CycleInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.lenovo.englishstudy.FlowLayout;
 import com.example.lenovo.englishstudy.animation.ExplosionField;
 import com.example.lenovo.englishstudy.animation.MoveImageView;
 import com.example.lenovo.englishstudy.animation.PointFTypeEvaluator;
 import com.example.lenovo.englishstudy.R;
 
 
-public class SearchFragment extends Fragment implements View.OnClickListener {
+public class SearchFragment extends Fragment {
     private ImageView hezi;
     private RelativeLayout contain;
-    private Button button1;
-    private Button button2;
-    private Button button3;
-    private Button button4;
+//    private Button button1;
+//    private Button button2;
+//    private Button button3;
+//    private Button button4;
     private Toolbar toolbar;
     private ImageView end;
-    private Boolean flag = true;
+    private ImageView ianswer;
+    private TextView answer1;
+    private TextView answer2;
+    private String as = "";
+    private Boolean flag1 = true;
+    private Boolean flag2 = false;
+    private Boolean flag3 = false;
+    private String mNames[] = {
+            "welcome","android","TextView",
+            "apple","jamy","kobe bryant",
+            "jordan","layout","viewgroup",
+            "margin","padding","text",
+            "name","type","search","logcat"
+    };
+    private FlowLayout mFlowLayout;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.searchfragment,container,false);
         end = view.findViewById(R.id.end);
-        end.setOnClickListener(this);
+        end.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(flag3) {
+                    flag1 = false;
+                    end.setVisibility(View.GONE);
+                    answer2.setText(as);
+                    beginAnimation2();
+                }
+            }
+        });
         end.setVisibility(View.GONE);
+        answer1 = view.findViewById(R.id.answer1);
+        answer1.setVisibility(View.GONE);
+        answer2 = view.findViewById(R.id.answer2);
+        answer2.setVisibility(View.GONE);
         toolbar = view.findViewById(R.id.title);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         setHasOptionsMenu(true);
-        button1 = view.findViewById(R.id.word1);
-        button2 = view.findViewById(R.id.word2);
-        button3 = view.findViewById(R.id.word3);
-        button4 = view.findViewById(R.id.word4);
-
+//        button1 = view.findViewById(R.id.word1);
+//        button2 = view.findViewById(R.id.word2);
+//        button3 = view.findViewById(R.id.word3);
+//        button4 = view.findViewById(R.id.word4);
+        ianswer = view.findViewById(R.id.ianswer);
+        ianswer.setVisibility(View.GONE);
         contain = view.findViewById(R.id.search);
         hezi = view.findViewById(R.id.hezi);
-        button1.setOnClickListener(this);
-        button2.setOnClickListener(this);
-        button3.setOnClickListener(this);
-        button4.setOnClickListener(this);
+//        button1.setOnClickListener(this);
+//        button2.setOnClickListener(this);
+//        button3.setOnClickListener(this);
+//        button4.setOnClickListener(this);
+        initChildViews(view);
         return view;
     }
 
-    @Override
-    public void onClick(View view) {
-        end.setVisibility(View.VISIBLE);
-        switch (view.getId()) {
-            case R.id.word1:
-            case R.id.word2:
-            case R.id.word3:
-            case R.id.word4:
-                if(flag) {
-                    beginAnimation1(view);
-                } else {
-                    end.setVisibility(View.GONE);
-                }
-                break;
-
-            case R.id.end:
-                flag = false;
-                end.setVisibility(View.GONE);
-                beginAnimation2();
-                break;
-        }
-
-    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -116,6 +128,9 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         //2.自定义ImageView 继承ImageView
         MoveImageView img = new MoveImageView(getContext());
         img.setImageResource(R.mipmap.ic_heart);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(120, 120);//两个400分别为添加图片的大小
+        img.setLayoutParams(params);
+
         //3.设置img在父布局中的坐标位置
         img.setX(childCoordinate[0] - parentCoordinate[0] );
         img.setY(childCoordinate[1] - parentCoordinate[1] );
@@ -153,6 +168,22 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                 //shopImg 开始一个放大动画
                 Animation scaleAnim = AnimationUtils.loadAnimation(getContext(), R.anim.anim);
                 hezi.startAnimation(scaleAnim);
+                scaleAnim.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        flag3 = true;
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
             }
 
             @Override
@@ -214,11 +245,56 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                         public void onAnimationEnd(Animator animation) {
                             super.onAnimationEnd(animation);
                             view.setVisibility(View.GONE);
+                            answer1.setVisibility(View.VISIBLE);
+                            ianswer.setVisibility(View.VISIBLE);
+                            answer2.setVisibility(View.VISIBLE);
+                            flag2 = true;
+                            flag1 = true;
+                            as = "";
                         }
                     });
         }
 
     }
+
+    private void initChildViews(View view) {
+        // TODO Auto-generated method stub
+        mFlowLayout = (FlowLayout) view.findViewById(R.id.flowlayout);
+        ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lp.leftMargin = 10;
+        lp.rightMargin = 10;
+        lp.topMargin = 10;
+        lp.bottomMargin = 10;
+        for(int i = 0; i < mNames.length; i ++){
+            final TextView textView = new TextView(getContext());
+            textView.setText(mNames[i]);
+            textView.setTextColor(Color.BLACK);
+            textView.setBackgroundDrawable(getResources().getDrawable(R.drawable.textview));
+            mFlowLayout.addView(textView,lp);
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    flag3 = false;
+                    as += textView.getText() + " ";
+                    if(flag1) {
+                        beginAnimation1(view);
+                        end.setVisibility(View.VISIBLE);
+                    }
+                    if(flag2) {
+                        hezi.setVisibility(View.VISIBLE);
+                        answer1.setVisibility(View.GONE);
+                        answer2.setVisibility(View.GONE);
+                        ianswer.setVisibility(View.GONE);
+                    }
+                }
+            });
+        }
+
+    }
+
+
+
 }
 
 
