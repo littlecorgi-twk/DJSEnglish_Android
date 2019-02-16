@@ -1,4 +1,4 @@
-package com.example.lenovo.englishstudy.animation;
+package com.example.lenovo.englishstudy;
 
 import android.graphics.Point;
 import android.graphics.Rect;

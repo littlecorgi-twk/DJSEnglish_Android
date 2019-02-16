@@ -35,10 +35,13 @@ public class PullToRefreshLinearLayout extends LinearLayout {
     private static final int PULL_DOWN_STATE = 1;
     private static final int PULL_UP_XCX = 1;
 
+    private VerticalScrollView mVerticalScrollView;
+
     /**
      * 最近按下时手指的位置
      */
     private int mLastMotionY;
+    private int mLastMotionX;
 
     /**
      * 头布局（小程序和刷新提示）
@@ -281,19 +284,27 @@ public class PullToRefreshLinearLayout extends LinearLayout {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
+        int x = ((int) ev.getRawX());
         int y = ((int) ev.getRawY());
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 // 首先拦截down事件， 记录y坐标
                 mLastMotionY = y;
+                mLastMotionX = x;
                 break;
             case MotionEvent.ACTION_MOVE:
                 // deltaY > 0 是向下运动吗， < 0 是向上运动
+                int deltaX = x - mLastMotionX;
                 int deltaY = y - mLastMotionY;
-                if (isRefreshViewScroll(deltaY)) {
-                    return true;
+                if (Math.abs(deltaY) > Math.abs(deltaX)) {
+                    if (isRefreshViewScroll(deltaY)) {
+                        return true;
+                    } else {
+                       return false;
+                    }
+                } else {
+                    return false;
                 }
-                break;
             case MotionEvent.ACTION_UP:
             case  MotionEvent.ACTION_CANCEL:
                 break;

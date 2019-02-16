@@ -1,4 +1,4 @@
-package com.example.lenovo.englishstudy.animation;
+package com.example.lenovo.englishstudy;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
