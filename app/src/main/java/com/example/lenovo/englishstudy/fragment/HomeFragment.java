@@ -17,6 +17,7 @@ import android.widget.ScrollView;
 
 import com.example.lenovo.englishstudy.R;
 import com.example.lenovo.englishstudy.pullextend.PullToRefreshLinearLayout;
+import com.example.lenovo.englishstudy.pullextend.VerticalScrollView;
 import com.example.lenovo.englishstudy.viewPageCard.CardItem;
 import com.example.lenovo.englishstudy.viewPageCard.CardPagerAdapter;
 import com.example.lenovo.englishstudy.viewPageCard.ShadowTransformer;
@@ -38,7 +39,7 @@ public class HomeFragment extends Fragment {
     Handler handler = new Handler();
 
     @BindView(R.id.sv_scrollView)
-    ScrollView scrollView;
+    VerticalScrollView scrollView;
 
     @Nullable
     @Override
@@ -47,7 +48,9 @@ public class HomeFragment extends Fragment {
         ButterKnife.bind(view);
         scrollView = view.findViewById(R.id.sv_scrollView);
         mViewPager = view.findViewById(R.id.vp_WordCard);
+        linRefresh = view.findViewById(R.id.lin_refresh);
         init();
+        initEvent();
         return view;
     }
 
