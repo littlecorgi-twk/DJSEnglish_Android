@@ -34,48 +34,13 @@
             android:layout_height="wrap_content"
             android:layout_weight="10">
 
-            <Button
-                android:id="@+id/word1"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
+            <com.example.lenovo.englishstudy.FlowLayout
+                android:id="@+id/flowlayout"
                 android:layout_margin="10dp"
-                android:background="@drawable/ic_button"
-                android:text="which"
-                android:textSize="15sp"
-                android:textAllCaps="false" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
 
-            <Button
-                android:id="@+id/word2"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_margin="10dp"
-                android:layout_toRightOf="@+id/word1"
-                android:background="@drawable/ic_button"
-                android:text="experience"
-                android:textSize="15sp"
-                android:textAllCaps="false" />
-
-            <Button
-                android:id="@+id/word3"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_margin="10dp"
-                android:layout_toRightOf="@+id/word2"
-                android:background="@drawable/ic_button"
-                android:text="you"
-                android:textSize="15sp"
-                android:textAllCaps="false" />
-
-            <Button
-                android:id="@+id/word4"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_margin="10dp"
-                android:layout_toRightOf="@+id/word3"
-                android:background="@drawable/ic_button"
-                android:text="y"
-                android:textSize="15sp"
-                android:textAllCaps="false" />
+            </com.example.lenovo.englishstudy.FlowLayout>
 
         </RelativeLayout>
 
@@ -99,6 +64,35 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="50dp"/>
+
+        <TextView
+            android:id="@+id/answer1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="550dp"
+            android:text="造句结果 "
+            android:textColor="#11CDB5"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/ianswer"
+            android:layout_width="20dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="550dp"
+            android:layout_toRightOf="@id/answer1"
+            android:background="@drawable/ic_answer"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/answer2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/answer1"
+            android:layout_marginLeft="15dp"
+            android:textSize="22sp"
+            android:textColor="#11CDB5"/>
     </RelativeLayout>
 
 </LinearLayout>
