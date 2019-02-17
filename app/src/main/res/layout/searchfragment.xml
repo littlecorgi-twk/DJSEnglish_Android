@@ -8,36 +8,21 @@
 
 
     <android.support.v7.widget.Toolbar
-    android:id="@+id/title"
-    android:layout_width="match_parent"
-    android:layout_height="?attr/actionBarSize"
-    android:background="?attr/colorPrimary"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-    app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-    <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:text="选词造句"
-    android:textColor="#ffffff"
-    android:textSize="22sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="选词造句"
+            android:textColor="#ffffff"
+            android:textSize="22sp" />
     </android.support.v7.widget.Toolbar>
-
-    <!--<RelativeLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="56dp"-->
-        <!--android:background="#11CDB5"-->
-        <!--android:orientation="horizontal">-->
-
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_centerInParent="true"-->
-            <!--android:text="选词造句"-->
-            <!--android:textColor="#ffffff"-->
-            <!--android:textSize="20sp" />-->
-    <!--</RelativeLayout>-->
 
     <RelativeLayout
         android:id="@+id/search"
@@ -52,7 +37,7 @@
             <Button
                 android:id="@+id/word1"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_margin="10dp"
                 android:background="@drawable/ic_button"
                 android:text="which"
@@ -62,7 +47,7 @@
             <Button
                 android:id="@+id/word2"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_margin="10dp"
                 android:layout_toRightOf="@+id/word1"
                 android:background="@drawable/ic_button"
@@ -73,7 +58,7 @@
             <Button
                 android:id="@+id/word3"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_margin="10dp"
                 android:layout_toRightOf="@+id/word2"
                 android:background="@drawable/ic_button"
@@ -84,7 +69,7 @@
             <Button
                 android:id="@+id/word4"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_margin="10dp"
                 android:layout_toRightOf="@+id/word3"
                 android:background="@drawable/ic_button"

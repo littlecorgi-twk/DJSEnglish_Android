@@ -35,8 +35,6 @@ public class PullToRefreshLinearLayout extends LinearLayout {
     private static final int PULL_DOWN_STATE = 1;
     private static final int PULL_UP_XCX = 1;
 
-    private VerticalScrollView mVerticalScrollView;
-
     /**
      * 最近按下时手指的位置
      */
@@ -300,7 +298,7 @@ public class PullToRefreshLinearLayout extends LinearLayout {
                     if (isRefreshViewScroll(deltaY)) {
                         return true;
                     } else {
-                       return false;
+                        return false;
                     }
                 } else {
                     return false;
