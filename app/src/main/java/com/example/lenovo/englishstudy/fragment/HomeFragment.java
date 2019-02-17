@@ -1,7 +1,6 @@
 package com.example.lenovo.englishstudy.fragment;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -11,18 +10,14 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.ScrollView;
 
 import com.example.lenovo.englishstudy.R;
 import com.example.lenovo.englishstudy.pullextend.PullToRefreshLinearLayout;
-import com.example.lenovo.englishstudy.pullextend.VerticalScrollView;
 import com.example.lenovo.englishstudy.viewPageCard.CardItem;
 import com.example.lenovo.englishstudy.viewPageCard.CardPagerAdapter;
 import com.example.lenovo.englishstudy.viewPageCard.ShadowTransformer;
 
-import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -39,7 +34,7 @@ public class HomeFragment extends Fragment {
     Handler handler = new Handler();
 
     @BindView(R.id.sv_scrollView)
-    VerticalScrollView scrollView;
+    ScrollView scrollView;
 
     @Nullable
     @Override
@@ -73,10 +68,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-    }
-
-    public static float dpToPixels(int dp, Context context) {
-        return dp * (context.getResources().getDisplayMetrics().density);
     }
 
     private void initEvent(){

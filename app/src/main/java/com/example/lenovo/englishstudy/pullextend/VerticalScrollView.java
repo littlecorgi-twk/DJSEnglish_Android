@@ -7,11 +7,10 @@ import android.widget.ScrollView;
 
 /**
  * @author littlecorgi
- * @Date 2019-02-16 17:08
+ * @Date 2019-02-17 10:28
  * @email a1203991686@126.com
  */
 public class VerticalScrollView extends ScrollView {
-
     private float xDistance, yDistance, xLast, yLast;
 
     public VerticalScrollView(Context context) {
