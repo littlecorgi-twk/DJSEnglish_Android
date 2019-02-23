@@ -4,6 +4,8 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.os.Bundle;
@@ -28,19 +30,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.lenovo.englishstudy.FlowLayout;
+import com.example.lenovo.englishstudy.SearchHistoryActivity;
 import com.example.lenovo.englishstudy.animation.ExplosionField;
 import com.example.lenovo.englishstudy.animation.MoveImageView;
 import com.example.lenovo.englishstudy.animation.PointFTypeEvaluator;
 import com.example.lenovo.englishstudy.R;
+import com.example.lenovo.englishstudy.db.Sentence;
 
 
 public class SearchFragment extends Fragment {
+
     private ImageView hezi;
     private RelativeLayout contain;
-//    private Button button1;
-//    private Button button2;
-//    private Button button3;
-//    private Button button4;
     private Toolbar toolbar;
     private ImageView end;
     private ImageView ianswer;
@@ -52,7 +53,7 @@ public class SearchFragment extends Fragment {
     private Boolean flag3 = false;
     private String mNames[] = {
             "welcome","android","TextView",
-            "apple","jamy","kobe bryant",
+            "apple","experience","kobe bryant",
             "jordan","layout","viewgroup",
             "margin","padding","text",
             "name","type","search","logcat"
@@ -71,6 +72,9 @@ public class SearchFragment extends Fragment {
                     flag1 = false;
                     end.setVisibility(View.GONE);
                     answer2.setText(as);
+                    Sentence sentence = new Sentence();
+                    sentence.setSentence(as);
+                    sentence.save();
                     beginAnimation2();
                 }
             }
@@ -83,21 +87,14 @@ public class SearchFragment extends Fragment {
         toolbar = view.findViewById(R.id.title);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         setHasOptionsMenu(true);
-//        button1 = view.findViewById(R.id.word1);
-//        button2 = view.findViewById(R.id.word2);
-//        button3 = view.findViewById(R.id.word3);
-//        button4 = view.findViewById(R.id.word4);
         ianswer = view.findViewById(R.id.ianswer);
         ianswer.setVisibility(View.GONE);
         contain = view.findViewById(R.id.search);
         hezi = view.findViewById(R.id.hezi);
-//        button1.setOnClickListener(this);
-//        button2.setOnClickListener(this);
-//        button3.setOnClickListener(this);
-//        button4.setOnClickListener(this);
         initChildViews(view);
         return view;
     }
+
 
 
     @Override
@@ -109,6 +106,8 @@ public class SearchFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.history:
+                Intent intent = new Intent(getActivity(), SearchHistoryActivity.class);
+                startActivity(intent);
                 break;
         }
         return true;
@@ -292,8 +291,6 @@ public class SearchFragment extends Fragment {
         }
 
     }
-
-
 
 }
 

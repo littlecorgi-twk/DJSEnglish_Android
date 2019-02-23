@@ -5,12 +5,12 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FlowLayout extends ViewGroup {
-
     //存储所有子View
     private List<List<View>> mAllChildViews = new ArrayList<>();
     //每一行的高度

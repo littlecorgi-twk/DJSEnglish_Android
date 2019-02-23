@@ -29,20 +29,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <RelativeLayout
+
+        <com.example.lenovo.englishstudy.FlowLayout
+            android:id="@+id/flowlayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="10">
+            android:layout_margin="10dp">
 
-            <com.example.lenovo.englishstudy.FlowLayout
-                android:id="@+id/flowlayout"
-                android:layout_margin="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+        </com.example.lenovo.englishstudy.FlowLayout>
 
-            </com.example.lenovo.englishstudy.FlowLayout>
-
-        </RelativeLayout>
 
         <ImageView
             android:id="@+id/end"
@@ -55,7 +50,6 @@
 
         <ImageView
             android:id="@+id/hezi"
-            android:layout_weight="1"
             android:scaleType="centerCrop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
