@@ -27,6 +27,7 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
     private List<CardItem> mData;
     private float mBaseElevation;
     private Context context;
+    private CardView cardView;
 
     public CardPagerAdapter(Context context) {
         mData = new ArrayList<>();
@@ -64,15 +65,41 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
                 .inflate(R.layout.adapter, container, false);
         container.addView(view);
         bind(mData.get(position), view);
-        CardView cardView = view.findViewById(R.id.cardView);
-        cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, WordsDetailActivity.class);
-                Toast.makeText(context, "click", Toast.LENGTH_SHORT).show();
-                context.startActivity(intent);
-            }
-        });
+        cardView = view.findViewById(R.id.cardView);
+        View.OnClickListener onClickListener = null;
+        for (int i = 0; i < getCount(); i++) {
+            onClickListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, WordsDetailActivity.class);
+                    Toast.makeText(context, "click", Toast.LENGTH_SHORT).show();
+                    context.startActivity(intent);
+                }
+            };
+        }
+        // switch (position) {
+        //     case 0:
+        //         onClickListener = new View.OnClickListener() {
+        //             @Override
+        //             public void onClick(View v) {
+        //                 Intent intent = new Intent(context, WordsDetailActivity.class);
+        //                 Toast.makeText(context, "click", Toast.LENGTH_SHORT).show();
+        //                 context.startActivity(intent);
+        //             }
+        //         };
+        //         break;
+        //     case 1:
+        //         onClickListener = new View.OnClickListener() {
+        //             @Override
+        //             public void onClick(View v) {
+        //                 Intent intent = new Intent(context, WordsDetailActivity.class);
+        //                 Toast.makeText(context, "click", Toast.LENGTH_SHORT).show();
+        //                 context.startActivity(intent);
+        //             }
+        //         };
+        //         break;
+        // }
+        cardView.setOnClickListener(onClickListener);
 
         if (mBaseElevation == 0) {
             mBaseElevation = cardView.getCardElevation();
