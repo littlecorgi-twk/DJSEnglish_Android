@@ -1,18 +1,23 @@
 package com.example.lenovo.englishstudy.fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import com.example.lenovo.englishstudy.R;
+import com.example.lenovo.englishstudy.WordsDetailActivity;
 import com.example.lenovo.englishstudy.pullextend.PullToRefreshLinearLayout;
 import com.example.lenovo.englishstudy.viewPageCard.CardItem;
 import com.example.lenovo.englishstudy.viewPageCard.CardPagerAdapter;
@@ -46,6 +51,9 @@ public class HomeFragment extends Fragment {
         linRefresh = view.findViewById(R.id.lin_refresh);
         init();
         initEvent();
+
+
+
         return view;
     }
 
