@@ -46,14 +46,14 @@
         android:layout_margin="15dp"/>
 
 
-        <com.example.lenovo.englishstudy.FlowLayout
+        <com.example.lenovo.englishstudy.userdefined.FlowLayout
             android:id="@+id/history_flowlayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_below="@+id/delete">
 
-        </com.example.lenovo.englishstudy.FlowLayout>
+        </com.example.lenovo.englishstudy.userdefined.FlowLayout>
 
 
     </RelativeLayout>

@@ -13,6 +13,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.lenovo.englishstudy.db.Sentence;
+import com.example.lenovo.englishstudy.userdefined.FlowLayout;
+
 import org.litepal.crud.DataSupport;
 import java.util.ArrayList;
 import java.util.HashSet;

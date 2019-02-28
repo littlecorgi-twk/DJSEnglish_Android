@@ -10,13 +10,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.example.lenovo.englishstudy.MyView;
+import com.example.lenovo.englishstudy.LoginActivity;
+import com.example.lenovo.englishstudy.userdefined.MyView;
 import com.example.lenovo.englishstudy.R;
 
 public class UserFragment extends Fragment implements MyView.OnRootClickListener {
     private LinearLayout oneItem;
     private LinearLayout twoItem;
     private LinearLayout threeItem;
+    private LinearLayout log;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -24,6 +26,13 @@ public class UserFragment extends Fragment implements MyView.OnRootClickListener
         oneItem = view.findViewById(R.id.one_item);
         twoItem = view.findViewById(R.id.two_item);
         threeItem = view.findViewById(R.id.three_item);
+        log = view.findViewById(R.id.log);
+        log.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getContext(), LoginActivity.class));
+            }
+        });
         initView();
         return view;
     }
