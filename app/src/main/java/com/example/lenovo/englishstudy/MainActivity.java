@@ -66,10 +66,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
 
         /** 添加导航按钮 */
         bottomNavigationBar
-                .addItem(new BottomNavigationItem(R.drawable.ic_home2, "Home").setInactiveIconResource(R.drawable.ic_home))
-                .addItem(new BottomNavigationItem(R.drawable.ic_search2, "Search").setInactiveIconResource(R.drawable.ic_search))
-                .addItem(new BottomNavigationItem(R.drawable.ic_chatroom2, "ChatRoom").setInactiveIconResource(R.drawable.ic_chatroom))
-                .addItem(new BottomNavigationItem(R.drawable.ic_user2, "User").setInactiveIconResource(R.drawable.ic_user))
+                .addItem(new BottomNavigationItem(R.drawable.ic_home2, "首页").setInactiveIconResource(R.drawable.ic_home))
+                .addItem(new BottomNavigationItem(R.drawable.ic_search2, "选词").setInactiveIconResource(R.drawable.ic_search))
+                .addItem(new BottomNavigationItem(R.drawable.ic_chatroom2, "聊天室").setInactiveIconResource(R.drawable.ic_chatroom))
+                .addItem(new BottomNavigationItem(R.drawable.ic_user2, "我的").setInactiveIconResource(R.drawable.ic_user))
             //    .setFirstSelectedPosition(lastSelectedPosition)
                 .initialise(); //initialise 一定要放在 所有设置的最后一项
 

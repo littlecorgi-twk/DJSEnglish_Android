@@ -30,13 +30,13 @@
         android:layout_height="match_parent">
 
 
-        <com.example.lenovo.englishstudy.FlowLayout
+        <com.example.lenovo.englishstudy.userdefined.FlowLayout
             android:id="@+id/flowlayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp">
 
-        </com.example.lenovo.englishstudy.FlowLayout>
+        </com.example.lenovo.englishstudy.userdefined.FlowLayout>
 
 
         <ImageView
