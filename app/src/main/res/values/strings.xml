@@ -1,9 +1,5 @@
 <resources>
     <string name="app_name">English Study</string>
-    <string name="title_home">Home</string>
-    <string name="title_search">Search</string>
-    <string name="title_chatRoom">ChatRoom</string>
-    <string name="title_user">User</string>
 
     <string name="title_1">Cool card</string>
     <string name="title_2">OK card</string>
