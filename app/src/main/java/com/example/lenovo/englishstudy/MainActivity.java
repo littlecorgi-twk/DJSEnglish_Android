@@ -29,14 +29,12 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationBar.OnTabSelectedListener {
     private BottomNavigationBar bottomNavigationBar;
-  //  private int lastSelectedPosition = 0;
-  //  private String TAG = MainActivity.class.getSimpleName();
+    //  private int lastSelectedPosition = 0;
+    //  private String TAG = MainActivity.class.getSimpleName();
     private HomeFragment homeFragment;
     private SearchFragment searchFragment;
     private ChatroomFragment chatroomFragment;
     private UserFragment userFragment;
-    public FragmentManager fragmentManager;
-    public String curFragmentTag = "";
 
 
     @Override
@@ -75,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
                 .addItem(new BottomNavigationItem(R.drawable.ic_search2, "选词").setInactiveIconResource(R.drawable.ic_search))
                 .addItem(new BottomNavigationItem(R.drawable.ic_chatroom2, "聊天室").setInactiveIconResource(R.drawable.ic_chatroom))
                 .addItem(new BottomNavigationItem(R.drawable.ic_user2, "我的").setInactiveIconResource(R.drawable.ic_user))
-            //    .setFirstSelectedPosition(lastSelectedPosition)
+                //    .setFirstSelectedPosition(lastSelectedPosition)
                 .initialise(); //initialise 一定要放在 所有设置的最后一项
 
         init();
@@ -111,19 +109,19 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
             case 1:
                 beginTransaction.hide(homeFragment).hide(chatroomFragment).hide(userFragment);
                 beginTransaction.show(searchFragment);
-              //  beginTransaction.addToBackStack(null);
+                //  beginTransaction.addToBackStack(null);
                 beginTransaction.commit();
                 break;
             case 2:
                 beginTransaction.hide(homeFragment).hide(searchFragment).hide(userFragment);
                 beginTransaction.show(chatroomFragment);
-               // beginTransaction.addToBackStack(null);
+                // beginTransaction.addToBackStack(null);
                 beginTransaction.commit();
                 break;
             case 3:
                 beginTransaction.hide(homeFragment).hide(searchFragment).hide(chatroomFragment);
                 beginTransaction.show(userFragment);
-               // beginTransaction.addToBackStack(null);
+                // beginTransaction.addToBackStack(null);
                 beginTransaction.commit();
                 break;
         }
@@ -162,18 +160,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
             Toast.makeText(MainActivity.this, "再按一次退出", Toast.LENGTH_SHORT).show();
             mExitTime = System.currentTimeMillis();
         } else {
-         //   MyConfig.clearSharePre(this, "users");
+            //   MyConfig.clearSharePre(this, "users");
             finish();
             System.exit(0);
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        UserFragment f = new UserFragment();
-        Log.d("234","2");
-        f.onActivityResult(requestCode, resultCode, data);
 
-    }
 }
