@@ -77,28 +77,6 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
                 }
             };
         }
-        // switch (position) {
-        //     case 0:
-        //         onClickListener = new View.OnClickListener() {
-        //             @Override
-        //             public void onClick(View v) {
-        //                 Intent intent = new Intent(context, WordsDetailActivity.class);
-        //                 Toast.makeText(context, "click", Toast.LENGTH_SHORT).show();
-        //                 context.startActivity(intent);
-        //             }
-        //         };
-        //         break;
-        //     case 1:
-        //         onClickListener = new View.OnClickListener() {
-        //             @Override
-        //             public void onClick(View v) {
-        //                 Intent intent = new Intent(context, WordsDetailActivity.class);
-        //                 Toast.makeText(context, "click", Toast.LENGTH_SHORT).show();
-        //                 context.startActivity(intent);
-        //             }
-        //         };
-        //         break;
-        // }
         cardView.setOnClickListener(onClickListener);
 
         if (mBaseElevation == 0) {
