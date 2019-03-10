@@ -2,8 +2,12 @@ package com.example.lenovo.englishstudy.Util;
 
 import android.text.TextUtils;
 
+import com.example.lenovo.englishstudy.bean.WordMeanig;
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * @author littlecorgi
@@ -12,15 +16,14 @@ import org.json.JSONException;
  */
 public class Utility {
 
-    public static boolean handleWordMeaningRequest (String request) {
-        if (!TextUtils.isEmpty(request)) {
-            try {
-                JSONArray wordMeaning = new JSONArray(request);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+    public static WordMeanig handleWordMeaningResponse(String response) {
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            String wordMeaningContent = jsonObject.toString();
+            return new Gson().fromJson(wordMeaningContent, WordMeanig.class);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        return true;
+        return null;
     }
 }
