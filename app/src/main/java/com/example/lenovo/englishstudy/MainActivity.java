@@ -1,11 +1,14 @@
 package com.example.lenovo.englishstudy;
 
+import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
@@ -32,6 +35,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
     private SearchFragment searchFragment;
     private ChatroomFragment chatroomFragment;
     private UserFragment userFragment;
+    public FragmentManager fragmentManager;
+    public String curFragmentTag = "";
 
 
     @Override
@@ -163,4 +168,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UserFragment f = new UserFragment();
+        Log.d("234","2");
+        f.onActivityResult(requestCode, resultCode, data);
+
+    }
 }
