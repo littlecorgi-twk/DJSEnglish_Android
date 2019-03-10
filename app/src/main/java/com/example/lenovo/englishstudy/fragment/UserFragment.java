@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.lenovo.englishstudy.LoginActivity;
 import com.example.lenovo.englishstudy.MainActivity;
 import com.example.lenovo.englishstudy.userdefined.MyView;
@@ -35,7 +36,7 @@ public class UserFragment extends Fragment implements MyView.OnRootClickListener
     private LinearLayout twoItem;
     private LinearLayout threeItem;
     private LinearLayout log;
-    private TextView login;
+    private TextView login,login_msg;
     private CircleImageView photo;
     private Tencent mTencent;
 
@@ -47,12 +48,13 @@ public class UserFragment extends Fragment implements MyView.OnRootClickListener
         twoItem = view.findViewById(R.id.two_item);
         threeItem = view.findViewById(R.id.three_item);
         login = view.findViewById(R.id.login);
+        login_msg = view.findViewById(R.id.login_msg);
         photo = view.findViewById(R.id.photo);
         log = view.findViewById(R.id.log);
         log.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().startActivity(new Intent(getContext(), LoginActivity.class));
+                startActivityForResult(new Intent(getContext(), LoginActivity.class),1);
 
             }
         });
@@ -70,14 +72,16 @@ public class UserFragment extends Fragment implements MyView.OnRootClickListener
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d("345","2");
+        Log.d("12345","2");
         switch (requestCode) {
             case 1:
                 if (resultCode == RESULT_OK) {
                     login.setText(data.getStringExtra("user_name"));
+                    login_msg.setText("");
                     Log.d("12345", data.getStringExtra("user_name"));
-                    Uri parse = Uri.parse(data.getStringExtra("user_photo"));
-                    photo.setImageURI(parse);
+                    Glide.with(getContext()).load(data.getStringExtra("user_photo")).into(photo);
+//                    Uri parse = Uri.parse(data.getStringExtra("user_photo"));
+//                    photo.setImageURI(parse);
                 }
 
                 break;

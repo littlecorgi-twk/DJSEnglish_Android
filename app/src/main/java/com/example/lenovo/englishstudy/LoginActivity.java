@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Message;
 import android.provider.SyncStateContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
@@ -36,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     private ImageView cancel;
     private ImageView qq;
     private Tencent mTencent;
-//    private UserFragment userFragment = new UserFragment();
+    //    private UserFragment userFragment = new UserFragment();
     private String user_name = "null" ,user_photo = " ";
 
     @Override
@@ -65,6 +66,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+
     }
 
     @Override
@@ -88,8 +90,7 @@ public class LoginActivity extends AppCompatActivity {
             Log.d("user_name",user_name);
             Log.d("user_photo",user_photo);
             getUserInfo();
-            Log.d("123",user_name);
-            Log.d("1234",user_photo);
+
 
             Toast.makeText(getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
         }
@@ -115,7 +116,6 @@ public class LoginActivity extends AppCompatActivity {
                     user_name = ((JSONObject) o).getString("nickname");
                     user_photo = ((JSONObject) o).getString("figureurl_qq_2");
 
-
 //                    UserFragment userFragment = new UserFragment();
 //                    Bundle bundle = new Bundle();
 //                    bundle.putString("user_name",user_name);
@@ -129,10 +129,7 @@ public class LoginActivity extends AppCompatActivity {
                     setResult(RESULT_OK, intent);
                     Log.d("456","1");
                     finish();
-//                    FragmentManager fragmentManager = getSupportFragmentManager();
-//                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                    fragmentTransaction.replace(R.id.frameLayout,userFragment);
-//                    fragmentTransaction.commit();
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();
