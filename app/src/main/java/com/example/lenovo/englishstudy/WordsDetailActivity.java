@@ -51,7 +51,7 @@ public class WordsDetailActivity extends AppCompatActivity {
 
     void initPopupWindow() {
         View view = LayoutInflater.from(this).inflate(R.layout.word_detail_popup_window, null);
-        popupWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        popupWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, false);
 
         popupWindow.setOutsideTouchable(true);
         // 设置PopupWindow是否能响应外部点击事件
