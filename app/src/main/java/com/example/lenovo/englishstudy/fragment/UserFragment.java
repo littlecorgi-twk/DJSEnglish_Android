@@ -1,6 +1,8 @@
 package com.example.lenovo.englishstudy.fragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -30,6 +32,8 @@ import org.json.JSONObject;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.app.Activity.RESULT_OK;
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 
 public class UserFragment extends Fragment implements MyView.OnRootClickListener {
     private LinearLayout oneItem;
@@ -38,7 +42,7 @@ public class UserFragment extends Fragment implements MyView.OnRootClickListener
     private LinearLayout log;
     private TextView login,login_msg;
     private CircleImageView photo;
-    private Tencent mTencent;
+    private Boolean iflogin = FALSE;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,21 +55,26 @@ public class UserFragment extends Fragment implements MyView.OnRootClickListener
         login_msg = view.findViewById(R.id.login_msg);
         photo = view.findViewById(R.id.photo);
         log = view.findViewById(R.id.log);
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("data",Context.MODE_PRIVATE);
+        String user_name = sharedPreferences.getString("user_name", "");
+        String user_photo = sharedPreferences.getString("user_photo", "");
+
+        if(user_name != ""&&user_photo != "") {
+            login.setText(user_name);
+            login_msg.setText("");
+            Glide.with(getContext()).load(user_photo).into(photo);
+            iflogin = TRUE;
+        }
         log.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult(new Intent(getContext(), LoginActivity.class),1);
+                if(!iflogin) {
+                    startActivityForResult(new Intent(getContext(), LoginActivity.class), 1);
+                }
 
             }
         });
         initView();
-//        Bundle bundle = getArguments();
-//        if(bundle != null) {
-//            login.setText(bundle.getString("user_name"));
-//            Log.d("12345", bundle.getString("user_name"));
-//            Uri parse = Uri.parse(bundle.getString("user_photo"));
-//            photo.setImageURI(parse);
-//        }
         return view;
     }
 
@@ -80,10 +89,13 @@ public class UserFragment extends Fragment implements MyView.OnRootClickListener
                     login_msg.setText("");
                     Log.d("12345", data.getStringExtra("user_name"));
                     Glide.with(getContext()).load(data.getStringExtra("user_photo")).into(photo);
-//                    Uri parse = Uri.parse(data.getStringExtra("user_photo"));
-//                    photo.setImageURI(parse);
+                    iflogin = TRUE;
+                    SharedPreferences sharedPreferences = getActivity().getSharedPreferences("data", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("user_name", data.getStringExtra("user_name"));
+                    editor.putString("user_photo", data.getStringExtra("user_photo"));
+                    editor.commit();
                 }
-
                 break;
             default:
         }
