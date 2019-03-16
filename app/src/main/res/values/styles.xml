@@ -22,4 +22,13 @@
         <item name="android:windowExitAnimation">@anim/context_menu_exit</item>
     </style>
 
+    <!--设置中间弹出PopupWindow的动画-->
+
+    <style name="anim_popup_center">
+        <item name="android:windowEnterAnimation">@anim/popup_center_in</item>
+        <item name="android:windowExitAnimation">@anim/popup_center_out</item>
+    </style>
+
+
+
 </resources>
