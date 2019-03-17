@@ -6,13 +6,11 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -21,12 +19,12 @@ import com.example.lenovo.englishstudy.db.Sentence;
 import com.example.lenovo.englishstudy.userdefined.FlowLayout;
 
 import org.litepal.crud.DataSupport;
-import java.util.ArrayList;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class SearchHistoryActivity extends AppCompatActivity {
+public class ChooseHistoryActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private ImageView delete;
     private String[] str;
@@ -38,7 +36,7 @@ public class SearchHistoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_history);
+        setContentView(R.layout.activity_choose_history);
         toolbar = findViewById(R.id.title2);
         delete = findViewById(R.id.delete);
         initData();
@@ -112,7 +110,7 @@ public class SearchHistoryActivity extends AppCompatActivity {
     }
 
     public void showCenterPopupWindow (TextView textView) {
-        View contentView = LayoutInflater.from(SearchHistoryActivity.this).inflate(R.layout.popupwindow, null);
+        View contentView = LayoutInflater.from(ChooseHistoryActivity.this).inflate(R.layout.popupwindow, null);
         PopupWindow popupWindow = new PopupWindow(contentView, 950, LinearLayout.LayoutParams.WRAP_CONTENT,false);
         sentence = contentView.findViewById(R.id.sentence);
         translate = contentView.findViewById(R.id.translate);
