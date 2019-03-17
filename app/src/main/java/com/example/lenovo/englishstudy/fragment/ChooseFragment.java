@@ -27,7 +27,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.lenovo.englishstudy.userdefined.FlowLayout;
-import com.example.lenovo.englishstudy.SearchHistoryActivity;
+import com.example.lenovo.englishstudy.ChooseHistoryActivity;
 import com.example.lenovo.englishstudy.animation.ExplosionField;
 import com.example.lenovo.englishstudy.animation.MoveImageView;
 import com.example.lenovo.englishstudy.animation.PointFTypeEvaluator;
@@ -35,7 +35,7 @@ import com.example.lenovo.englishstudy.R;
 import com.example.lenovo.englishstudy.db.Sentence;
 
 
-public class SearchFragment extends Fragment {
+public class ChooseFragment extends Fragment {
 
     private ImageView hezi;
     private RelativeLayout contain;
@@ -103,7 +103,7 @@ public class SearchFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.history:
-                Intent intent = new Intent(getActivity(), SearchHistoryActivity.class);
+                Intent intent = new Intent(getActivity(), ChooseHistoryActivity.class);
                 startActivity(intent);
                 break;
         }
@@ -235,7 +235,7 @@ public class SearchFragment extends Fragment {
             }
         } else {
 
-            new ExplosionField(SearchFragment.this.getContext()).explode(view,
+            new ExplosionField(ChooseFragment.this.getContext()).explode(view,
                     new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
