@@ -3,9 +3,7 @@ package com.example.lenovo.englishstudy.fragment;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.os.Bundle;
@@ -23,7 +21,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.CycleInterpolator;
 import android.view.animation.RotateAnimation;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -63,7 +60,7 @@ public class SearchFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.searchfragment,container,false);
+        View view = inflater.inflate(R.layout.choosefragment,container,false);
         end = view.findViewById(R.id.end);
         end.setOnClickListener(new View.OnClickListener() {
             @Override

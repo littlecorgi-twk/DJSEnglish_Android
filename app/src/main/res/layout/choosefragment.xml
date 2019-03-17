@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="选词造句"
+            android:textColor="#ffffff"
+            android:textSize="22sp" />
+    </android.support.v7.widget.Toolbar>
+
+    <RelativeLayout
+        android:id="@+id/search"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <com.example.lenovo.englishstudy.userdefined.FlowLayout
+            android:id="@+id/flowlayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp">
+
+        </com.example.lenovo.englishstudy.userdefined.FlowLayout>
+
+
+        <ImageView
+            android:id="@+id/end"
+            android:scaleType="centerCrop"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/ic_end"
+            android:layout_above="@+id/hezi"
+            android:layout_centerHorizontal="true"/>
+
+        <ImageView
+            android:id="@+id/hezi"
+            android:scaleType="centerCrop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/ic_hezi"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="50dp"/>
+
+        <TextView
+            android:id="@+id/answer1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="550dp"
+            android:text="造句结果 "
+            android:textColor="#11CDB5"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/ianswer"
+            android:layout_width="20dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="550dp"
+            android:layout_toRightOf="@id/answer1"
+            android:background="@drawable/ic_answer"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/answer2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/answer1"
+            android:layout_marginLeft="15dp"
+            android:textSize="22sp"
+            android:textColor="#11CDB5"/>
+    </RelativeLayout>
+
+</LinearLayout>
