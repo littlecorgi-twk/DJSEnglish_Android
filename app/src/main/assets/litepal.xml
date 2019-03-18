@@ -1,7 +1,7 @@
 <litepal>
     <dbname value="englishstudy" />
 
-    <version value="2" />
+    <version value="3" />
 
     <list>
         <mapping class="com.example.lenovo.englishstudy.db.Sentence" />
