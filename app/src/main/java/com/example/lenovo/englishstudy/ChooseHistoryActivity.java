@@ -6,23 +6,38 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.lenovo.englishstudy.Util.HttpUtil;
+import com.example.lenovo.englishstudy.Util.Utility;
+import com.example.lenovo.englishstudy.bean.WordTranslate;
 import com.example.lenovo.englishstudy.db.Sentence;
 import com.example.lenovo.englishstudy.userdefined.FlowLayout;
 
 import org.litepal.crud.DataSupport;
 
+import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public class ChooseHistoryActivity extends AppCompatActivity {
     private Toolbar toolbar;
@@ -32,6 +47,8 @@ public class ChooseHistoryActivity extends AppCompatActivity {
     private Set<String> dataList = new HashSet<>();
     private FlowLayout mFlowLayout;
     private TextView sentence, translate;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +84,7 @@ public class ChooseHistoryActivity extends AppCompatActivity {
             delete.setVisibility(View.INVISIBLE);
         }
         for (Sentence sentence: sentenceList) {
+            Log.d("123",sentence.getSentence());
             dataList.add(sentence.getSentence());
         }
         str = dataList.toArray(new String[dataList.size()]);
@@ -111,9 +129,16 @@ public class ChooseHistoryActivity extends AppCompatActivity {
 
     public void showCenterPopupWindow (TextView textView) {
         View contentView = LayoutInflater.from(ChooseHistoryActivity.this).inflate(R.layout.popupwindow, null);
-        PopupWindow popupWindow = new PopupWindow(contentView, 950, LinearLayout.LayoutParams.WRAP_CONTENT,false);
+        PopupWindow popupWindow = new PopupWindow(contentView, 950, LinearLayout.LayoutParams.WRAP_CONTENT,true);
         sentence = contentView.findViewById(R.id.sentence);
         translate = contentView.findViewById(R.id.translate);
+        //requestWordTranslate(textView.getText().toString());
+
+        for (Sentence sentence: sentenceList) {
+            if((sentence.getSentence()).equals(textView.getText())) {
+                translate.setText(sentence.getSentence_translate());
+            }
+        }
         sentence.setText(textView.getText());
         popupWindow.setOutsideTouchable(true);
         // 设置PopupWindow是否能响应外部点击事件
@@ -124,6 +149,18 @@ public class ChooseHistoryActivity extends AppCompatActivity {
         popupWindow.setAnimationStyle(R.style.anim_popup_center);
         //设置动画
         popupWindow.showAtLocation(contentView, Gravity.CENTER, 0, 0);
+
+        final WindowManager.LayoutParams wBackground = getWindow().getAttributes();
+        wBackground.alpha = 0.4f;
+        getWindow().setAttributes(wBackground);
+
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                wBackground.alpha = 1.0f;
+                getWindow().setAttributes(wBackground);
+            }
+        });
 
     }
 

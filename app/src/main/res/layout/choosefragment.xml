@@ -87,6 +87,15 @@
             android:layout_marginLeft="15dp"
             android:textSize="22sp"
             android:textColor="#11CDB5"/>
+
+        <TextView
+            android:id="@+id/answer3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/answer2"
+            android:layout_marginLeft="15dp"
+            android:textSize="22sp"
+            android:textColor="#11CDB5"/>
     </RelativeLayout>
 
 </LinearLayout>

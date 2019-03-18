@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,7 +26,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.lenovo.englishstudy.Util.HttpUtil;
+import com.example.lenovo.englishstudy.Util.Utility;
+import com.example.lenovo.englishstudy.bean.WordTranslate;
 import com.example.lenovo.englishstudy.userdefined.FlowLayout;
 import com.example.lenovo.englishstudy.ChooseHistoryActivity;
 import com.example.lenovo.englishstudy.animation.ExplosionField;
@@ -33,6 +38,14 @@ import com.example.lenovo.englishstudy.animation.MoveImageView;
 import com.example.lenovo.englishstudy.animation.PointFTypeEvaluator;
 import com.example.lenovo.englishstudy.R;
 import com.example.lenovo.englishstudy.db.Sentence;
+
+import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 
 public class ChooseFragment extends Fragment {
@@ -43,7 +56,7 @@ public class ChooseFragment extends Fragment {
     private ImageView end;
     private ImageView ianswer;
     private TextView answer1;
-    private TextView answer2;
+    private TextView answer2, answer3;
     private String as = "";
     private Boolean flag1 = true;
     private Boolean flag2 = false;
@@ -57,7 +70,6 @@ public class ChooseFragment extends Fragment {
     };
     private FlowLayout mFlowLayout;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.choosefragment,container,false);
@@ -69,9 +81,7 @@ public class ChooseFragment extends Fragment {
                     flag1 = false;
                     end.setVisibility(View.GONE);
                     answer2.setText(as);
-                    Sentence sentence = new Sentence();
-                    sentence.setSentence(as);
-                    sentence.save();
+                    requestWordTranslate(as);
                     beginAnimation2();
                 }
             }
@@ -81,6 +91,8 @@ public class ChooseFragment extends Fragment {
         answer1.setVisibility(View.GONE);
         answer2 = view.findViewById(R.id.answer2);
         answer2.setVisibility(View.GONE);
+        answer3 = view.findViewById(R.id.answer3);
+        answer3.setVisibility(View.GONE);
         toolbar = view.findViewById(R.id.title);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         setHasOptionsMenu(true);
@@ -244,6 +256,7 @@ public class ChooseFragment extends Fragment {
                             answer1.setVisibility(View.VISIBLE);
                             ianswer.setVisibility(View.VISIBLE);
                             answer2.setVisibility(View.VISIBLE);
+                            answer3.setVisibility(View.VISIBLE);
                             flag2 = true;
                             flag1 = true;
                             as = "";
@@ -281,6 +294,7 @@ public class ChooseFragment extends Fragment {
                         hezi.setVisibility(View.VISIBLE);
                         answer1.setVisibility(View.GONE);
                         answer2.setVisibility(View.GONE);
+                        answer3.setVisibility(View.GONE);
                         ianswer.setVisibility(View.GONE);
                     }
                 }
@@ -288,6 +302,78 @@ public class ChooseFragment extends Fragment {
         }
 
     }
+
+    public void requestWordTranslate(final String word) {
+        String salt = String.valueOf(System.currentTimeMillis());
+        String wordTranslateUrl = "http://api.fanyi.baidu.com/api/trans/vip/translate?q="+ word +
+                "&from=en&to=zh&appid=20180809000192979&salt=1435660288"+"&sign=" + md5("20180809000192979"+ word + "1435660288" + "ty5IoV55tyJoTtK5WBid");
+        Log.d("235", "1");
+        Log.d("2345", md5("20180809000192979"+ word + "1435660288" +"ty5IoV55tyJoTtK5WBid"));
+        HttpUtil.sendHttpRequest(wordTranslateUrl, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getActivity(), "获取翻译失败", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                final String responseText = response.body().string();
+                final WordTranslate wordTranslate = Utility.handleWordTranslateResponse(responseText);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(wordTranslate != null) {
+                            Sentence sentence = new Sentence();
+                            sentence.setSentence(word);
+                            sentence.setSentence_translate(wordTranslate.getTrans_result().get(0).getDst());
+                            sentence.save();
+                            if (sentence.save()) {
+                                Log.d("3333","存储成功");
+                            } else {
+                                Log.d("3333","存储失败");
+                            }
+                            answer3.setText(wordTranslate.getTrans_result().get(0).getDst());
+                        }
+                        else {
+                            Toast.makeText(getActivity(), "获取翻译失败", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+            }
+        });
+
+    }
+
+    public static String md5(String string) {
+        if (TextUtils.isEmpty(string)) {
+            return "";
+        }
+        MessageDigest md5 = null;
+        try {
+            md5 = MessageDigest.getInstance("MD5");
+            byte[] bytes = md5.digest(string.getBytes());
+            String result = "";
+            for (byte b : bytes) {
+                String temp = Integer.toHexString(b & 0xff);
+                if (temp.length() == 1) {
+                    temp = "0" + temp;
+                }
+                result += temp;
+            }
+            return result;
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
 
 }
 
