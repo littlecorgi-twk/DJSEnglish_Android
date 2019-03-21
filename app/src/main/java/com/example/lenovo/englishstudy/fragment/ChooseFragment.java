@@ -42,6 +42,7 @@ import com.example.lenovo.englishstudy.db.Sentence;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -260,6 +261,7 @@ public class ChooseFragment extends Fragment {
                             flag2 = true;
                             flag1 = true;
                             as = "";
+
                         }
                     });
         }
@@ -277,13 +279,16 @@ public class ChooseFragment extends Fragment {
         lp.bottomMargin = 10;
         for(int i = 0; i < mNames.length; i ++){
             final TextView textView = new TextView(getContext());
+            textView.setBackgroundDrawable(getResources().getDrawable(R.drawable.textview));
             textView.setText(mNames[i]);
             textView.setTextColor(Color.BLACK);
-            textView.setBackgroundDrawable(getResources().getDrawable(R.drawable.textview));
-            mFlowLayout.addView(textView,lp);
+            mFlowLayout.addView(textView, lp);
+
+
             textView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    textView.setBackgroundDrawable(getResources().getDrawable(R.drawable.textview_click));
                     flag3 = false;
                     as += textView.getText() + " ";
                     if(flag1) {
@@ -300,6 +305,8 @@ public class ChooseFragment extends Fragment {
                 }
             });
         }
+
+
 
     }
 
@@ -339,6 +346,8 @@ public class ChooseFragment extends Fragment {
                                 Log.d("3333","存储失败");
                             }
                             answer3.setText(wordTranslate.getTrans_result().get(0).getDst());
+                            mFlowLayout.removeAllViews();
+                            initChildViews(getView());
                         }
                         else {
                             Toast.makeText(getActivity(), "获取翻译失败", Toast.LENGTH_SHORT).show();
