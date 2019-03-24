@@ -13,7 +13,7 @@ import com.example.lenovo.englishstudy.fragment.HomeFragment;
 import com.example.lenovo.englishstudy.fragment.ChooseFragment;
 import com.example.lenovo.englishstudy.fragment.SearchFragment;
 import com.example.lenovo.englishstudy.fragment.UserFragment;
-1
+
 public class MainActivity extends AppCompatActivity implements BottomNavigationBar.OnTabSelectedListener {
     private BottomNavigationBar bottomNavigationBar;
     //  private int lastSelectedPosition = 0;
