@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.lenovo.englishstudy.LoginActivity;
 import com.example.lenovo.englishstudy.MainActivity;
+import com.example.lenovo.englishstudy.UserActivity;
 import com.example.lenovo.englishstudy.userdefined.MyView;
 import com.example.lenovo.englishstudy.R;
 import com.tencent.connect.UserInfo;
@@ -56,12 +57,12 @@ public class UserFragment extends Fragment implements MyView.OnRootClickListener
         photo = view.findViewById(R.id.photo);
         log = view.findViewById(R.id.log);
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("data",Context.MODE_PRIVATE);
-        String user_name = sharedPreferences.getString("user_name", "");
+        final String user_name = sharedPreferences.getString("user_name", "");
         String user_photo = sharedPreferences.getString("user_photo", "");
 
         if(user_name != ""&&user_photo != "") {
             login.setText(user_name);
-            login_msg.setText("");
+            login_msg.setText("点击查看个人主页");
             Glide.with(getContext()).load(user_photo).into(photo);
             iflogin = TRUE;
         }
@@ -70,6 +71,10 @@ public class UserFragment extends Fragment implements MyView.OnRootClickListener
             public void onClick(View view) {
                 if(!iflogin) {
                     startActivityForResult(new Intent(getContext(), LoginActivity.class), 1);
+                } else {
+                    Intent intent = new Intent(getContext(), UserActivity.class);
+                    intent.putExtra("u_name",user_name);
+
                 }
 
             }

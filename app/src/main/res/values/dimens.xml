@@ -12,5 +12,7 @@
     <dimen name="d_20">20dp</dimen>
     <dimen name="d_5">5dp</dimen>
     <dimen name="d_10">10dp</dimen>
+    <dimen name="title_height">?attr/actionBarSize</dimen>
+    <dimen name="head_height">300dp</dimen>
 
 </resources>
