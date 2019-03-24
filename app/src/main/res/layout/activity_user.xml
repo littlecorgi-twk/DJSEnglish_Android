@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/head_height"
+        android:orientation="vertical"
+        android:background="#5C525252">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/u_photo"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="60dp"
+            android:layout_gravity="center_horizontal"/>
+
+        <TextView
+            android:id="@+id/u_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:textSize="22sp"
+            android:textColor="#ffffff"/>
+
+        <Button
+            android:id="@+id/edit"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="编辑"
+            android:layout_gravity="center_horizontal"/>
+
+    </LinearLayout>
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/user_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_height"
+        android:background="#00000000"
+        android:theme="@style/toolbar_theme"
+        app:popupTheme="@style/Theme.AppCompat.Light">
+
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="22sp"
+            android:textColor="#302F2F"
+            android:layout_gravity="center"/>
+
+    </android.support.v7.widget.Toolbar>
+
+    <View
+        android:id="@+id/division"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="#45ababab" />
+
+
+
+    <com.example.lenovo.englishstudy.userdefined.ObservableScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </com.example.lenovo.englishstudy.userdefined.ObservableScrollView>
+
+</FrameLayout>
