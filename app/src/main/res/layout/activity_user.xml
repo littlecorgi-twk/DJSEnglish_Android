@@ -37,10 +37,11 @@
 
     </LinearLayout>
 
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/user_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/title_height"
+        android:layout_height="?attr/actionBarSize"
         android:background="#00000000"
         android:theme="@style/toolbar_theme"
         app:popupTheme="@style/Theme.AppCompat.Light">
