@@ -58,7 +58,7 @@ public class UserFragment extends Fragment implements MyView.OnRootClickListener
         log = view.findViewById(R.id.log);
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("data",Context.MODE_PRIVATE);
         final String user_name = sharedPreferences.getString("user_name", "");
-        String user_photo = sharedPreferences.getString("user_photo", "");
+        final String user_photo = sharedPreferences.getString("user_photo", "");
 
         if(user_name != ""&&user_photo != "") {
             login.setText(user_name);
@@ -72,9 +72,10 @@ public class UserFragment extends Fragment implements MyView.OnRootClickListener
                 if(!iflogin) {
                     startActivityForResult(new Intent(getContext(), LoginActivity.class), 1);
                 } else {
-                    Intent intent = new Intent(getContext(), UserActivity.class);
-                    intent.putExtra("u_name",user_name);
-
+                    Intent intent = new Intent(getActivity(), UserActivity.class);
+                    intent.putExtra("u_name", user_name);
+                    intent.putExtra("u_photo", user_photo);
+                    startActivity(intent);
                 }
 
             }
