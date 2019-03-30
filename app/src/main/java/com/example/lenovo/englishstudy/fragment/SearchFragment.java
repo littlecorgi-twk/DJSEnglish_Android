@@ -58,11 +58,14 @@ public class SearchFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String s) {
                 if (!TextUtils.isEmpty(s)) {
-                    Log.d("1234", "1");
+                    // Log.d("1234", "1");
+                    // requestWordSuggest(s);
+                    // Log.d("1234", "2");
+                    // mListView.setFilterText(s);
+                    // //changeSearch(mListView);
+                    adapter.notifyDataSetChanged();
+                    mListView.setSelection(0);
                     requestWordSuggest(s);
-                    Log.d("1234", "2");
-                    mListView.setFilterText(s);
-                    //changeSearch(mListView);
                 } else {
                     mListView.clearTextFilter();
                 }
@@ -79,7 +82,7 @@ public class SearchFragment extends Fragment {
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
-                new Thread(new Runnable() {
+                getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         Toast.makeText(getContext(), "获取单词联想失败", Toast.LENGTH_SHORT).show();
@@ -91,7 +94,7 @@ public class SearchFragment extends Fragment {
             public void onResponse(Call call, Response response) throws IOException {
                 final String responseText = response.body().string();
                 final WordSuggest wordSuggest = Utility.handleWordSuggestResponse(responseText);
-                new Thread(new Runnable() {
+                getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         if (wordSuggest != null) {
@@ -113,13 +116,14 @@ public class SearchFragment extends Fragment {
             mString.clear();
             mString.add("查无此词");
             adapter.notifyDataSetChanged();
+            mListView.setSelection(0);
         } else {
             mString.clear();
             for (WordSuggest.DataBean.EntriesBean entriesBean: wordSuggest.getData().getEntries()) {
                 mString.add(entriesBean.getEntry() + "    " + entriesBean.getExplain());
             }
-            Log.d("1234", mString.toString());
             adapter.notifyDataSetChanged();
+            mListView.setSelection(0);
         }
     }
 
