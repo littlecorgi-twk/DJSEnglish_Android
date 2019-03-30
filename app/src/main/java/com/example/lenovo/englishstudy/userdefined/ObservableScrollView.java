@@ -34,7 +34,6 @@ public class ObservableScrollView extends ScrollView {
                 scrollViewListener.onScrollChanged(this, oldy, y, true);//isUp是否回到顶部
             }
         }
-
     }
 
     public interface ScrollViewListener{

@@ -3,6 +3,7 @@ package com.example.lenovo.englishstudy.Util;
 import android.text.TextUtils;
 
 import com.example.lenovo.englishstudy.bean.WordMeanig;
+import com.example.lenovo.englishstudy.bean.WordSuggest;
 import com.example.lenovo.englishstudy.bean.WordTranslate;
 import com.example.lenovo.englishstudy.db.Sentence;
 import com.google.gson.Gson;
@@ -34,6 +35,17 @@ public class Utility {
             JSONObject jsonObject = new JSONObject(response);
             String wordTranslateContent = jsonObject.toString();
             return new Gson().fromJson(wordTranslateContent, WordTranslate.class);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static WordSuggest handleWordSuggestResponse(String response) {
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            String wordSuggestContent = jsonObject.toString();
+            return new Gson().fromJson(wordSuggestContent, WordSuggest.class);
         } catch (JSONException e) {
             e.printStackTrace();
         }
