@@ -5,55 +5,83 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.lenovo.englishstudy.userdefined.ObservableScrollView;
 
 import java.lang.invoke.ConstantCallSite;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
+import static org.litepal.LitePalApplication.getContext;
 
 public class UserActivity extends AppCompatActivity {
     private ObservableScrollView observableScrollView;
     private Toolbar toolbar;
     private ImageView back_button;
     private View division;
+    private CircleImageView u_photo;
+    private TextView u_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
-        final float title_height = getResources().getDimension(R.dimen.title_height);
-        final float head_height = getResources().getDimension(R.dimen.head_height);
-        back_button = findViewById(android.R.id.home);
+        observableScrollView = findViewById(R.id.o_scrollView);
+        back_button = findViewById(R.id.u_back);
+        back_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+        u_name = findViewById(R.id.u_name);
+        u_photo = findViewById(R.id.u_photo);
+        String user_name = getIntent().getStringExtra("u_name");
+        u_name.setText(user_name);
+        String user_photo = getIntent().getStringExtra("u_photo");
+        Glide.with(getContext()).load(user_photo).into(u_photo);
+//        back_button = findViewById(android.R.id.home);
         division = findViewById(R.id.division);
         division.setVisibility(View.GONE);
         toolbar = findViewById(R.id.user_toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar =  getSupportActionBar();
         if(actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
+//            actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
         }
-        observableScrollView = findViewById(R.id.scrollView);
+        initView();
+    }
+
+    private void initView() {
+        Log.d("3333","1");
+        final float title_height = getResources().getDimension(R.dimen.title_height);
+        final float head_height = getResources().getDimension(R.dimen.head_height);
         observableScrollView.setOnScrollListener(new ObservableScrollView.ScrollViewListener() {
             @Override
-            public void onScroll(int oldy, int dy, boolean isUp) {
+            public void onScrollChanged(ObservableScrollView observableScrollView, int oldy, int dy, boolean isUp) {
+                Log.d("4444444","3");
                 float move_distance = head_height - title_height;
                 if(!isUp && dy <= move_distance) {
-                    toolbar.setBackgroundColor(ContextCompat.getColor(UserActivity.this, R.color.color_white));
+                    toolbar.setBackgroundColor(ContextCompat.getColor(UserActivity.this, R.color.color_black));
                     TitleAlphaChange(dy, move_distance);
 
                 } else if(!isUp && dy > move_distance) {
                     TitleAlphaChange(1, 1);
-                    back_button.setColorFilter(R.color.color_black);
+                    back_button.setImageResource(R.drawable.u_back);
                     division.setVisibility(View.VISIBLE);
                 } else if(isUp && dy > move_distance) { //返回顶部
                     //不做处理
                 } else if(isUp && dy <= move_distance) {
                     TitleAlphaChange(dy, move_distance);
-                    back_button.setColorFilter(R.color.color_white);
+                    back_button.setImageResource(R.drawable.u_back);
                     division.setVisibility(View.GONE);
                 }
 

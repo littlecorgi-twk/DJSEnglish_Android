@@ -2,6 +2,7 @@ package com.example.lenovo.englishstudy.userdefined;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.ScrollView;
 
 public class ObservableScrollView extends ScrollView {
@@ -26,16 +27,17 @@ public class ObservableScrollView extends ScrollView {
     protected void onScrollChanged(int x, int y, int oldx, int oldy) {
         super.onScrollChanged(x, y, oldx, oldy);
         if(scrollViewListener != null) {
+            Log.d("5555","1");
             if(oldy < y) {
-                scrollViewListener.onScroll(oldy, y, false);
+                scrollViewListener.onScrollChanged(this, oldy, y, false);
             } else if(oldy > y) {
-                scrollViewListener.onScroll(oldy, y, true);//isUp是否回到顶部
+                scrollViewListener.onScrollChanged(this, oldy, y, true);//isUp是否回到顶部
             }
         }
 
     }
 
     public interface ScrollViewListener{
-        void onScroll(int oldy, int dy, boolean isUp);
+        void onScrollChanged(ObservableScrollView observableScrollView, int oldy, int dy, boolean isUp);
     }
 }
