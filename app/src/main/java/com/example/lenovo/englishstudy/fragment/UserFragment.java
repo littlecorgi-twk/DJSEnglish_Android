@@ -72,6 +72,7 @@ public class UserFragment extends Fragment implements MyView.OnRootClickListener
                 if(!iflogin) {
                     startActivityForResult(new Intent(getContext(), LoginActivity.class), 1);
                 } else {
+//                    startActivityForResult(new Intent(getContext(), LoginActivity.class), 1);
                     Intent intent = new Intent(getActivity(), UserActivity.class);
                     intent.putExtra("u_name", user_name);
                     intent.putExtra("u_photo", user_photo);
