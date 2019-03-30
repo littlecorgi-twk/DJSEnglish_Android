@@ -20,7 +20,7 @@ public class ObservableScrollView extends ScrollView {
     }
 
     public void setOnScrollListener(ScrollViewListener scrollListener){
-        this.scrollViewListener = scrollViewListener;
+        this.scrollViewListener = scrollListener;
     }
 
     @Override
