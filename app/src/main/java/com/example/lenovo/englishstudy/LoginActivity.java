@@ -39,14 +39,21 @@ public class LoginActivity extends AppCompatActivity {
     private Tencent mTencent;
     //    private UserFragment userFragment = new UserFragment();
     private String user_name = "null" ,user_photo = " ";
+    private TextView register;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        register = findViewById(R.id.register);
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
         cancel = findViewById(R.id.cancel);
-
-
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

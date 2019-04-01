@@ -14,11 +14,11 @@
         <!--app:popupTheme="@style/Theme.AppCompat.Light">-->
         <ImageView
             android:id="@+id/u_back"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:src="@drawable/u_back_w"/>
         <TextView
-            android:id="@+id/user_name"
+            android:id="@+id/t_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
