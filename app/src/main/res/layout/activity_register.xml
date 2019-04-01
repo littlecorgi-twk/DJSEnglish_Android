@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".LoginActivity">
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -12,9 +10,9 @@
         android:layout_marginTop="10dp">
 
         <ImageView
-            android:id="@+id/cancel"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:id="@+id/r_back"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_marginLeft="20dp"
             android:layout_centerVertical="true"
             android:background="@drawable/u_back"/>
@@ -62,7 +60,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignRight="@+id/message_verify"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="45dp"
                 android:text="发送验证码"
                 android:textSize="18sp" />
 

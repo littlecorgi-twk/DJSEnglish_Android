@@ -2,6 +2,7 @@ package com.example.lenovo.englishstudy.Util;
 
 import android.text.TextUtils;
 
+import com.example.lenovo.englishstudy.bean.MessageVerify;
 import com.example.lenovo.englishstudy.bean.WordMeanig;
 import com.example.lenovo.englishstudy.bean.WordSuggest;
 import com.example.lenovo.englishstudy.bean.WordTranslate;
@@ -51,4 +52,6 @@ public class Utility {
         }
         return null;
     }
+
+   // public static MessageVerify
 }
