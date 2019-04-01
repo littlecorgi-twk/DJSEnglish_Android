@@ -14,6 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".WordSuggestDetail"></activity>
         <activity android:name=".RegisterActivity"></activity>
         <activity android:name=".UserActivity" />
         <activity android:name=".LoginActivity" />
@@ -35,8 +36,10 @@
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="tencent1108246406" /> <!-- 替换成自己在腾讯开发平台申请的的APPID -->
             </intent-filter>
         </activity>
