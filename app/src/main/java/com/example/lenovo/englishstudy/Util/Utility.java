@@ -53,5 +53,14 @@ public class Utility {
         return null;
     }
 
-   // public static MessageVerify
+    public static MessageVerify handleMessageVerifyResponse(String response) {
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            String messageVerifyContent = jsonObject.toString();
+            return new Gson().fromJson(messageVerifyContent, MessageVerify.class);
+        }catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return  null;
+    }
 }
