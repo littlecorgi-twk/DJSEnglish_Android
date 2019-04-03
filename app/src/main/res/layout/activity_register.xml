@@ -68,15 +68,32 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
         <EditText
+            android:id="@+id/e_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="35dp"
             android:hint="6~20位字母数字密码"
             android:textSize="18sp"
             android:textColor="#E4090808"
+            android:inputType="textPassword"
             android:paddingBottom="20dp"
             android:theme="@style/MyEditText"/>
+        
+        <ToggleButton
+            android:id="@+id/toggle_button"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/toggle_selector"
+            android:textOff=""
+            android:textOn=""
+            android:layout_alignRight="@+id/e_password"
+            android:layout_marginTop="50dp"/>
+
+    </RelativeLayout>
 
         <Button
             android:id="@+id/button_register"

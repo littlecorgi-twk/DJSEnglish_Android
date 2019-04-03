@@ -93,7 +93,7 @@ public class UserFragment extends Fragment implements MyView.OnRootClickListener
             case 1:
                 if (resultCode == RESULT_OK) {
                     login.setText(data.getStringExtra("user_name"));
-                    login_msg.setText("");
+                    login_msg.setText("点击查看个人主页");
                     Log.d("12345", data.getStringExtra("user_name"));
                     Glide.with(getContext()).load(data.getStringExtra("user_photo")).into(photo);
                     iflogin = TRUE;
