@@ -1,15 +1,11 @@
 package com.example.lenovo.englishstudy.Util;
 
-import android.text.TextUtils;
-
 import com.example.lenovo.englishstudy.bean.MessageVerify;
 import com.example.lenovo.englishstudy.bean.WordMeanig;
 import com.example.lenovo.englishstudy.bean.WordSuggest;
 import com.example.lenovo.englishstudy.bean.WordTranslate;
-import com.example.lenovo.englishstudy.db.Sentence;
 import com.google.gson.Gson;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 

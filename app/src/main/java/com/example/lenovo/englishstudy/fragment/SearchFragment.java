@@ -9,33 +9,28 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lenovo.englishstudy.R;
-import com.example.lenovo.englishstudy.Util.HttpUtil;
+import com.example.lenovo.englishstudy.Util.GetRequest_Interface;
 import com.example.lenovo.englishstudy.Util.Utility;
 import com.example.lenovo.englishstudy.adapter.WordSuggestAdapter;
-import com.example.lenovo.englishstudy.bean.WordMeanig;
 import com.example.lenovo.englishstudy.bean.WordSuggest;
-
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.List;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SearchFragment extends Fragment {
 
@@ -64,11 +59,6 @@ public class SearchFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String s) {
                 if (!TextUtils.isEmpty(s)) {
-                    // Log.d("1234", "1");
-                    // requestWordSuggest(s);
-                    // Log.d("1234", "2");
-                    // mListView.setFilterText(s);
-                    // //changeSearch(mListView);
                     adapter.notifyDataSetChanged();
                     mListView.setSelection(0);
                     requestWordSuggest(s);
@@ -82,6 +72,40 @@ public class SearchFragment extends Fragment {
     }
 
     public void requestWordSuggest(final String word) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://dict.youdao.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
+
+        Call<WordSuggest> call = request.getCall(word);
+
+        call.enqueue(new Callback<WordSuggest>() {
+            @Override
+            public void onResponse(Call<WordSuggest> call, final Response<WordSuggest> response) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showWordSuggest(response.body());
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Call<WordSuggest> call, Throwable t) {
+                t.printStackTrace();
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getContext(), "获取单词联想失败1", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+    }
+
+    /*public void requestWordSuggest(final String word) {
         String wordSuggestUrl = "http://dict.youdao.com/suggest?q=" + word +
                 "&le=eng&num=15&ver=2.0&doctype=json&keyfrom=mdict.7.2.0.android&model=honor&mid=5.6.1&imei=659135764921685&vendor=wandoujia&screen=1080x1800&ssid=superman&abtest=2";
         HttpUtil.sendHttpRequest(wordSuggestUrl, new Callback() {
@@ -91,7 +115,7 @@ public class SearchFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getContext(), "获取单词联想失败", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "获取单词联想失败1", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -109,13 +133,13 @@ public class SearchFragment extends Fragment {
                             editor.apply();
                             showWordSuggest(wordSuggest);
                         } else {
-                            Toast.makeText(getContext(), "获取单词联想失败", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "获取单词联想失败2", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
             }
         });
-    }
+    }*/
 
     public void showWordSuggest(WordSuggest wordSuggest) {
         if (!wordSuggest.getResult().getMsg().equals("success")) {
