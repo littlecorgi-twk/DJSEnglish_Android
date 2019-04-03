@@ -17,6 +17,8 @@
         <activity android:name=".WordSuggestDetail"></activity>
         <activity android:name=".RegisterActivity"></activity>
         <activity android:name=".UserActivity" />
+        <activity android:name=".fragment.SearchWordDetail"></activity>
+        <activity android:name=".UserActivity"></activity>
         <activity android:name=".LoginActivity" />
         <activity android:name=".ChooseHistoryActivity" />
         <activity android:name=".WordsDetailActivity" />
@@ -46,7 +48,8 @@
         <activity
             android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+        </activity>
     </application>
 
 </manifest>

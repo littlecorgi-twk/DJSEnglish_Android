@@ -1,5 +1,6 @@
 package com.example.lenovo.englishstudy.fragment;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -15,17 +16,22 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lenovo.englishstudy.R;
 import com.example.lenovo.englishstudy.Util.HttpUtil;
 import com.example.lenovo.englishstudy.Util.Utility;
+import com.example.lenovo.englishstudy.adapter.WordSuggestAdapter;
 import com.example.lenovo.englishstudy.bean.WordMeanig;
 import com.example.lenovo.englishstudy.bean.WordSuggest;
+
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -35,8 +41,8 @@ public class SearchFragment extends Fragment {
 
     private SearchView mSearchView;
     private ListView mListView;
-    private ArrayList<String> mString = new ArrayList<>();
-    private ArrayAdapter<String> adapter;
+    private ArrayList<WordSuggest.DataBean.EntriesBean> mEntries = new ArrayList<>();
+    private WordSuggestAdapter adapter;
 
     @Nullable
     @Override
@@ -44,7 +50,7 @@ public class SearchFragment extends Fragment {
         View view = inflater.inflate(R.layout.searchfragment, container, false);
         mSearchView = view.findViewById(R.id.searchView);
         mListView = view.findViewById(R.id.lv_searchList);
-        adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, mString);
+        adapter = new WordSuggestAdapter(getContext(), R.layout.word_suggest_listview, mEntries);
         mListView.setAdapter(adapter);
         // mListView.setTextFilterEnabled(true);
 
@@ -113,14 +119,14 @@ public class SearchFragment extends Fragment {
 
     public void showWordSuggest(WordSuggest wordSuggest) {
         if (!wordSuggest.getResult().getMsg().equals("success")) {
-            mString.clear();
-            mString.add("查无此词");
+            mEntries.clear();
+            mEntries.add(new WordSuggest.DataBean.EntriesBean("查无此词！", ""));
             adapter.notifyDataSetChanged();
             mListView.setSelection(0);
         } else {
-            mString.clear();
+            mEntries.clear();
             for (WordSuggest.DataBean.EntriesBean entriesBean: wordSuggest.getData().getEntries()) {
-                mString.add(entriesBean.getEntry() + "    " + entriesBean.getExplain());
+                mEntries.add(new WordSuggest.DataBean.EntriesBean(entriesBean.getEntry(), entriesBean.getExplain()));
             }
             adapter.notifyDataSetChanged();
             mListView.setSelection(0);
@@ -144,3 +150,4 @@ public class SearchFragment extends Fragment {
         }
     }
 }
+
