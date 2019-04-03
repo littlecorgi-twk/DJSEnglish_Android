@@ -4,13 +4,19 @@ import android.graphics.Color;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.example.lenovo.englishstudy.Util.HttpUtil;
 import com.example.lenovo.englishstudy.Util.Utility;
@@ -31,15 +37,31 @@ import okhttp3.Response;
 public class RegisterActivity extends AppCompatActivity {
     private ImageView r_back;
     private TextView send_verify;
-    private EditText e_phoneNumber, e_messageVerify;
+    private EditText e_phoneNumber, e_messageVerify, e_password;
     private Boolean flag;
     private TimeCount time;
     private Button register;
+    private ToggleButton toggleButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         register = findViewById(R.id.button_register);
+        e_password = findViewById(R.id.e_password);
+        toggleButton = findViewById(R.id.toggle_button);
+        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if(isChecked) {
+                    e_password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    e_password.setSelection(e_password.getText().toString().length());
+                } else {
+                    e_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    e_password.setSelection(e_password.getText().toString().length());
+                }
+            }
+        });
+
         e_messageVerify = findViewById(R.id.message_verify);
         register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -174,7 +196,6 @@ public class RegisterActivity extends AppCompatActivity {
             send_verify.setTextColor(Color.parseColor("#FFAB40"));
         }
     }
-
 
 
 }
