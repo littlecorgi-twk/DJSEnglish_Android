@@ -2,6 +2,7 @@ package com.example.lenovo.englishstudy.Util;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 
 /**
  * @author littlecorgi
@@ -14,6 +15,13 @@ public class HttpUtil {
 
     public static void sendHttpRequest(String address, okhttp3.Callback callback) {
         Request request = new Request.Builder().url(address).build();
+        okHttpClient.newCall(request).enqueue(callback);
+    }
+
+    public static void sendHttpRequest(String address, RequestBody requestBody, okhttp3.Callback callback) {
+        Request request = new Request.Builder().url(address)
+                .addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
+                .post(requestBody).build();
         okHttpClient.newCall(request).enqueue(callback);
     }
 }
