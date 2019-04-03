@@ -100,10 +100,16 @@ public class WordSuggest {
         }
 
         public static class EntriesBean {
+
             /**
              * explain : art. 一; 任一; 每一
              * entry : a
              */
+
+            public EntriesBean(String entry, String explain) {
+                this.explain = explain;
+                this.entry = entry;
+            }
 
             private String explain;
             private String entry;
