@@ -79,7 +79,7 @@ public class SearchFragment extends Fragment {
 
         GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
 
-        Call<WordSuggest> call = request.getCall(word);
+        Call<WordSuggest> call = request.getWordSuggestCall(word);
 
         call.enqueue(new Callback<WordSuggest>() {
             @Override

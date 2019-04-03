@@ -15,16 +15,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lenovo.englishstudy.R;
+import com.example.lenovo.englishstudy.Util.GetRequest_Interface;
 import com.example.lenovo.englishstudy.Util.HttpUtil;
 import com.example.lenovo.englishstudy.Util.Utility;
 import com.example.lenovo.englishstudy.bean.WordMeanig;
+import com.example.lenovo.englishstudy.bean.WordSuggest;
 import com.example.lenovo.englishstudy.userdefined.FlowLayout;
 
 import java.io.IOException;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class WordsDetailActivity extends AppCompatActivity {
 
@@ -91,6 +95,40 @@ public class WordsDetailActivity extends AppCompatActivity {
     }
 
     public void requestWordMeaning(final String word) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://dict.youdao.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
+
+        retrofit2.Call<WordMeanig> call = request.getWordMeaningCall(word);
+
+        call.enqueue(new Callback<WordMeanig>() {
+            @Override
+            public void onResponse(retrofit2.Call<WordMeanig> call, final Response<WordMeanig> response) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showWordMeaning(response.body());
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Call<WordMeanig> call, Throwable t) {
+                t.printStackTrace();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(WordsDetailActivity.this, "获取单词联想失败1", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+    }
+
+    /*public void requestWordMeaning(final String word) {
         String wordMeaningUrl = "http://dict.youdao.com/jsonapi?jsonversion=2&client=mobile&q=" + word +
             "&dicts=%7B%22count%22%3A99%2C%22dicts%22%3A%5B%5B%22ec%22%2C%22ce%22%2C%22newcj%22%2C%22newjc%22%2C%22kc%22%2C%22ck%22%2C%22fc%22%2C%22cf%22%2C%22multle%22%2C%22jtj%22%2C%22pic_dict%22%2C%22tc%22%2C%22ct%22%2C%22typos%22%2C%22special%22%2C%22tcb%22%2C%22baike%22%2C%22lang%22%2C%22simple%22%2C%22wordform%22%2C%22exam_dict%22%2C%22ctc%22%2C%22web_search%22%2C%22auth_sents_part%22%2C%22ec21%22%2C%22phrs%22%2C%22input%22%2C%22wikipedia_digest%22%2C%22ee%22%2C%22collins%22%2C%22ugc%22%2C%22media_sents_part%22%2C%22syno%22%2C%22rel_word%22%2C%22longman%22%2C%22ce_new%22%2C%22le%22%2C%22newcj_sents%22%2C%22blng_sents_part%22%2C%22hh%22%5D%2C%5B%22ugc%22%5D%2C%5B%22longman%22%5D%2C%5B%22newjc%22%5D%2C%5B%22newcj%22%5D%2C%5B%22web_trans%22%5D%2C%5B%22fanyi%22%5D%5D%7D&keyfrom=mdict.7.2.0.android&model=honor&mid=5.6.1&imei=659135764921685&vendor=wandoujia&screen=1080x1800&ssid=superman&network=wifi&abtest=2&xmlVersion=5.1";
         HttpUtil.sendHttpRequest(wordMeaningUrl, new Callback() {
@@ -125,7 +163,7 @@ public class WordsDetailActivity extends AppCompatActivity {
             }
         });
 
-    }
+    }*/
 
     public void showWordMeaning(WordMeanig wordMeanig) {
         if (wordMeanig.getSimple().getQuery().equals("no word!")) {
