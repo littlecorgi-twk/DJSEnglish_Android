@@ -28,6 +28,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.lenovo.englishstudy.Util.GetRequest_Interface;
 import com.example.lenovo.englishstudy.Util.HttpUtil;
 import com.example.lenovo.englishstudy.Util.Utility;
 import com.example.lenovo.englishstudy.bean.WordTranslate;
@@ -44,9 +45,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class ChooseFragment extends Fragment {
@@ -310,11 +313,60 @@ public class ChooseFragment extends Fragment {
     }
 
     public void requestWordTranslate(final String word) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://api.fanyi.baidu.com/api/trans/vip/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
+        Call<WordTranslate> call = request.getWordTranslateCall(word, md5("20180809000192979"+ word + "1435660288" + "ty5IoV55tyJoTtK5WBid"));
+        call.enqueue(new Callback<WordTranslate>() {
+            @Override
+            public void onResponse(Call<WordTranslate> call, Response<WordTranslate> response) {
+                final WordTranslate wordTranslate = response.body();
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(wordTranslate != null) {
+                            Sentence sentence = new Sentence();
+                            sentence.setSentence(word);
+                            sentence.setSentence_translate(wordTranslate.getTrans_result().get(0).getDst());
+                            sentence.save();
+                            if (sentence.save()) {
+                                Log.d("3333","存储成功");
+                            } else {
+                                Log.d("3333","存储失败");
+                            }
+                            answer3.setText(wordTranslate.getTrans_result().get(0).getDst());
+                            mFlowLayout.removeAllViews();
+                            initChildViews(getView());
+                        }
+                        else {
+                            Toast.makeText(getActivity(), "获取翻译失败", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Call<WordTranslate> call, Throwable t) {
+                t.printStackTrace();
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getActivity(), "获取翻译失败", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+    }
+
+    /*public void requestWordTranslate(final String word) {
         String salt = String.valueOf(System.currentTimeMillis());
         String wordTranslateUrl = "http://api.fanyi.baidu.com/api/trans/vip/translate?q="+ word +
                 "&from=en&to=zh&appid=20180809000192979&salt=1435660288"+"&sign=" + md5("20180809000192979"+ word + "1435660288" + "ty5IoV55tyJoTtK5WBid");
         Log.d("235", "1");
         Log.d("2345", md5("20180809000192979"+ word + "1435660288" +"ty5IoV55tyJoTtK5WBid"));
+
         HttpUtil.sendHttpRequest(wordTranslateUrl, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -357,7 +409,7 @@ public class ChooseFragment extends Fragment {
             }
         });
 
-    }
+    }*/
 
     public static String md5(String string) {
         if (TextUtils.isEmpty(string)) {
