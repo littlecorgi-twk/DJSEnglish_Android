@@ -17,8 +17,7 @@
         android:networkSecurityConfig="@xml/network_security_config">
         <activity android:name=".WordSuggestDetail">
         </activity>
-        <activity android:name=".RegisterActivity">
-        </activity>
+        <activity android:name=".RegisterActivity"/>
         <activity android:name=".UserActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".ChooseHistoryActivity" />

@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.example.lenovo.englishstudy.Util.GetRequest_Interface;
 import com.example.lenovo.englishstudy.Util.HttpUtil;
 import com.example.lenovo.englishstudy.Util.Utility;
 import com.example.lenovo.englishstudy.bean.MessageVerify;
@@ -27,12 +28,14 @@ import org.w3c.dom.Text;
 
 import java.io.IOException;
 
-import okhttp3.Call;
-import okhttp3.Callback;
+import retrofit2.Call;
+import retrofit2.Callback;
 import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RegisterActivity extends AppCompatActivity {
     private ImageView r_back;
@@ -103,63 +106,17 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    public void requestMessageVerify(final String phoneNumber) {
-        final String messageVerifyUrl = "http://47.102.206.19:8080/user/get_msgcode.do";
-      //  MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded; charset=UTF-8");
-        RequestBody  requestBody = new FormBody.Builder().add("phoneNumber",phoneNumber).build();
-        //RequestBody requestBody = RequestBody.create(mediaType, phoneNumber);
-        HttpUtil.sendHttpRequest(messageVerifyUrl, requestBody, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(RegisterActivity.this, "获取验证码失败", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                final String responseText = response.body().string();
-                final MessageVerify messageVerify = Utility.handleMessageVerifyResponse(responseText);
-                Log.d("34567",messageVerify.getMsg());
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (messageVerify != null) {
-                            if (messageVerify.getStatus() == 0 && messageVerify.getMsg().equals("发送成功")) {
-                                Toast.makeText(RegisterActivity.this, "发送成功", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    }
-                });
-            }
-        });
-    }
-
     public void requestVmessageVerify(final String phone, final String msgCode) {
-        final String messageVerifyUrl = "http://47.102.206.19:8080/user/check_msg.do";
-        //  MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded; charset=UTF-8");
-        RequestBody  requestBody = new FormBody.Builder().add("phone",phone).add("msgCode",msgCode).build();
-        //RequestBody requestBody = RequestBody.create(mediaType, phoneNumber);
-        HttpUtil.sendHttpRequest(messageVerifyUrl, requestBody, new Callback() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://47.102.206.19:8080/user/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
+        Call<MessageVerify> call = request.getVmessageVerifyCall(phone, msgCode);
+        call.enqueue(new retrofit2.Callback<MessageVerify>() {
             @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(RegisterActivity.this, "验证码错误", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                final String responseText = response.body().string();
-                final MessageVerify messageVerify = Utility.handleMessageVerifyResponse(responseText);
+            public void onResponse(Call<MessageVerify> call, retrofit2.Response<MessageVerify> response) {
+                final MessageVerify messageVerify = response.body();
                 Log.d("34567",messageVerify.getMsg());
                 runOnUiThread(new Runnable() {
                     @Override
@@ -174,9 +131,133 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 });
             }
+
+            @Override
+            public void onFailure(Call<MessageVerify> call, Throwable t) {
+                t.printStackTrace();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(RegisterActivity.this, "验证码错误", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
         });
     }
 
+    public void requestMessageVerify(final String phoneNumber) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://47.102.206.19:8080/user/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
+        Call<MessageVerify> call = request.getMessageVerifyCall(phoneNumber);
+        call.enqueue(new retrofit2.Callback<MessageVerify>() {
+            @Override
+            public void onResponse(Call<MessageVerify> call, retrofit2.Response<MessageVerify> response) {
+                final MessageVerify messageVerify = response.body();
+                Log.d("34567",messageVerify.getMsg());
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (messageVerify != null) {
+                            if (messageVerify.getStatus() == 0 && messageVerify.getMsg().equals("发送成功")) {
+                                Toast.makeText(RegisterActivity.this, "发送成功", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Call<MessageVerify> call, Throwable t) {
+                t.printStackTrace();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(RegisterActivity.this, "获取验证码失败", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+    }
+
+
+
+//    public void requestMessageVerify(final String phoneNumber) {
+//        final String messageVerifyUrl = "http://47.102.206.19:8080/user/get_msgcode.do";
+//      //  MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded; charset=UTF-8");
+//        RequestBody  requestBody = new FormBody.Builder().add("phoneNumber",phoneNumber).build();
+//        //RequestBody requestBody = RequestBody.create(mediaType, phoneNumber);
+//        HttpUtil.sendHttpRequest(messageVerifyUrl, requestBody, new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                e.printStackTrace();
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        Toast.makeText(RegisterActivity.this, "获取验证码失败", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                final String responseText = response.body().string();
+//                final MessageVerify messageVerify = Utility.handleMessageVerifyResponse(responseText);
+//                Log.d("34567",messageVerify.getMsg());
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        if (messageVerify != null) {
+//                            if (messageVerify.getStatus() == 0 && messageVerify.getMsg().equals("发送成功")) {
+//                                Toast.makeText(RegisterActivity.this, "发送成功", Toast.LENGTH_SHORT).show();
+//                            }
+//                        }
+//                    }
+//                });
+//            }
+//        });
+//    }
+
+//    public void requestVmessageVerify(final String phone, final String msgCode) {
+//        final String messageVerifyUrl = "http://47.102.206.19:8080/user/check_msg.do";
+//        //  MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded; charset=UTF-8");
+//        RequestBody  requestBody = new FormBody.Builder().add("phone",phone).add("msgCode",msgCode).build();
+//        //RequestBody requestBody = RequestBody.create(mediaType, phoneNumber);
+//        HttpUtil.sendHttpRequest(messageVerifyUrl, requestBody, new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                e.printStackTrace();
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        Toast.makeText(RegisterActivity.this, "验证码错误", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                final String responseText = response.body().string();
+//                final MessageVerify messageVerify = Utility.handleMessageVerifyResponse(responseText);
+//                Log.d("34567",messageVerify.getMsg());
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        if (messageVerify != null) {
+//                            if (messageVerify.getStatus() == 0 && messageVerify.getMsg().equals("验证码正确")) {
+//                                Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+//                            }else {
+//                                Toast.makeText(RegisterActivity.this, "验证码错误", Toast.LENGTH_SHORT).show();
+//                            }
+//                        }
+//                    }
+//                });
+//            }
+//        });
+//    }
+//
     class TimeCount extends CountDownTimer {
         public TimeCount(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);
