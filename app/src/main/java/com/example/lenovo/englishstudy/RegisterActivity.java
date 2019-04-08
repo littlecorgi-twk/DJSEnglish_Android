@@ -41,7 +41,7 @@ public class RegisterActivity extends AppCompatActivity {
     private ImageView r_back;
     private TextView send_verify;
     private EditText e_phoneNumber, e_messageVerify, e_password;
-    private Boolean flag;
+    private Boolean flag, flag2 = true , flag3 = false;
     private TimeCount time;
     private Button register;
     private ToggleButton toggleButton;
@@ -69,7 +69,8 @@ public class RegisterActivity extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                requestVmessageVerify(e_phoneNumber.getText().toString(), e_messageVerify.getText().toString());
+                VerifyPassword();
+
             }
         });
         r_back = findViewById(R.id.r_back);
@@ -124,7 +125,7 @@ public class RegisterActivity extends AppCompatActivity {
                         if (messageVerify != null) {
                             if (messageVerify.getStatus() == 0 && messageVerify.getMsg().equals("验证码正确")) {
                                 Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
-                            }else {
+                            }else if(!flag3){
                                 Toast.makeText(RegisterActivity.this, "验证码错误", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -180,6 +181,27 @@ public class RegisterActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    public void VerifyPassword() {
+        flag2 = true;
+        flag3 = false;
+        String password = e_password.getText().toString();
+        Log.d("33333",password);
+        for(int i = 0; i < password.length(); i++){
+            if(password.charAt(i)<'0'||(password.charAt(i)>'9'&&password.charAt(i)<'A')||(password.charAt(i)>'Z'&&password.charAt(i)<'a')||password.charAt(i)>'z') {
+                flag2 = false;
+                break;
+            }
+        }
+        Log.d("4444", flag2 + " ");
+        if(password.length() >=6 && password.length() <= 20 && flag2) {
+            requestVmessageVerify(e_phoneNumber.getText().toString(), e_messageVerify.getText().toString()  );
+        } else {
+            Log.d("33223", "1");
+            Toast.makeText(RegisterActivity.this, "密码为6~20位的数字字母组合", Toast.LENGTH_SHORT).show();
+            flag3 = true;
+        }
     }
 
 
