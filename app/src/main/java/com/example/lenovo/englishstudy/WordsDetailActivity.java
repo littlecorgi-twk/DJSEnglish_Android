@@ -1,9 +1,7 @@
 package com.example.lenovo.englishstudy;
 
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -14,15 +12,9 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.lenovo.englishstudy.R;
 import com.example.lenovo.englishstudy.Util.GetRequest_Interface;
-import com.example.lenovo.englishstudy.Util.HttpUtil;
-import com.example.lenovo.englishstudy.Util.Utility;
 import com.example.lenovo.englishstudy.bean.WordMeanig;
-import com.example.lenovo.englishstudy.bean.WordSuggest;
 import com.example.lenovo.englishstudy.userdefined.FlowLayout;
-
-import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -107,11 +99,11 @@ public class WordsDetailActivity extends AppCompatActivity {
         call.enqueue(new Callback<WordMeanig>() {
             @Override
             public void onResponse(retrofit2.Call<WordMeanig> call, final Response<WordMeanig> response) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        showWordMeaning(response.body());
-                    }
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                showWordMeaning(response.body());
+                            }
                 });
             }
 
