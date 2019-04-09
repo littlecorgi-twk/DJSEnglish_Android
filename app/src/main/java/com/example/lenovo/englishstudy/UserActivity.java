@@ -1,5 +1,6 @@
 package com.example.lenovo.englishstudy;
 
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.lenovo.englishstudy.bean.MessageVerify;
 import com.example.lenovo.englishstudy.userdefined.ObservableScrollView;
 
 import java.lang.invoke.ConstantCallSite;
@@ -29,6 +31,9 @@ public class UserActivity extends AppCompatActivity {
     private View division;
     private CircleImageView u_photo;
     private TextView u_name,t_name;
+    private Button edit_button;
+    private String user_name;
+    private String user_photo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +41,7 @@ public class UserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user);
         observableScrollView = findViewById(R.id.o_scrollView);
         observableScrollView.fullScroll(ScrollView.FOCUS_UP);
+        edit_button = findViewById(R.id.edit);
         back_button = findViewById(R.id.u_back);
         back_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,10 +53,10 @@ public class UserActivity extends AppCompatActivity {
         u_photo = findViewById(R.id.u_photo);
         t_name = findViewById(R.id.t_name);
         t_name.setVisibility(View.GONE);
-        String user_name = getIntent().getStringExtra("u_name");
+        user_name = getIntent().getStringExtra("u_name");
         u_name.setText(user_name);
         t_name.setText(user_name);
-        String user_photo = getIntent().getStringExtra("u_photo");
+        user_photo = getIntent().getStringExtra("u_photo");
         Glide.with(getContext()).load(user_photo).into(u_photo);
 //        back_button = findViewById(android.R.id.home);
         division = findViewById(R.id.division);
@@ -97,7 +103,15 @@ public class UserActivity extends AppCompatActivity {
 
             }
         });
-
+        edit_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(UserActivity.this, MessageActivity.class);
+                intent.putExtra("u_name", user_name);
+                intent.putExtra("u_photo", user_photo);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

@@ -34,6 +34,21 @@
             android:textColor="#242323"
             android:textSize="20sp" />
 
+        <!--item右边的文字-->
+        <TextView
+            android:id="@+id/tv_right_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="19sp"
+            android:textColor="#383737"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_rightIcon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_rightarrow" />
+
         <!--item右边的Icon 默认是向右的箭头-->
         <ImageView
             android:id="@+id/iv_right_icon"
@@ -48,8 +63,8 @@
     <View
         android:id="@+id/divider_bottom"
         android:layout_width="fill_parent"
-        android:layout_marginStart="50dp"
         android:layout_height="2px"
-        android:background="#45ababab" />
+        android:background="#45ababab"
+        android:layout_marginStart="40dp"/>
 
 </LinearLayout>

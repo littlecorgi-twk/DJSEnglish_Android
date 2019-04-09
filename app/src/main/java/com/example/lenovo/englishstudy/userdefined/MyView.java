@@ -1,7 +1,10 @@
 package com.example.lenovo.englishstudy.userdefined;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,15 +12,21 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.lenovo.englishstudy.R;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
+import static org.litepal.LitePalApplication.getContext;
 
 public class MyView extends LinearLayout {
     //各各控件
     private View dividerBottom;
     private LinearLayout llRoot;
     private ImageView ivLeftIcon;
-    private TextView tvTextContent;
+    private TextView tvTextContent, tvRightText;
     private ImageView ivRightIcon;
+    private CircleImageView rightIcon;
 
     public MyView(Context context) {  //该构造函数使其，可以在Java代码中创建
         super(context);
@@ -37,8 +46,33 @@ public class MyView extends LinearLayout {
         dividerBottom = findViewById(R.id.divider_bottom);
         ivLeftIcon = findViewById(R.id.iv_left_icon);
         tvTextContent = findViewById(R.id.tv_text_content);
+        tvRightText = findViewById(R.id.tv_right_text);
         ivRightIcon = findViewById(R.id.iv_right_icon);
+        rightIcon = findViewById(R.id.iv_rightIcon);
         return this;
+    }
+
+    public MyView init(String textContent, String rightText) {
+        init();
+        setLeftIconSize(0,0);
+        setTextContentSize(20);
+        setTextContent(textContent);
+        setRightText(rightText);
+        setRightIconSize(0,0);
+        showArrow(true);
+        return this;
+
+    }
+
+    public MyView init2(String textContent, String rightIcon) {
+        init();
+        setLeftIconSize(0,0);
+        setTextContentSize(20);
+        setTextContent(textContent);
+        setRightIcon(rightIcon);
+        showArrow(true);
+        return this;
+
     }
 
     public MyView init(int iconRes, String textContent) {
@@ -50,8 +84,20 @@ public class MyView extends LinearLayout {
 
     }
 
+    public MyView initMine(String textContent, String rightText, boolean showDivider) {
+        init(textContent, rightText);
+        showDivider(showDivider);
+        return this;
+    }
+
     public MyView initMine(int iconRes, String textContent, boolean showDivider) {
         init(iconRes, textContent);
+        showDivider(showDivider);
+        return this;
+    }
+
+    public MyView initMine2(String textContent, String rightIcon, boolean showDivider) {
+        init2(textContent, rightIcon);
         showDivider(showDivider);
         return this;
     }
@@ -126,10 +172,18 @@ public class MyView extends LinearLayout {
     }
 
     /**
-     * 设置右边Icon 以及Icon的宽高
+     * 设置左右边Icon 以及Icon的宽高
      */
     public MyView setLeftIconSize(int widthDp, int heightDp) {
         ViewGroup.LayoutParams layoutParams = ivLeftIcon.getLayoutParams();
+        layoutParams.width = DensityUtils.dp2px(getContext(), widthDp);
+        layoutParams.height = DensityUtils.dp2px(getContext(), heightDp);
+        ivLeftIcon.setLayoutParams(layoutParams);
+        return this;
+    }
+
+    public MyView setRightIconSize(int widthDp, int heightDp) {
+        ViewGroup.LayoutParams layoutParams = rightIcon.getLayoutParams();
         layoutParams.width = DensityUtils.dp2px(getContext(), widthDp);
         layoutParams.height = DensityUtils.dp2px(getContext(), heightDp);
         ivLeftIcon.setLayoutParams(layoutParams);
@@ -168,7 +222,27 @@ public class MyView extends LinearLayout {
         return this;
     }
 
+    /**
+     * 设置右边的文字内容
+     *
+     * @param textContent
+     * @return
+     */
+    public MyView setRightText(String textContent) {
+        tvRightText.setText(textContent);
+        return this;
+    }
 
+    /**
+     * 设置左边Icon
+     *
+     * @param iconRes
+     */
+    public MyView setRightIcon(String iconRes) {
+        Log.d("55555", iconRes.toString());
+        Glide.with(getContext()).load(iconRes).into(rightIcon);
+        return this;
+    }
 
     /**
      * 整个一行被点击
