@@ -49,9 +49,9 @@ public class UserFragment extends Fragment implements MyView.OnRootClickListener
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.userfragment, container, false);
         Log.d("123","1");
-        oneItem = view.findViewById(R.id.one_item);
-        twoItem = view.findViewById(R.id.two_item);
-        threeItem = view.findViewById(R.id.three_item);
+        oneItem = view.findViewById(R.id.u_one_item);
+        twoItem = view.findViewById(R.id.u_two_item);
+        threeItem = view.findViewById(R.id.u_three_item);
         login = view.findViewById(R.id.login);
         login_msg = view.findViewById(R.id.login_msg);
         photo = view.findViewById(R.id.photo);
