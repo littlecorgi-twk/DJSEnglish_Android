@@ -1,7 +1,9 @@
 package com.example.lenovo.englishstudy.userdefined;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.Icon;
 import android.net.Uri;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -75,10 +77,23 @@ public class MyView extends LinearLayout {
 
     }
 
+    public MyView init(String textContent, Bitmap rightIcon) {
+        init();
+        setLeftIconSize(0,0);
+        setTextContentSize(20);
+        setTextContent(textContent);
+        setRightIcon(rightIcon);
+        showArrow(true);
+        return this;
+
+    }
+
     public MyView init(int iconRes, String textContent) {
         init();
         setLeftIcon(iconRes);
+        setLeftIconSize(25, 25);
         setTextContent(textContent);
+        setRightIconSize(0,0);
         showArrow(true);
         return this;
 
@@ -92,6 +107,12 @@ public class MyView extends LinearLayout {
 
     public MyView initMine(int iconRes, String textContent, boolean showDivider) {
         init(iconRes, textContent);
+        showDivider(showDivider);
+        return this;
+    }
+
+    public MyView initMine(String textContent, Bitmap rightIcon, boolean showDivider) {
+        init(textContent, rightIcon);
         showDivider(showDivider);
         return this;
     }
@@ -186,7 +207,7 @@ public class MyView extends LinearLayout {
         ViewGroup.LayoutParams layoutParams = rightIcon.getLayoutParams();
         layoutParams.width = DensityUtils.dp2px(getContext(), widthDp);
         layoutParams.height = DensityUtils.dp2px(getContext(), heightDp);
-        ivLeftIcon.setLayoutParams(layoutParams);
+        rightIcon.setLayoutParams(layoutParams);
         return this;
     }
 
@@ -239,6 +260,12 @@ public class MyView extends LinearLayout {
      * @param iconRes
      */
     public MyView setRightIcon(String iconRes) {
+        Log.d("55555", iconRes.toString());
+        Glide.with(getContext()).load(iconRes).into(rightIcon);
+        return this;
+    }
+
+    public MyView setRightIcon(Bitmap iconRes) {
         Log.d("55555", iconRes.toString());
         Glide.with(getContext()).load(iconRes).into(rightIcon);
         return this;
