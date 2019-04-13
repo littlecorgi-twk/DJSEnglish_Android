@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".WordSuggestDetail">
+    tools:context=".WordSuggestDetailActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#5B706A6A"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:background="#5BE7E0E0"
+        android:orientation="vertical">
 
         <!--blng_sents_part-双语例句-->
         <!--auth_sents_part-权威例句-->
@@ -24,11 +24,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/textview"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_wordSuggest_content"
+                android:id="@+id/tv_wordSuggestDetail_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="a"
@@ -41,24 +40,24 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/iv_wordSuggest_ukspeech"
+                    android:id="@+id/iv_wordSuggestDetail_ukspeech"
                     android:layout_width="20sp"
                     android:layout_height="20sp" />
 
                 <TextView
-                    android:id="@+id/tv_wordSuggest_ukphone"
+                    android:id="@+id/tv_wordSuggestDetail_ukphone"
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
                     android:text="英"
                     android:textColor="#5B706A6A" />
 
                 <ImageView
-                    android:id="@+id/iv_wordSuggest_usspeech"
+                    android:id="@+id/iv_wordSuggestDetail_usspeech"
                     android:layout_width="20sp"
                     android:layout_height="20sp" />
 
                 <TextView
-                    android:id="@+id/tv_wordSuggest_usphone"
+                    android:id="@+id/tv_wordSuggestDetail_usphone"
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
                     android:text="美"
@@ -70,77 +69,106 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/textview"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:paddingStart="5dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="0dp">
 
-            <ListView
-                android:id="@+id/lv_wordSuggest_meaningList"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/textview"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="经典例句" />
+                android:background="@drawable/textview"
+                android:orientation="vertical"
+                android:layout_marginTop="5dp">
 
-            <TextView
-                android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/tv_wordSuggestDetail_meaningList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="双语" />
+                android:background="@drawable/textview"
+                android:orientation="vertical"
+                android:layout_marginTop="5dp">
 
-            <TextView
-                android:id="@+id/tv_wordSuggest_blng_sents_part"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="经典例句" />
 
-            <TextView
-                android:layout_width="wrap_content"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="双语" />
+
+                <TextView
+                    android:id="@+id/tv_wordSuggestDetail_blng_sents_part_sentenceEng"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/tv_wordSuggestDetail_blng_sents_part_sentenceTranslation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="权威" />
+
+                <TextView
+                    android:id="@+id/tv_wordSuggestDetail_auth_sents_part_foreign"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/tv_wordSuggestDetail_auth_sents_part_source"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="原声" />
+
+                <TextView
+                    android:id="@+id/tv_wordSuggestDetail_media_sents_part_eng"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/tv_wordSuggestDetail_media_sents_part_source"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="权威" />
+                android:background="@drawable/textview"
+                android:orientation="vertical"
+                android:layout_marginTop="5dp">
 
-            <TextView
-                android:id="@+id/tv_wordSuggest_auth_sents_part"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/tv_wordSuggestDetail_web_trans"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="网络释义" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="原声" />
+                <TextView
+                    android:id="@+id/tv_wordSuggestDetail_web_trans_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/tv_wordSuggest_media_sents_part"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                </TextView>
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/textview"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/tv_wordSuggest_web_trans"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="网络释义" />
-
-            <ListView
-                android:id="@+id/lv_wordSuggest_web_trans_list"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-            </ListView>
+            </LinearLayout>
 
         </LinearLayout>
 

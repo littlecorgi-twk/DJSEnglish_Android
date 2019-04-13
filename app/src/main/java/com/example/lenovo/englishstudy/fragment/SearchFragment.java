@@ -1,5 +1,6 @@
 package com.example.lenovo.englishstudy.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,18 +10,23 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.lenovo.englishstudy.R;
 import com.example.lenovo.englishstudy.Util.GetRequest_Interface;
+import com.example.lenovo.englishstudy.WordSuggestDetailActivity;
 import com.example.lenovo.englishstudy.adapter.WordSuggestAdapter;
 import com.example.lenovo.englishstudy.bean.WordSuggest;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,8 +35,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SearchFragment extends Fragment {
 
-    private SearchView mSearchView;
-    private ListView mListView;
+    @BindView(R.id.searchView)
+    SearchView searchView;
+    @BindView(R.id.lv_searchList)
+    ListView lvSearchList;
+    Unbinder unbinder;
     private ArrayList<WordSuggest.DataBean.EntriesBean> mEntries = new ArrayList<>();
     private WordSuggestAdapter adapter;
 
@@ -38,13 +47,20 @@ public class SearchFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.searchfragment, container, false);
-        mSearchView = view.findViewById(R.id.searchView);
-        mListView = view.findViewById(R.id.lv_searchList);
+        unbinder = ButterKnife.bind(this, view);
         adapter = new WordSuggestAdapter(getContext(), R.layout.word_suggest_listview, mEntries);
-        mListView.setAdapter(adapter);
+        lvSearchList.setAdapter(adapter);
+        lvSearchList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getContext(), WordSuggestDetailActivity.class);
+                intent.putExtra("Word", mEntries.get(position).getEntry());
+                getActivity().startActivity(intent);
+            }
+        });
         // mListView.setTextFilterEnabled(true);
 
-        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
                 return false;
@@ -55,10 +71,10 @@ public class SearchFragment extends Fragment {
             public boolean onQueryTextChange(String s) {
                 if (!TextUtils.isEmpty(s)) {
                     adapter.notifyDataSetChanged();
-                    mListView.setSelection(0);
+                    lvSearchList.setSelection(0);
                     requestWordSuggest(s);
                 } else {
-                    mListView.clearTextFilter();
+                    lvSearchList.clearTextFilter();
                 }
                 return false;
             }
@@ -141,19 +157,20 @@ public class SearchFragment extends Fragment {
             mEntries.clear();
             mEntries.add(new WordSuggest.DataBean.EntriesBean("查无此词！", ""));
             adapter.notifyDataSetChanged();
-            mListView.setSelection(0);
+            lvSearchList.setSelection(0);
         } else {
             mEntries.clear();
-            for (WordSuggest.DataBean.EntriesBean entriesBean: wordSuggest.getData().getEntries()) {
+            for (WordSuggest.DataBean.EntriesBean entriesBean : wordSuggest.getData().getEntries()) {
                 mEntries.add(new WordSuggest.DataBean.EntriesBean(entriesBean.getEntry(), entriesBean.getExplain()));
             }
             adapter.notifyDataSetChanged();
-            mListView.setSelection(0);
+            lvSearchList.setSelection(0);
         }
     }
 
     /**
      * 通过反射设置mTextFilter属性达到隐藏弹框
+     *
      * @param listView ListView实例
      */
     private void changeSearch(ListView listView) {
@@ -161,12 +178,16 @@ public class SearchFragment extends Fragment {
             Field field = listView.getClass().getSuperclass().getDeclaredField("mTextFilter");
             field.setAccessible(true);
             EditText searchAutoComplete = (EditText) field.get(listView);
-            // searchAutoComplete.setTextColor(getResources().getColor(android.R.color.transparent));
-            // searchAutoComplete.setBackgroundColor(getResources().getColor(android.R.color.transparent));
             searchAutoComplete.setVisibility(View.GONE);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }
 

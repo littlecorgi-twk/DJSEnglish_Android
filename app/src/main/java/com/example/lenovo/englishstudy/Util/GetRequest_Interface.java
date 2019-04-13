@@ -3,9 +3,11 @@ package com.example.lenovo.englishstudy.Util;
 import com.example.lenovo.englishstudy.bean.MessageVerify;
 import com.example.lenovo.englishstudy.bean.WordMeanig;
 import com.example.lenovo.englishstudy.bean.WordSuggest;
+import com.example.lenovo.englishstudy.bean.WordSuggestDetail;
 import com.example.lenovo.englishstudy.bean.WordTranslate;
 
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -24,7 +26,6 @@ public interface GetRequest_Interface {
     @GET("translate?&from=en&to=zh&appid=20180809000192979&salt=1435660288")
     Call<WordTranslate> getWordTranslateCall(@Query("q") String word, @Query("sign") String md5);
 
-
     @FormUrlEncoded
     @Headers("Content-Type: application/x-www-form-urlencoded")
     @POST("get_msgcode.do")
@@ -35,5 +36,7 @@ public interface GetRequest_Interface {
     @POST("check_msg.do")
     Call<MessageVerify> getVmessageVerifyCall(@Field("phone") String phone, @Field("msgCode") String msgCode);
 
+    @GET("jsonapi?jsonversion=2&client=mobile&dicts=%7B\"count\"%3A99%2C\"dicts\"%3A%5B%5B\"ec\"%2C\"ce\"%2C\"newcj\"%2C\"newjc\"%2C\"kc\"%2C\"ck\"%2C\"fc\"%2C\"cf\"%2C\"multle\"%2C\"jtj\"%2C\"pic_dict\"%2C\"tc\"%2C\"ct\"%2C\"typos\"%2C\"special\"%2C\"tcb\"%2C\"baike\"%2C\"lang\"%2C\"simple\"%2C\"wordform\"%2C\"exam_dict\"%2C\"ctc\"%2C\"web_search\"%2C\"auth_sents_part\"%2C\"ec21\"%2C\"phrs\"%2C\"input\"%2C\"wikipedia_digest\"%2C\"ee\"%2C\"collins\"%2C\"ugc\"%2C\"media_sents_part\"%2C\"syno\"%2C\"rel_word\"%2C\"longman\"%2C\"ce_new\"%2C\"le\"%2C\"newcj_sents\"%2C\"blng_sents_part\"%2C\"hh\"%5D%2C%5B\"ugc\"%5D%2C%5B\"longman\"%5D%2C%5B\"newjc\"%5D%2C%5B\"newcj\"%5D%2C%5B\"web_trans\"%5D%2C%5B\"fanyi\"%5D%5D%7D&keyfrom=mdict.7.2.0.android&model=honor&mid=5.6.1&imei=659135764921685&vendor=wandoujia&screen=1080x1800&ssid=superman&network=wifi&abtest=2&xmlVersion=5.1")
+    Call<WordSuggestDetail> getWordSuggestDetailCall(@Query("q") String word);
 
 }

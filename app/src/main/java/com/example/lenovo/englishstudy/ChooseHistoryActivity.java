@@ -18,26 +18,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.lenovo.englishstudy.Util.HttpUtil;
-import com.example.lenovo.englishstudy.Util.Utility;
-import com.example.lenovo.englishstudy.bean.WordTranslate;
 import com.example.lenovo.englishstudy.db.Sentence;
 import com.example.lenovo.englishstudy.userdefined.FlowLayout;
 
 import org.litepal.crud.DataSupport;
 
-import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
 
 public class ChooseHistoryActivity extends AppCompatActivity {
     private Toolbar toolbar;
