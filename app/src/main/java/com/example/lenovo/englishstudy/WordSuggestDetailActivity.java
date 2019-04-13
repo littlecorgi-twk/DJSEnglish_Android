@@ -5,12 +5,17 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lenovo.englishstudy.Util.GetRequest_Interface;
 import com.example.lenovo.englishstudy.bean.WordSuggestDetail;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -35,8 +40,6 @@ public class WordSuggestDetailActivity extends AppCompatActivity {
     TextView tvWordSuggestDetailWebTrans;
     @BindView(R.id.tv_wordSuggestDetail_meaningList)
     TextView tvWordSuggestDetailMeaningList;
-    @BindView(R.id.tv_wordSuggestDetail_web_trans_list)
-    TextView tvWordSuggestDetailWebTransList;
     @BindView(R.id.tv_wordSuggestDetail_blng_sents_part_sentenceEng)
     TextView tvWordSuggestDetailBlngSentsPartSentenceEng;
     @BindView(R.id.tv_wordSuggestDetail_blng_sents_part_sentenceTranslation)
@@ -57,6 +60,8 @@ public class WordSuggestDetailActivity extends AppCompatActivity {
     TextView tvWordDetailWebTran;
     @BindView(R.id.tv_wordSuggestDetail_exam_type)
     TextView tvWordSuggestDetailExamType;
+    @BindView(R.id.parts_layout)
+    LinearLayout partsLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,16 +136,6 @@ public class WordSuggestDetailActivity extends AppCompatActivity {
             tvWordSuggestDetailMediaSentsPartSource.setText(wordSuggestDetail.getMedia_sents_part().getSent().get(0).getSnippets().getSnippet().get(0).getSource() +
                     wordSuggestDetail.getMedia_sents_part().getSent().get(0).getSnippets().getSnippet().get(0).getName());
             String wordDetailWebTrans = "";
-            for (WordSuggestDetail.WebTransBean.WebtranslationBean webtranslationBean : wordSuggestDetail.getWeb_trans().getWebtranslation()) {
-                wordDetailWebTrans += webtranslationBean.getKey();
-                wordDetailWebTrans += '\n';
-                for (WordSuggestDetail.WebTransBean.WebtranslationBean.TransBean transBean : webtranslationBean.getTrans()) {
-                    wordDetailWebTrans += transBean.getValue();
-                    wordDetailWebTrans += ';';
-                }
-                wordDetailWebTrans += "\n\n";
-            }
-            tvWordSuggestDetailWebTransList.setText(wordDetailWebTrans);
             wordDetailWebTrans = "";
             for (WordSuggestDetail.WebTransBean.WebtranslationBean.TransBean transBean : wordSuggestDetail.getWeb_trans().getWebtranslation().get(0).getTrans()) {
                 wordDetailWebTrans += transBean.getValue();
@@ -155,6 +150,27 @@ public class WordSuggestDetailActivity extends AppCompatActivity {
             }
             examType = examType.substring(0, examType.length() - 1);
             tvWordSuggestDetailExamType.setText(examType);
+            partsLayout.removeAllViews();
+            int tvCounter = 0;
+            for (WordSuggestDetail.WebTransBean.WebtranslationBean webtranslationBean : wordSuggestDetail.getWeb_trans().getWebtranslation()) {
+                View view = LayoutInflater.from(this).inflate(R.layout.parts_item, partsLayout, false);
+                TextView tvPartsItemCounter = view.findViewById(R.id.tv_parts_item_counter);
+                Button buttonPartsItemContent = view.findViewById(R.id.button_parts_item_content);
+                TextView tvPartsItemMeaning = view.findViewById(R.id.tv_parts_item_meaning);
+                tvCounter++;
+                StringBuilder tvCounterString = new StringBuilder();
+                tvCounterString.insert(tvCounterString.length(), tvCounter);
+                tvCounterString.insert(tvCounterString.length(), '.');
+                tvPartsItemCounter.setText(tvCounterString);
+                buttonPartsItemContent.setText(webtranslationBean.getKey());
+                String webTrans = "";
+                for (WordSuggestDetail.WebTransBean.WebtranslationBean.TransBean transBean : webtranslationBean.getTrans()) {
+                    webTrans += transBean.getValue();
+                    webTrans += ';';
+                }
+                tvPartsItemMeaning.setText(webTrans);
+                partsLayout.addView(view);
+            }
         }
     }
 }
