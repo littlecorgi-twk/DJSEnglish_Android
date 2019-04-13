@@ -29,8 +29,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lenovo.englishstudy.Util.GetRequest_Interface;
-import com.example.lenovo.englishstudy.Util.HttpUtil;
-import com.example.lenovo.englishstudy.Util.Utility;
 import com.example.lenovo.englishstudy.bean.WordTranslate;
 import com.example.lenovo.englishstudy.userdefined.FlowLayout;
 import com.example.lenovo.englishstudy.ChooseHistoryActivity;
@@ -40,10 +38,8 @@ import com.example.lenovo.englishstudy.animation.PointFTypeEvaluator;
 import com.example.lenovo.englishstudy.R;
 import com.example.lenovo.englishstudy.db.Sentence;
 
-import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
