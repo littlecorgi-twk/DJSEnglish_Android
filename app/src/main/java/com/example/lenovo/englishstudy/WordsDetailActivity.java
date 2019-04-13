@@ -88,7 +88,7 @@ public class WordsDetailActivity extends AppCompatActivity {
 
     public void requestWordMeaning(final String word) {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://dict.youdao.com/")
+                .baseUrl("q=account&")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

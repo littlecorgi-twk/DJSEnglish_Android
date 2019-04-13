@@ -19,21 +19,9 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.example.lenovo.englishstudy.Util.GetRequest_Interface;
-import com.example.lenovo.englishstudy.Util.HttpUtil;
-import com.example.lenovo.englishstudy.Util.Utility;
 import com.example.lenovo.englishstudy.bean.MessageVerify;
-import com.example.lenovo.englishstudy.bean.WordTranslate;
-
-import org.w3c.dom.Text;
-
-import java.io.IOException;
 
 import retrofit2.Call;
-import retrofit2.Callback;
-import okhttp3.FormBody;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 

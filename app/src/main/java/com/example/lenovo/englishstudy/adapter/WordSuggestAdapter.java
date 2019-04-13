@@ -20,7 +20,7 @@ import java.util.List;
 public class WordSuggestAdapter extends ArrayAdapter<WordSuggest.DataBean.EntriesBean> {
     private int resoureId;
 
-    public WordSuggestAdapter(Context context, int textViewResourceId, List<WordSuggest.DataBean.EntriesBean> objects){
+    public WordSuggestAdapter(Context context, int textViewResourceId, List<WordSuggest.DataBean.EntriesBean> objects) {
         super(context, textViewResourceId, objects);
         resoureId = textViewResourceId;
     }
