@@ -49,7 +49,7 @@
                     android:id="@+id/button_wordSuggestDetail_ukspeech"
                     android:layout_width="20sp"
                     android:layout_height="20sp"
-                    android:background="@drawable/speach" />
+                     />
 
                 <TextView
                     android:id="@+id/tv_wordSuggestDetail_ukphone"
@@ -62,8 +62,7 @@
                     android:id="@+id/button_wordSuggestDetail_usspeech"
                     android:layout_width="20sp"
                     android:layout_height="20sp"
-                    android:layout_marginStart="20dp"
-                    android:background="@drawable/speach" />
+                    android:layout_marginStart="20dp" />
 
                 <TextView
                     android:id="@+id/tv_wordSuggestDetail_usphone"
