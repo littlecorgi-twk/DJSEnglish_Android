@@ -266,8 +266,8 @@ public class MyView extends LinearLayout {
     }
 
     public MyView setRightIcon(Bitmap iconRes) {
-        Log.d("55555", iconRes.toString());
-        Glide.with(getContext()).load(iconRes).into(rightIcon);
+//        Log.d("55555", iconRes.toString());
+        rightIcon.setImageBitmap(iconRes);
         return this;
     }
 
