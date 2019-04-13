@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:overScrollMode="never"
     tools:context=".WordSuggestDetailActivity">
 
     <LinearLayout
@@ -238,12 +239,13 @@
                     android:textColor="#B8B8B8"
                     android:textSize="12sp" />
 
-                <TextView
-                    android:id="@+id/tv_wordSuggestDetail_web_trans_list"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                <LinearLayout
+                    android:id="@+id/parts_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                </TextView>
+                </LinearLayout>
 
             </LinearLayout>
 
