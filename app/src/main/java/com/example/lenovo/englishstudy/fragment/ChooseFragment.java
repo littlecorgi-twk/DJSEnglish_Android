@@ -11,7 +11,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,15 +27,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.lenovo.englishstudy.Util.GetRequest_Interface;
-import com.example.lenovo.englishstudy.bean.WordTranslate;
-import com.example.lenovo.englishstudy.userdefined.FlowLayout;
 import com.example.lenovo.englishstudy.ChooseHistoryActivity;
+import com.example.lenovo.englishstudy.R;
+import com.example.lenovo.englishstudy.Util.GetRequest_Interface;
 import com.example.lenovo.englishstudy.animation.ExplosionField;
 import com.example.lenovo.englishstudy.animation.MoveImageView;
 import com.example.lenovo.englishstudy.animation.PointFTypeEvaluator;
-import com.example.lenovo.englishstudy.R;
+import com.example.lenovo.englishstudy.bean.WordTranslate;
 import com.example.lenovo.englishstudy.db.Sentence;
+import com.example.lenovo.englishstudy.userdefined.FlowLayout;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -62,22 +61,22 @@ public class ChooseFragment extends Fragment {
     private Boolean flag2 = false;
     private Boolean flag3 = false;
     private String mNames[] = {
-            "welcome","android","TextView",
-            "apple","experience","kobe bryant",
-            "jordan","layout","viewgroup",
-            "margin","padding","text",
-            "name","type","search","logcat"
+            "welcome", "android", "TextView",
+            "apple", "experience", "kobe bryant",
+            "jordan", "layout", "viewgroup",
+            "margin", "padding", "text",
+            "name", "type", "search", "logcat"
     };
     private FlowLayout mFlowLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.choosefragment,container,false);
+        View view = inflater.inflate(R.layout.choosefragment, container, false);
         end = view.findViewById(R.id.end);
         end.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(flag3) {
+                if (flag3) {
                     flag1 = false;
                     end.setVisibility(View.GONE);
                     answer2.setText(as);
@@ -105,7 +104,6 @@ public class ChooseFragment extends Fragment {
     }
 
 
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.toolbar, menu);
@@ -131,7 +129,6 @@ public class ChooseFragment extends Fragment {
         contain.getLocationInWindow(parentCoordinate);
         hezi.getLocationInWindow(shopCoordinate);
 
-        Log.d("1234",shopCoordinate[1] + " ");
 
         //2.自定义ImageView 继承ImageView
         MoveImageView img = new MoveImageView(getContext());
@@ -140,9 +137,8 @@ public class ChooseFragment extends Fragment {
         img.setLayoutParams(params);
 
         //3.设置img在父布局中的坐标位置
-        img.setX(childCoordinate[0] - parentCoordinate[0] );
-        img.setY(childCoordinate[1] - parentCoordinate[1] );
-        Log.d("12345",shopCoordinate[1] + " ");
+        img.setX(childCoordinate[0] - parentCoordinate[0]);
+        img.setY(childCoordinate[1] - parentCoordinate[1]);
         //4.父布局添加该Img
         contain.addView(img);
 
@@ -151,7 +147,7 @@ public class ChooseFragment extends Fragment {
         PointF endP = new PointF();
         PointF controlP = new PointF();
         //开始的数据点坐标就是 addV的坐标
-        startP.x = childCoordinate[0] - parentCoordinate[0] ;
+        startP.x = childCoordinate[0] - parentCoordinate[0];
         startP.y = childCoordinate[1] - parentCoordinate[1];
         //结束的数据点坐标就是 shopImg的坐标
         endP.x = shopCoordinate[0] - parentCoordinate[0] + 150;
@@ -159,13 +155,11 @@ public class ChooseFragment extends Fragment {
         //控制点坐标 x等于 购物车x；y等于 addV的y
         controlP.x = endP.x;
         controlP.y = startP.y;
-        Log.d("123456",shopCoordinate[1] + " ");
 
         //启动属性动画
         ObjectAnimator animator = ObjectAnimator.ofObject(img, "mPointF",
                 new PointFTypeEvaluator(controlP), startP, endP);
         animator.setDuration(1000);
-        Log.d("1234567",shopCoordinate[1] + " ");
         animator.start();
         animator.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -237,6 +231,7 @@ public class ChooseFragment extends Fragment {
 
     /**
      * 为自己以及子View添加破碎动画，动画结束后，把View消失掉
+     *
      * @param view 可能是ViewGroup的view
      */
     private void setSelfAndChildDisappearOnClick(final View view) {
@@ -276,7 +271,7 @@ public class ChooseFragment extends Fragment {
         lp.rightMargin = 10;
         lp.topMargin = 10;
         lp.bottomMargin = 10;
-        for(int i = 0; i < mNames.length; i ++){
+        for (int i = 0; i < mNames.length; i++) {
             final TextView textView = new TextView(getContext());
             textView.setBackgroundDrawable(getResources().getDrawable(R.drawable.textview));
             textView.setText(mNames[i]);
@@ -289,11 +284,11 @@ public class ChooseFragment extends Fragment {
                     textView.setBackgroundDrawable(getResources().getDrawable(R.drawable.textview_click));
                     flag3 = false;
                     as += textView.getText() + " ";
-                    if(flag1) {
+                    if (flag1) {
                         beginAnimation1(view);
                         end.setVisibility(View.VISIBLE);
                     }
-                    if(flag2) {
+                    if (flag2) {
                         hezi.setVisibility(View.VISIBLE);
                         answer1.setVisibility(View.GONE);
                         answer2.setVisibility(View.GONE);
@@ -305,7 +300,6 @@ public class ChooseFragment extends Fragment {
         }
 
 
-
     }
 
     public void requestWordTranslate(final String word) {
@@ -314,7 +308,7 @@ public class ChooseFragment extends Fragment {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
-        Call<WordTranslate> call = request.getWordTranslateCall(word, md5("20180809000192979"+ word + "1435660288" + "ty5IoV55tyJoTtK5WBid"));
+        Call<WordTranslate> call = request.getWordTranslateCall(word, md5("20180809000192979" + word + "1435660288" + "ty5IoV55tyJoTtK5WBid"));
         call.enqueue(new Callback<WordTranslate>() {
             @Override
             public void onResponse(Call<WordTranslate> call, Response<WordTranslate> response) {
@@ -322,21 +316,18 @@ public class ChooseFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if(wordTranslate != null) {
+                        if (wordTranslate != null) {
                             Sentence sentence = new Sentence();
                             sentence.setSentence(word);
                             sentence.setSentence_translate(wordTranslate.getTrans_result().get(0).getDst());
                             sentence.save();
                             if (sentence.save()) {
-                                Log.d("3333","存储成功");
                             } else {
-                                Log.d("3333","存储失败");
                             }
                             answer3.setText(wordTranslate.getTrans_result().get(0).getDst());
                             mFlowLayout.removeAllViews();
                             initChildViews(getView());
-                        }
-                        else {
+                        } else {
                             Toast.makeText(getActivity(), "获取翻译失败", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -360,8 +351,6 @@ public class ChooseFragment extends Fragment {
         String salt = String.valueOf(System.currentTimeMillis());
         String wordTranslateUrl = "http://api.fanyi.baidu.com/api/trans/vip/translate?q="+ word +
                 "&from=en&to=zh&appid=20180809000192979&salt=1435660288"+"&sign=" + md5("20180809000192979"+ word + "1435660288" + "ty5IoV55tyJoTtK5WBid");
-        Log.d("235", "1");
-        Log.d("2345", md5("20180809000192979"+ word + "1435660288" +"ty5IoV55tyJoTtK5WBid"));
 
         HttpUtil.sendHttpRequest(wordTranslateUrl, new Callback() {
             @Override
@@ -388,9 +377,7 @@ public class ChooseFragment extends Fragment {
                             sentence.setSentence_translate(wordTranslate.getTrans_result().get(0).getDst());
                             sentence.save();
                             if (sentence.save()) {
-                                Log.d("3333","存储成功");
                             } else {
-                                Log.d("3333","存储失败");
                             }
                             answer3.setText(wordTranslate.getTrans_result().get(0).getDst());
                             mFlowLayout.removeAllViews();

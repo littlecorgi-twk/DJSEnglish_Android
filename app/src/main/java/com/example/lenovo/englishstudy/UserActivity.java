@@ -1,12 +1,11 @@
 package com.example.lenovo.englishstudy;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -15,10 +14,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.lenovo.englishstudy.bean.MessageVerify;
 import com.example.lenovo.englishstudy.userdefined.ObservableScrollView;
-
-import java.lang.invoke.ConstantCallSite;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -30,7 +26,7 @@ public class UserActivity extends AppCompatActivity {
     private ImageView back_button;
     private View division;
     private CircleImageView u_photo;
-    private TextView u_name,t_name;
+    private TextView u_name, t_name;
     private Button edit_button;
     private String user_name;
     private String user_photo;
@@ -63,8 +59,8 @@ public class UserActivity extends AppCompatActivity {
         division.setVisibility(View.GONE);
         toolbar = findViewById(R.id.user_toolbar);
         setSupportActionBar(toolbar);
-        ActionBar actionBar =  getSupportActionBar();
-        if(actionBar != null) {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
 //            actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
         }
@@ -72,33 +68,31 @@ public class UserActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        Log.d("3333","1");
         final float title_height = getResources().getDimension(R.dimen.title_height);
         final float head_height = getResources().getDimension(R.dimen.head_height);
         observableScrollView.setOnScrollListener(new ObservableScrollView.ScrollViewListener() {
             @Override
             public void onScrollChanged(ObservableScrollView observableScrollView, int oldy, int dy, boolean isUp) {
-                Log.d("4444444","3");
                 float move_distance = head_height - title_height;
-                if(!isUp && dy <= move_distance) {
+                if (!isUp && dy <= move_distance) {
                     toolbar.setBackgroundColor(ContextCompat.getColor(UserActivity.this, R.color.color_white));
                     TitleAlphaChange(dy, move_distance);
 
-                } else if(!isUp && dy > move_distance) {
+                } else if (!isUp && dy > move_distance) {
                     TitleAlphaChange(1, 1);
                     back_button.setImageResource(R.drawable.u_back);
                     t_name.setVisibility(View.VISIBLE);
                     division.setVisibility(View.VISIBLE);
-                } else if(isUp && dy > move_distance) {//返回顶部
-                  //  toolbar.setBackgroundColor(ContextCompat.getColor(UserActivity.this, R.color.color_background));
-                   // t_name.setVisibility(View.GONE);
-                   // back_button.setImageResource(R.drawable.u_back_w);
-                } else if(isUp && dy <= move_distance) {
+                } else if (isUp && dy > move_distance) {//返回顶部
+                    //  toolbar.setBackgroundColor(ContextCompat.getColor(UserActivity.this, R.color.color_background));
+                    // t_name.setVisibility(View.GONE);
+                    // back_button.setImageResource(R.drawable.u_back_w);
+                } else if (isUp && dy <= move_distance) {
                     TitleAlphaChange(dy, move_distance);
                     back_button.setImageResource(R.drawable.u_back_w);
                     t_name.setVisibility(View.GONE);
                     division.setVisibility(View.GONE);
-                  //  toolbar.setBackgroundColor(ContextCompat.getColor(UserActivity.this, R.color.color_background));
+                    //  toolbar.setBackgroundColor(ContextCompat.getColor(UserActivity.this, R.color.color_background));
                 }
 
             }
@@ -125,7 +119,7 @@ public class UserActivity extends AppCompatActivity {
     }
 
     private void TitleAlphaChange(int dy, float mHeaderHeight) {
-        float percent = (float) Math.abs(dy) / Math.abs(mHeaderHeight) ;
+        float percent = (float) Math.abs(dy) / Math.abs(mHeaderHeight);
         int alpha = (int) (percent * 255);
         toolbar.getBackground().setAlpha(alpha);
     }

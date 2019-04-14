@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -14,8 +13,6 @@ import android.widget.Toast;
 
 import com.example.lenovo.englishstudy.Util.GetRequest_Interface;
 import com.example.lenovo.englishstudy.bean.WordSuggestDetail;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -71,7 +68,6 @@ public class WordSuggestDetailActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String word = intent.getStringExtra("Word");
-        Log.d("1234", word);
         requestWordSuggestDetail(word);
 
     }
@@ -115,8 +111,6 @@ public class WordSuggestDetailActivity extends AppCompatActivity {
         if (wordSuggestDetail.getLongman().getIsGood().equals("false")) {
             tvWordSuggestDetailContent.setText("查无此词！！！");
         } else {
-            Log.d("123", wordSuggestDetail.toString());
-            Log.d("123", wordSuggestDetail.getEc().getWord().get(0).getReturnphrase().getL().getI());
             tvWordSuggestDetailContent.setText("adsf");
             tvWordSuggestDetailContent.setText(wordSuggestDetail.getEc().getWord().get(0).getReturnphrase().getL().getI());
             tvWordSuggestDetailUkphone.setText(new StringBuffer("英" + '/' + wordSuggestDetail.getSimple().getWord().get(0).getUkphone() + '/'));

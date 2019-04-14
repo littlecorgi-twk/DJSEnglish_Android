@@ -141,6 +141,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
 
     //退出时的时间
     private long mExitTime;
+
     //对返回键进行监听
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

@@ -5,20 +5,17 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.example.lenovo.englishstudy.Util.GetRequest_Interface;
 import com.example.lenovo.englishstudy.bean.ImageMessage;
 import com.example.lenovo.englishstudy.userdefined.MyView;
@@ -31,7 +28,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -43,12 +39,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import static org.litepal.LitePalApplication.getContext;
 
-public class MessageActivity extends AppCompatActivity implements MyView.OnRootClickListener{
+public class MessageActivity extends AppCompatActivity implements MyView.OnRootClickListener {
     private LinearLayout oneItem;
     private String user_name;
     private String user_photo;
     private ImageView back_button;
- //   private CircleImageView imageView;
+    //   private CircleImageView imageView;
     private int CROP_REQUEST_CODE = 3;
 
     @Override
@@ -88,7 +84,6 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
     public void onRootClick(View view) {
         switch ((int) view.getTag()) {
             case 1:
-                Log.d("77777","1");
                 if (ContextCompat.checkSelfPermission(MessageActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(MessageActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
                 } else {
@@ -107,7 +102,7 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
         }
     }
 
-    private void choosePhoto(){
+    private void choosePhoto() {
         Intent intentToPickPic = new Intent(Intent.ACTION_PICK, null);
         intentToPickPic.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
         startActivityForResult(intentToPickPic, 1);
@@ -116,18 +111,18 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK) {
-            switch(requestCode) {
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
                 case 1:
-                    if(null != data.getData()) {
-                       Uri localUri = data.getData();
-                       cropPhoto(localUri);
+                    if (null != data.getData()) {
+                        Uri localUri = data.getData();
+                        cropPhoto(localUri);
                     }
                     break;
 
                 case 3:
                     Bundle bundle = data.getExtras();
-                    if(bundle != null) {
+                    if (bundle != null) {
                         Bitmap image = bundle.getParcelable("data");
                         oneItem.removeAllViews();
                         oneItem.addView(new MyView(getContext())
@@ -224,7 +219,7 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         final GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
-        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data") , file);
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("upload_file", file.getName(), requestFile);
         Call<ImageMessage> call = request.upload(body);
         call.enqueue(new Callback<ImageMessage>() {
@@ -234,8 +229,8 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if(imageMessage != null) {
-                            if(imageMessage.getStatus() == 0) {
+                        if (imageMessage != null) {
+                            if (imageMessage.getStatus() == 0) {
                                 Toast.makeText(MessageActivity.this, "上传成功", Toast.LENGTH_SHORT).show();
                             }
                         }

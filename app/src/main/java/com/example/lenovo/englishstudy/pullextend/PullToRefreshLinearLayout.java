@@ -277,7 +277,7 @@ public class PullToRefreshLinearLayout extends LinearLayout {
         } else {
             childHeightSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);
         }
-        child.measure(childWidthSpec,childHeightSpec);
+        child.measure(childWidthSpec, childHeightSpec);
     }
 
     @Override
@@ -304,7 +304,7 @@ public class PullToRefreshLinearLayout extends LinearLayout {
                     return false;
                 }
             case MotionEvent.ACTION_UP:
-            case  MotionEvent.ACTION_CANCEL:
+            case MotionEvent.ACTION_CANCEL:
                 break;
         }
         return false;
@@ -366,6 +366,7 @@ public class PullToRefreshLinearLayout extends LinearLayout {
         }
         return super.onTouchEvent(event);
     }
+
     /**
      * 是否应该到了父View,即PullToRefreshLinearLayout滑动
      *
@@ -526,7 +527,6 @@ public class PullToRefreshLinearLayout extends LinearLayout {
         invalidate();
         return params.topMargin;
     }
-
 
 
     /**
