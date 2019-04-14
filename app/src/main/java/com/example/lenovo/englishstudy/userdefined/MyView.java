@@ -2,11 +2,7 @@ package com.example.lenovo.englishstudy.userdefined;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.Icon;
-import android.net.Uri;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +14,6 @@ import com.bumptech.glide.Glide;
 import com.example.lenovo.englishstudy.R;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
-import static org.litepal.LitePalApplication.getContext;
 
 public class MyView extends LinearLayout {
     //各各控件
@@ -56,11 +50,11 @@ public class MyView extends LinearLayout {
 
     public MyView init(String textContent, String rightText) {
         init();
-        setLeftIconSize(0,0);
+        setLeftIconSize(0, 0);
         setTextContentSize(20);
         setTextContent(textContent);
         setRightText(rightText);
-        setRightIconSize(0,0);
+        setRightIconSize(0, 0);
         showArrow(true);
         return this;
 
@@ -68,7 +62,7 @@ public class MyView extends LinearLayout {
 
     public MyView init2(String textContent, String rightIcon) {
         init();
-        setLeftIconSize(0,0);
+        setLeftIconSize(0, 0);
         setTextContentSize(20);
         setTextContent(textContent);
         setRightIcon(rightIcon);
@@ -79,7 +73,7 @@ public class MyView extends LinearLayout {
 
     public MyView init(String textContent, Bitmap rightIcon) {
         init();
-        setLeftIconSize(0,0);
+        setLeftIconSize(0, 0);
         setTextContentSize(20);
         setTextContent(textContent);
         setRightIcon(rightIcon);
@@ -93,7 +87,7 @@ public class MyView extends LinearLayout {
         setLeftIcon(iconRes);
         setLeftIconSize(25, 25);
         setTextContent(textContent);
-        setRightIconSize(0,0);
+        setRightIconSize(0, 0);
         showArrow(true);
         return this;
 
@@ -260,13 +254,11 @@ public class MyView extends LinearLayout {
      * @param iconRes
      */
     public MyView setRightIcon(String iconRes) {
-        Log.d("55555", iconRes.toString());
         Glide.with(getContext()).load(iconRes).into(rightIcon);
         return this;
     }
 
     public MyView setRightIcon(Bitmap iconRes) {
-//        Log.d("55555", iconRes.toString());
         rightIcon.setImageBitmap(iconRes);
         return this;
     }
@@ -277,12 +269,14 @@ public class MyView extends LinearLayout {
     public static interface OnRootClickListener {
         void onRootClick(View view);
     }
+
     /**
      * 右边箭头的点击事件
      */
     public static interface OnArrowClickListener {
         void onArrowClick(View view);
     }
+
     public MyView setOnRootClickListener(final OnRootClickListener onRootClickListener, final int tag) {
         llRoot.setOnClickListener(new OnClickListener() {
             @Override
@@ -293,6 +287,7 @@ public class MyView extends LinearLayout {
         });
         return this;
     }
+
     public MyView setOnArrowClickListener(final OnArrowClickListener onArrowClickListener, final int tag) {
 
         ivRightIcon.setOnClickListener(new OnClickListener() {

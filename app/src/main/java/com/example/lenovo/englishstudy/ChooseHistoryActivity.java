@@ -2,12 +2,10 @@ package com.example.lenovo.englishstudy;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -38,7 +36,6 @@ public class ChooseHistoryActivity extends AppCompatActivity {
     private TextView sentence, translate;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,8 +45,8 @@ public class ChooseHistoryActivity extends AppCompatActivity {
         initData();
         initChildViews();
         setSupportActionBar(toolbar);
-        ActionBar actionBar =  getSupportActionBar();
-        if(actionBar != null) {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
         }
@@ -64,16 +61,14 @@ public class ChooseHistoryActivity extends AppCompatActivity {
         });
 
 
-
     }
 
     public void initData() {
         sentenceList = DataSupport.findAll(Sentence.class);
-        if(sentenceList.size() == 0) {
+        if (sentenceList.size() == 0) {
             delete.setVisibility(View.INVISIBLE);
         }
-        for (Sentence sentence: sentenceList) {
-            Log.d("123",sentence.getSentence());
+        for (Sentence sentence : sentenceList) {
             dataList.add(sentence.getSentence());
         }
         str = dataList.toArray(new String[dataList.size()]);
@@ -116,15 +111,15 @@ public class ChooseHistoryActivity extends AppCompatActivity {
         }
     }
 
-    public void showCenterPopupWindow (TextView textView) {
+    public void showCenterPopupWindow(TextView textView) {
         View contentView = LayoutInflater.from(ChooseHistoryActivity.this).inflate(R.layout.popupwindow, null);
-        PopupWindow popupWindow = new PopupWindow(contentView, 950, LinearLayout.LayoutParams.WRAP_CONTENT,true);
+        PopupWindow popupWindow = new PopupWindow(contentView, 950, LinearLayout.LayoutParams.WRAP_CONTENT, true);
         sentence = contentView.findViewById(R.id.sentence);
         translate = contentView.findViewById(R.id.translate);
         //requestWordTranslate(textView.getText().toString());
 
-        for (Sentence sentence: sentenceList) {
-            if((sentence.getSentence()).equals(textView.getText())) {
+        for (Sentence sentence : sentenceList) {
+            if ((sentence.getSentence()).equals(textView.getText())) {
                 translate.setText(sentence.getSentence_translate());
             }
         }

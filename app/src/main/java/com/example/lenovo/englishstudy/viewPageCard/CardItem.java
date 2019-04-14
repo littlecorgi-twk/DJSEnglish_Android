@@ -5,7 +5,7 @@ package com.example.lenovo.englishstudy.viewPageCard;
  * @Date 2019-01-24 18:16
  * @email a1203991686@126.com
  */
-public class CardItem  {
+public class CardItem {
     private int mTextResource;
     private int mTitleResource;
 

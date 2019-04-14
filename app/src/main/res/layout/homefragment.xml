@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    
+
     <com.example.lenovo.englishstudy.pullextend.PullToRefreshLinearLayout
         android:id="@+id/lin_refresh"
         android:layout_width="match_parent"
@@ -17,8 +17,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <android.support.v4.view.ViewPager
                     android:id="@+id/vp_WordCard"
@@ -27,11 +27,11 @@
                     android:layout_gravity="bottom"
                     android:clipToPadding="false"
                     android:overScrollMode="never"
-                    android:paddingBottom="30dp"
-                    android:paddingEnd="@dimen/card_padding"
                     android:paddingStart="@dimen/card_padding"
                     android:paddingLeft="@dimen/card_padding"
-                    android:paddingRight="@dimen/card_padding"/>
+                    android:paddingEnd="@dimen/card_padding"
+                    android:paddingRight="@dimen/card_padding"
+                    android:paddingBottom="30dp" />
 
             </LinearLayout>
         </com.example.lenovo.englishstudy.pullextend.VerticalScrollView>

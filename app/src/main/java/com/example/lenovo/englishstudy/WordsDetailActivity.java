@@ -30,11 +30,11 @@ public class WordsDetailActivity extends AppCompatActivity {
     private TextView mMeaning;
 
     private String mNames[] = {
-            "welcome","android","TextView",
-            "apple","jamy","kobe bryant",
-            "jordan","layout","viewgroup",
-            "margin","padding","text",
-            "name","type","search","logcat"
+            "welcome", "android", "TextView",
+            "apple", "jamy", "kobe bryant",
+            "jordan", "layout", "viewgroup",
+            "margin", "padding", "text",
+            "name", "type", "search", "logcat"
     };
 
     @Override
@@ -63,14 +63,14 @@ public class WordsDetailActivity extends AppCompatActivity {
         mMeaning = view.findViewById(R.id.tv_meaning);
     }
 
-    void initChildViews(){
+    void initChildViews() {
         FlowLayout mFlowLayout = findViewById(R.id.fl_wordDetail);
         ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         lp.leftMargin = 5;
         lp.rightMargin = 5;
         lp.topMargin = 5;
         lp.bottomMargin = 5;
-        for(int i = 0; i < mNames.length; i ++){
+        for (int i = 0; i < mNames.length; i++) {
             final TextView mTextView = new TextView(this);
             mTextView.setText(mNames[i]);
             mTextView.setTextColor(Color.BLACK);
@@ -99,11 +99,11 @@ public class WordsDetailActivity extends AppCompatActivity {
         call.enqueue(new Callback<WordMeanig>() {
             @Override
             public void onResponse(retrofit2.Call<WordMeanig> call, final Response<WordMeanig> response) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                showWordMeaning(response.body());
-                            }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showWordMeaning(response.body());
+                    }
                 });
             }
 
@@ -167,7 +167,7 @@ public class WordsDetailActivity extends AppCompatActivity {
             String phoneticSymbol = "/" + wordMeanig.getSimple().getWord().get(0).getUkphone() + "/";
             mPhoneticSymbol.setText(phoneticSymbol);
             String meaning = "";
-            for (WordMeanig.EcBean.WordBean.TrsBean trsBean : wordMeanig.getEc().getWord().get(0).getTrs() ) {
+            for (WordMeanig.EcBean.WordBean.TrsBean trsBean : wordMeanig.getEc().getWord().get(0).getTrs()) {
                 meaning = meaning.concat(trsBean.getTr().get(0).getL().getI().get(0)).concat("\n");
             }
             mMeaning.setText(meaning);
