@@ -26,7 +26,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class WordSuggestDetailActivity extends AppCompatActivity {
 
-
     @BindView(R.id.tv_wordSuggestDetail_content)
     TextView tvWordSuggestDetailContent;
     @BindView(R.id.tv_wordSuggestDetail_ukphone)
@@ -59,6 +58,12 @@ public class WordSuggestDetailActivity extends AppCompatActivity {
     TextView tvWordSuggestDetailExamType;
     @BindView(R.id.parts_layout)
     LinearLayout partsLayout;
+    @BindView(R.id.tv_wordSuggestDetail_blng_sents)
+    TextView tvWordSuggestDetailBlngSents;
+    @BindView(R.id.tv_wordSuggestDetail_auth_sents)
+    TextView tvWordSuggestDetailAuthSents;
+    @BindView(R.id.tv_wordSuggestDetail_media_sents)
+    TextView tvWordSuggestDetailMediaSents;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +74,6 @@ public class WordSuggestDetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String word = intent.getStringExtra("Word");
         requestWordSuggestDetail(word);
-
     }
 
     public void requestWordSuggestDetail(final String word) {
@@ -85,30 +89,20 @@ public class WordSuggestDetailActivity extends AppCompatActivity {
         call.enqueue(new Callback<WordSuggestDetail>() {
             @Override
             public void onResponse(Call<WordSuggestDetail> call, final Response<WordSuggestDetail> response) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        showWordSuggestDetail(response.body());
-                    }
-                });
+                showWordSuggestDetail(response.body());
             }
 
             @Override
             public void onFailure(Call<WordSuggestDetail> call, Throwable t) {
                 t.printStackTrace();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(WordSuggestDetailActivity.this, "获取单词联想失败1", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                Toast.makeText(WordSuggestDetailActivity.this, "获取单词联想失败1", Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
     public void showWordSuggestDetail(WordSuggestDetail wordSuggestDetail) {
-        if (wordSuggestDetail.getLongman().getIsGood().equals("false")) {
+        if (wordSuggestDetail.getEc().getWord().isEmpty()) {
             tvWordSuggestDetailContent.setText("查无此词！！！");
         } else {
             tvWordSuggestDetailContent.setText("adsf");
@@ -122,13 +116,31 @@ public class WordSuggestDetailActivity extends AppCompatActivity {
             }
             wordMeaningContent = wordMeaningContent.substring(0, wordMeaningContent.length() - 2);
             tvWordSuggestDetailMeaningList.setText(wordMeaningContent);
-            tvWordSuggestDetailBlngSentsPartSentenceEng.setText(Html.fromHtml(wordSuggestDetail.getBlng_sents_part().getSentencepair().get(0).getSentenceeng()));
-            tvWordSuggestDetailBlngSentsPartSentenceTranslation.setText(wordSuggestDetail.getBlng_sents_part().getSentencepair().get(0).getSentencetranslation());
-            tvWordSuggestDetailAuthSentsPartForeign.setText(Html.fromHtml(wordSuggestDetail.getAuth_sents_part().getSent().get(0).getForeign()));
-            tvWordSuggestDetailAuthSentsPartSource.setText(Html.fromHtml(wordSuggestDetail.getAuth_sents_part().getSent().get(0).getSource()));
-            tvWordSuggestDetailMediaSentsPartEng.setText(Html.fromHtml(wordSuggestDetail.getMedia_sents_part().getSent().get(0).getEng()));
-            tvWordSuggestDetailMediaSentsPartSource.setText(wordSuggestDetail.getMedia_sents_part().getSent().get(0).getSnippets().getSnippet().get(0).getSource() +
-                    wordSuggestDetail.getMedia_sents_part().getSent().get(0).getSnippets().getSnippet().get(0).getName());
+            if (!wordSuggestDetail.getBlng_sents_part().getSentencepair().isEmpty()) {
+                tvWordSuggestDetailBlngSentsPartSentenceEng.setText(Html.fromHtml(wordSuggestDetail.getBlng_sents_part().getSentencepair().get(0).getSentenceeng()));
+                tvWordSuggestDetailBlngSentsPartSentenceTranslation.setText(wordSuggestDetail.getBlng_sents_part().getSentencepair().get(0).getSentencetranslation());
+            } else {
+                tvWordSuggestDetailBlngSentsPartSentenceEng.setVisibility(View.GONE);
+                tvWordSuggestDetailBlngSentsPartSentenceTranslation.setVisibility(View.GONE);
+                tvWordSuggestDetailBlngSents.setVisibility(View.GONE);
+            }
+            if (!wordSuggestDetail.getAuth_sents_part().getSent().isEmpty()) {
+                tvWordSuggestDetailAuthSentsPartForeign.setText(Html.fromHtml(wordSuggestDetail.getAuth_sents_part().getSent().get(0).getForeign()));
+                tvWordSuggestDetailAuthSentsPartSource.setText(Html.fromHtml(wordSuggestDetail.getAuth_sents_part().getSent().get(0).getSource()));
+            } else {
+                tvWordSuggestDetailAuthSentsPartForeign.setVisibility(View.GONE);
+                tvWordSuggestDetailAuthSentsPartSource.setVisibility(View.GONE);
+                tvWordSuggestDetailAuthSents.setVisibility(View.GONE);
+            }
+            if (!wordSuggestDetail.getMedia_sents_part().getSent().isEmpty()) {
+                tvWordSuggestDetailMediaSentsPartEng.setText(Html.fromHtml(wordSuggestDetail.getMedia_sents_part().getSent().get(0).getEng()));
+                tvWordSuggestDetailMediaSentsPartSource.setText(wordSuggestDetail.getMedia_sents_part().getSent().get(0).getSnippets().getSnippet().get(0).getSource() +
+                        wordSuggestDetail.getMedia_sents_part().getSent().get(0).getSnippets().getSnippet().get(0).getName());
+            } else {
+                tvWordSuggestDetailMediaSentsPartEng.setVisibility(View.GONE);
+                tvWordSuggestDetailMediaSentsPartSource.setVisibility(View.GONE);
+                tvWordSuggestDetailMediaSents.setVisibility(View.GONE);
+            }
             String wordDetailWebTrans = "";
             wordDetailWebTrans = "";
             for (WordSuggestDetail.WebTransBean.WebtranslationBean.TransBean transBean : wordSuggestDetail.getWeb_trans().getWebtranslation().get(0).getTrans()) {
@@ -136,27 +148,32 @@ public class WordSuggestDetailActivity extends AppCompatActivity {
                 wordDetailWebTrans += ';';
             }
             tvWordDetailWebTran.setText(wordDetailWebTrans);
-            String examType = "";
-            List<String> examTypeString = wordSuggestDetail.getEc().getExam_type();
-            for (String a : examTypeString) {
-                examType += a;
-                examType += '/';
+            if (!wordSuggestDetail.getEc().getExam_type().isEmpty()) {
+                String examType = "";
+                List<String> examTypeString = wordSuggestDetail.getEc().getExam_type();
+                for (String a : examTypeString) {
+                    examType += a;
+                    examType += '/';
+                }
+                examType = examType.substring(0, examType.length() - 1);
+                tvWordSuggestDetailExamType.setText(examType);
+            } else {
+                tvWordSuggestDetailExamType.setVisibility(View.GONE);
             }
-            examType = examType.substring(0, examType.length() - 1);
-            tvWordSuggestDetailExamType.setText(examType);
+
             partsLayout.removeAllViews();
             int tvCounter = 0;
             for (WordSuggestDetail.WebTransBean.WebtranslationBean webtranslationBean : wordSuggestDetail.getWeb_trans().getWebtranslation()) {
                 View view = LayoutInflater.from(this).inflate(R.layout.parts_item, partsLayout, false);
                 TextView tvPartsItemCounter = view.findViewById(R.id.tv_parts_item_counter);
-                Button buttonPartsItemContent = view.findViewById(R.id.button_parts_item_content);
+                TextView tvPartsItemContent = view.findViewById(R.id.tv_parts_item_content);
                 TextView tvPartsItemMeaning = view.findViewById(R.id.tv_parts_item_meaning);
                 tvCounter++;
                 StringBuilder tvCounterString = new StringBuilder();
                 tvCounterString.insert(tvCounterString.length(), tvCounter);
                 tvCounterString.insert(tvCounterString.length(), '.');
                 tvPartsItemCounter.setText(tvCounterString);
-                buttonPartsItemContent.setText(webtranslationBean.getKey());
+                tvPartsItemContent.setText(webtranslationBean.getKey());
                 String webTrans = "";
                 for (WordSuggestDetail.WebTransBean.WebtranslationBean.TransBean transBean : webtranslationBean.getTrans()) {
                     webTrans += transBean.getValue();

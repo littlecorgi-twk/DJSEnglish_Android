@@ -27,4 +27,10 @@
         android:textColor="#5B706A6A"
         android:textSize="12sp" />
 
+    <Button
+        android:id="@+id/button_word_suggest_listview_clear_history"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@drawable/ic_cancel" />
+
 </LinearLayout>

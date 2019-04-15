@@ -2,6 +2,7 @@ package com.example.lenovo.englishstudy.bean;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,8 +34,12 @@ public class WordSuggestDetail {
      * wikipedia_digest : {"source":{"name":"维基百科","url":"http://en.wikipedia.org/wiki/Account"},"summarys":[{"key":"Account","summary":"Account may refer to:Accounts is a British term for financial statements."}]}
      */
 
-    private AuthSentsPartBean auth_sents_part;
-    private BlngSentsPartBean blng_sents_part;
+    List<AuthSentsPartBean.SentBean> sentBeanList = new ArrayList<>();
+
+    private AuthSentsPartBean auth_sents_part = new AuthSentsPartBean("false", 1, sentBeanList);
+
+    List<BlngSentsPartBean.SentencepairBean> sentencepairBeanList = new ArrayList<>();
+    private BlngSentsPartBean blng_sents_part = new BlngSentsPartBean(sentencepairBeanList);
     private CollinsBean collins;
     private EcBean ec;
     private EeBean ee;
@@ -42,8 +47,10 @@ public class WordSuggestDetail {
     private String input;
     private String lang;
     private String le;
-    private LongmanBean longman;
-    private MediaSentsPartBean media_sents_part;
+    private LongmanBean longman = new LongmanBean("false");
+
+    List<MediaSentsPartBean.SentBeanXX> sentBeanXXList = new ArrayList<>();
+    private MediaSentsPartBean media_sents_part = new MediaSentsPartBean(sentBeanXXList);
     private MetaBean meta;
     private PhrsBeanX phrs;
     private RelWordBean rel_word;
@@ -206,15 +213,22 @@ public class WordSuggestDetail {
     }
 
     public static class AuthSentsPartBean {
+        public AuthSentsPartBean(String more, int sentencecount, List<SentBean> sent) {
+            this.more = more;
+            this.sentencecount = sentencecount;
+            this.sent = sent;
+        }
+
         /**
          * more : auth_sents
          * sent : [{"foreign":"This purchase will <b>account<\/b> for 39.5% of the outstanding shares of the brokerage following the issuance. ","score":0.9831430912017822,"source":"FORBES: <i>JP Morgan Sweetens Deal That Is Still Sour For Bear Investors<\/i>","speech":"This+purchase+will+account+for+39.5%25+of+the+outstanding+shares+of+the+brokerage+following+the+issuance.+","speech-size":"30kb","url":"http://www.forbes.com/2008/03/24/bear-stearns-jpmorgan-markets-equity-cx_po_0324markets06.html"},{"foreign":"Spouse heirs, of course, can still claim the <b>account<\/b> as their own and name new heirs. ","score":0.9831407070159912,"source":"FORBES: <i>IRA Tips and Traps<\/i>","speech":"Spouse+heirs%2C+of+course%2C+can+still+claim+the+account+as+their+own+and+name+new+heirs.+","speech-size":"25kb","url":"http://www.forbes.com/forbes/2001/0611/216.html"},{"foreign":"But if you die, the <b>account<\/b> bypasses your estate and belongs to the joint holder. ","score":0.9831357002258301,"source":"FORBES: <i>Estate Repair<\/i>","speech":"But+if+you+die%2C+the+account+bypasses+your+estate+and+belongs+to+the+joint+holder.+","speech-size":"24kb","url":"http://www.forbes.com/forbes/2008/1208/113_print.html"}]
          * sentence-count : 4
          */
 
+
         private String more;
         @SerializedName("sentence-count")
-        private int sentencecount;
+        private int sentencecount = 0;
         private List<SentBean> sent;
 
         public String getMore() {
@@ -242,6 +256,15 @@ public class WordSuggestDetail {
         }
 
         public static class SentBean {
+            public SentBean(String foreign, double score, String source, String speech, String speechsize, String url) {
+                this.foreign = foreign;
+                this.score = score;
+                this.source = source;
+                this.speech = speech;
+                this.speechsize = speechsize;
+                this.url = url;
+            }
+
             /**
              * foreign : This purchase will <b>account</b> for 39.5% of the outstanding shares of the brokerage following the issuance.
              * score : 0.9831430912017822
@@ -251,7 +274,7 @@ public class WordSuggestDetail {
              * url : http://www.forbes.com/2008/03/24/bear-stearns-jpmorgan-markets-equity-cx_po_0324markets06.html
              */
 
-            private String foreign;
+            private String foreign = "null";
             private double score;
             private String source;
             private String speech;
@@ -310,11 +333,16 @@ public class WordSuggestDetail {
     }
 
     public static class BlngSentsPartBean {
+        public BlngSentsPartBean(List<SentencepairBean> sentencepair) {
+            this.sentencepair = sentencepair;
+        }
+
         /**
          * more : blng_sents
          * sentence-count : 6
          * sentence-pair : [{"aligned-words":{"src":{"chars":[{"@e":"7","@id":"0","@s":"1","aligns":{"sc":[{"@id":"0"}],"tc":[{"@id":"3"}]}},{"@e":"11","@id":"1","@s":"8","aligns":{"sc":[{"@id":"1"}],"tc":[{"@id":"0"}]}},{"@e":"19","@id":"2","@s":"12","aligns":{"sc":[{"@id":"2"}],"tc":[{"@id":"4"}]},"q":[{"@e":"19","@s":"12"}]},{"@e":"23","@id":"3","@s":"20","aligns":{"sc":[{"@id":"3"}],"tc":[{"@id":"1"}]}},{"@e":"28","@id":"4","@s":"24","aligns":{"sc":[{"@id":"4"}],"tc":[{"@id":"2"}]}}]},"tran":{"chars":[{"@e":"2","@id":"0","@s":"1","aligns":{"sc":[{"@id":"1"}],"tc":[{"@id":"0"}]}},{"@e":"3","@id":"1","@s":"2","aligns":{"sc":[{"@id":"3"}],"tc":[{"@id":"1"}]}},{"@e":"5","@id":"2","@s":"3","aligns":{"sc":[{"@id":"4"}],"tc":[{"@id":"2"}]}},{"@e":"8","@id":"3","@s":"6","aligns":{"sc":[{"@id":"0"}],"tc":[{"@id":"3"}]}},{"@e":"10","@id":"4","@s":"8","aligns":{"sc":[{"@id":"2"}],"tc":[{"@id":"4"}]}}]}},"sentence":"How do you account for this.","sentence-eng":"How do you <b>account<\/b> for this.","sentence-speech":"How+do+you+account+for+this.&le=eng","sentence-translation":"你对这件事怎么解释?。","speech-size":"8kb","url":"http://www.youdict.com/liju/w/account"},{"aligned-words":{"src":{"chars":[{"@e":"4","@id":"0","@s":"1","aligns":{"sc":[{"@id":"0"}],"tc":[{"@id":"0"}]}},{"@e":"8","@id":"1","@s":"6","aligns":{"sc":[{"@id":"1"}],"tc":[{"@id":"1"}]}},{"@e":"16","@id":"2","@s":"9","aligns":{"sc":[{"@id":"2"}],"tc":[{"@id":"2"}]}},{"@e":"24","@id":"3","@s":"17","aligns":{"sc":[{"@id":"3"}],"tc":[{"@id":"4"}]},"q":[{"@e":"24","@s":"17"}]},{"@e":"34","@id":"4","@s":"25","aligns":{"sc":[{"@id":"4"}],"tc":[{"@id":"3"}]}}]},"tran":{"chars":[{"@e":"3","@id":"0","@s":"1","aligns":{"sc":[{"@id":"0"}],"tc":[{"@id":"0"}]}},{"@e":"6","@id":"1","@s":"4","aligns":{"sc":[{"@id":"1"}],"tc":[{"@id":"1"}]}},{"@e":"7","@id":"2","@s":"6","aligns":{"sc":[{"@id":"2"}],"tc":[{"@id":"2"}]}},{"@e":"9","@id":"3","@s":"7","aligns":{"sc":[{"@id":"4"}],"tc":[{"@id":"3"}]}},{"@e":"12","@id":"4","@s":"10","aligns":{"sc":[{"@id":"3"}],"tc":[{"@id":"4"}]}}]}},"sentence":"Yes. We have an account like that.","sentence-eng":"Yes. We have an <b>account<\/b> like that.","sentence-speech":"Yes.+We+have+an+account+like+that.&le=eng","sentence-translation":"是的，我们有这样的帐户。","speech-size":"9kb","url":"http://dec3.jlu.edu.cn/webcourse/t000033/English2/unit16/dia5_trans.html"},{"aligned-words":{"src":{"chars":[{"@e":"7","@id":"0","@s":"1","aligns":{"sc":[{"@id":"0"}],"tc":[{"@id":"1"}]}},{"@e":"11","@id":"1","@s":"8","aligns":{"sc":[{"@id":"1"}],"tc":[{"@id":"0"}]}},{"@e":"19","@id":"2","@s":"12","aligns":{"sc":[{"@id":"2"}],"tc":[{"@id":"5"}]},"q":[{"@e":"19","@s":"12"}]},{"@e":"28","@id":"3","@s":"24","aligns":{"sc":[{"@id":"3"}],"tc":[{"@id":"6"}]}},{"@e":"31","@id":"4","@s":"29","aligns":{"sc":[{"@id":"4"}],"tc":[{"@id":"2"}]}},{"@e":"36","@id":"5","@s":"32","aligns":{"sc":[{"@id":"5"}],"tc":[{"@id":"3"}]}},{"@e":"45","@id":"6","@s":"37","aligns":{"sc":[{"@id":"6"}],"tc":[{"@id":"4"}]}}]},"tran":{"chars":[{"@e":"2","@id":"0","@s":"1","aligns":{"sc":[{"@id":"1"}],"tc":[{"@id":"0"}]}},{"@e":"4","@id":"1","@s":"2","aligns":{"sc":[{"@id":"0"}],"tc":[{"@id":"1"}]}},{"@e":"5","@id":"2","@s":"4","aligns":{"sc":[{"@id":"4"}],"tc":[{"@id":"2"}]}},{"@e":"6","@id":"3","@s":"5","aligns":{"sc":[{"@id":"5"}],"tc":[{"@id":"3"}]}},{"@e":"9","@id":"4","@s":"7","aligns":{"sc":[{"@id":"6"}],"tc":[{"@id":"4"}]}},{"@e":"12","@id":"5","@s":"10","aligns":{"sc":[{"@id":"2"}],"tc":[{"@id":"5"}]}},{"@e":"15","@id":"6","@s":"12","aligns":{"sc":[{"@id":"3"}],"tc":[{"@id":"6"}]}}]}},"sentence":"How do you account for that in your research?","sentence-eng":"How do you <b>account<\/b> for that in your research?","sentence-speech":"How+do+you+account+for+that+in+your+research%3F&le=eng","sentence-translation":"你怎么在你的研究中解释这一点呢？","speech-size":"13kb","url":"http://www.youdict.com/liju/w/account"}]
          */
+
 
         private String more;
         @SerializedName("sentence-count")
@@ -957,6 +985,11 @@ public class WordSuggestDetail {
     }
 
     public static class EcBean {
+
+        public EcBean(List<String> exam_type) {
+            this.exam_type = exam_type;
+        }
+
         /**
          * exam_type : ["TOEFL","高中","IELTS","CET6","CET4","商务英语","考研"]
          * source : {"name":"有道词典","url":"http://dict.youdao.com"}
@@ -964,7 +997,7 @@ public class WordSuggestDetail {
          */
 
         private SourceBean source;
-        private List<String> exam_type;
+        private List<String> exam_type = new ArrayList<>();
         private List<WordBean> word;
 
         public SourceBean getSource() {
@@ -1851,6 +1884,11 @@ public class WordSuggestDetail {
     }
 
     public static class LongmanBean {
+
+        public LongmanBean(String isGood) {
+            this.isGood = isGood;
+        }
+
         /**
          * isGood : true
          * wordList : [{"Entry":{"Head":[{"FREQ":["S1","W1"],"GRAM":["C"],"HOMNUM":["1"],"HWD":["account"],"HYPHENATION":["ac\u2027count"],"POS":["n"],"PronCodes":[{"PRON":["əˈkaʊnt"],"PRONKK":["əˋka u nt"]}],"VIDEOCAL":["http://ydschool-online.nos.netease.com/account_v0205.mp3"]}],"Sense":[{"DEF":["a written or spoken description that says what happens in an event or process"],"EXAMPLE":["Chomsky\u2019s account of how children learn their first language"],"EXAMPLETRAN":["乔姆斯基关于儿童如何学习第一语言的描述"],"GramExa":[{"EXAMPLE":["He was too shocked to <i>give an account<\/i> of what had happened."],"EXAMPLETRAN":["他因受惊过度而无法描述所发生的事情。"],"PROPFORMPREP":["of"]},{"COLLOTRAN":["一五一十的叙述"],"EXAMPLE":["a blow-by-blow account of how England lost to Portugal"],"EXAMPLETRAN":["英格兰队如何负于葡萄牙队的详细报道"],"GLOSS":["a description of all the details of an event in the order that they happened"],"PROPFORM":["blow-by-blow account"]},{"COLLOTRAN":["目击者的/第一手的描述"],"EXAMPLE":["Eye-witness accounts told of the unprovoked shooting of civilians.","This gives a first-hand account of the war."],"EXAMPLETRAN":["目击者讲到平民无故被枪击。","这是关于这场战争的第一手报道。"],"GLOSS":["a description of events by someone who saw them"],"PROPFORM":["eye-witness/first-hand account"]}],"SIGNPOST":["description"],"SIGNTRAN":["描述"],"TRAN":["叙述，描写，报道"]},{"Crossref":[{"Crossrefto":[{"REFHWD":["bank account"]},{"REFHWD":["checking account"]},{"REFHWD":["current account"]},{"REFHWD":["deposit account"]},{"REFHWD":["profit and loss account"]},{"REFHWD":["savings account"]}]}],"DEF":["an arrangement in which a bank keeps your money safe so that you can pay more in or take money out"],"EXAMPLE":["My salary is paid into my bank account.","I\u2019ve <i>opened an account<\/i> with Barclay\u2019s Bank.","My husband and I have a <i>joint account<\/i> (= <em> one that is shared between two people <\/em> ) ."],"EXAMPLETRAN":["我的工资直接存入我的银行账户。","我在巴克莱银行开了一个账户。","我和丈夫有个联名账户。"],"SIGNPOST":["at a bank"],"SIGNTRAN":["在银行"],"TRAN":["账户"],"Variant":[{"ABBR":["a/c","acct."],"LINKWORD":["written abbreviation <i>书面缩写为<\/i>","or"]}]},{"DEF":["to consider or include particular facts or details when making a decision or judgment about something"],"EXAMPLE":["These figures do not take account of changes in the rate of inflation."],"EXAMPLETRAN":["这些数字没有把通货膨胀率的变化考虑进去。"],"LEXUNIT":["take account of sth"],"TRAN":["考虑到某事，把某事考虑进去"],"Variant":[{"LEXVAR":["take sth into account"],"LINKWORD":["also <i>又作<\/i>"]}]},{"DEF":["because of something else, especially a problem or difficulty"],"EXAMPLE":["She was told to wear flat shoes, on account of her back problem."],"EXAMPLETRAN":["因为背部有问题，她被建议穿平底鞋。"],"LEXUNIT":["on account of sth"],"TRAN":["因为某事，由于某事"]},{"LEXUNIT":["accounts"],"Subsense":[{"DEF":["an exact record of the money that a company has received and the money it has spent"],"EXAMPLE":["The accounts for last year showed a profit of $2 million."],"EXAMPLETRAN":["去年的账目显示利润为200万美元。"],"GRAM":["plural"],"GRAMTRAN":["复数"],"TRAN":["账目"]},{"DEF":["a department in a company that is responsible for keeping records of the amount of money spent and received"],"EXAMPLE":["Eileen works in accounts."],"EXAMPLETRAN":["艾琳在财务部工作。"],"GRAM":["U"],"TRAN":["〔公司的〕财务部"]}]},{"DEF":["if you buy goods on account, you take them away with you and pay for them later"],"LEXUNIT":["on account"],"TRAN":["赊账"]},{"DEF":["an arrangement that you have with a shop or company, which allows you to buy goods or use a service now and pay for them later"],"EXAMPLE":["Can you charge this to my account please?","an unlimited-use Internet account"],"EXAMPLETRAN":["你能把这记在我的（赊欠）账上吗？","一个能无限使用的因特网后付费账户"],"SIGNPOST":["with a shop/company"],"SIGNTRAN":["商店/公司"],"SYN":["credit account"],"TRAN":["〔可先使用后付款的〕赊欠账户"]},{"DEF":["a statement that shows how much money you owe for things you have bought from a shop"],"GramExa":[{"COLLOTRAN":["付账/结账"],"EXAMPLE":["James left the restaurant, settling his account by credit card."],"EXAMPLETRAN":["詹姆斯用信用卡结完账离开餐厅。"],"GLOSS":["pay what you owe"],"PROPFORM":["pay/settle your account"]}],"SIGNPOST":["bill"],"SIGNTRAN":["账单"],"SYN":["bill"],"TRAN":["账单"]},{"DEF":["an arrangement to sell goods and services to another company over a period of time"],"EXAMPLE":["Our sales manager has secured several big accounts recently."],"EXAMPLETRAN":["我们的销售部经理最近拉到了好几笔大生意。"],"SIGNPOST":["arrangement to sell goods"],"SIGNTRAN":["售货安排"],"TRAN":["〔一段时间内的〕交易安排"]},{"DEF":["according to what a lot of people say"],"EXAMPLE":["It has, from all accounts, been a successful marriage."],"EXAMPLETRAN":["谁都说这是一桩美满的婚姻。"],"LEXUNIT":["by/from all accounts"],"TRAN":["根据各方面所说"]},{"DEF":["if you do something on someone\u2019s account, you do it because you think they want you to"],"EXAMPLE":["Please don\u2019t change your plans on my account."],"EXAMPLETRAN":["请不要为了我而改变你的计划。"],"LEXUNIT":["on sb\u2019s account"],"TRAN":["为了某人的缘故"]},{"DEF":["by yourself or for yourself"],"EXAMPLE":["Carrie decided to do a little research on her own account."],"EXAMPLETRAN":["卡丽决定自己做点研究。"],"LEXUNIT":["on your own account"],"TRAN":["靠自己；为自己"]},{"DEF":["used when saying that someone must not, for any reason, do something"],"EXAMPLE":["On no account must you disturb me."],"EXAMPLETRAN":["你千万不要打扰我。"],"LEXUNIT":["on no account/not on any account"],"TRAN":["决不，绝对不"]},{"DEF":["according to what you have said, especially when you have admitted doing something wrong"],"EXAMPLE":["Bentley was, by his own account, over-sensitive to criticism."],"EXAMPLETRAN":["据本特利自己说，他对批评过于敏感。"],"LEXUNIT":["by sb\u2019s own account"],"TRAN":["据某人自己所说"]},{"DEF":["concerning a particular situation"],"EXAMPLE":["There needn\u2019t be any more worries on that account."],"EXAMPLETRAN":["没有必要再为那事担心了。"],"LEXUNIT":["on that account/on this account"],"TRAN":["由于那个/这个缘故"]},{"DEF":["to do something or perform very well or very badly"],"EXAMPLE":["Kevin gave a good account of himself in today\u2019s game."],"EXAMPLETRAN":["凯文在今天的比赛中表现出色。"],"LEXUNIT":["give a good/poor account of yourself"],"TRAN":["表现好/表现差"]},{"DEF":["to force someone who is responsible for a mistake or a crime to explain publicly why they did it and punish them for it if necessary"],"EXAMPLE":["The people responsible for the accident have never been brought to account."],"EXAMPLETRAN":["这起事故的责任人一直没有被追究责任。"],"LABELTRAN":["【正式】"],"LEXUNIT":["bring/call sb to account"],"REGISTERLAB":["formal"],"TRAN":["追究某人的责任"]},{"DEF":["to use something for a good purpose"],"EXAMPLE":["Perhaps she could put some of her talents to good account by helping us."],"EXAMPLETRAN":["通过帮助我们，也许她可以把自己的某些才能充分发挥出来。"],"LABELTRAN":["【正式】"],"LEXUNIT":["put/turn sth to good account"],"REGISTERLAB":["formal"],"TRAN":["善用某物，充分利用某物"]},{"DEF":["not important"],"EXAMPLE":["As she grew up, her father was of no account to her."],"EXAMPLETRAN":["她渐渐长大，父亲对她也不重要了。"],"LABELTRAN":["【正式】"],"LEXUNIT":["of no/little account"],"REGISTERLAB":["formal"],"TRAN":["不重要，没关系"]}]}},{"Entry":{"Head":[{"FREQ":["S3","W2"],"HOMNUM":["2"],"HWD":["account"],"HYPHENATION":["account"],"POS":["v"],"VIDEOCAL":["http://ydschool-online.nos.netease.com/account_v0205.mp3"]}],"PhrVbEntry":[{"Head":[{"PHRVBHWD":["account for <i>sth<\/i>"],"POS":["phr v"]}],"Sense":[{"DEF":["to form a particular amount or part of something"],"EXAMPLE":["Afro-Americans account for 12% of the US population."],"EXAMPLETRAN":["非裔美国人占美国人口的12%。"],"TRAN":["占〔一定数量或比例〕"]},{"DEF":["to be the reason why something happens"],"EXAMPLE":["Recent pressure at work may account for his behavior."],"EXAMPLETRAN":["他的行为也许是最近的工作压力导致的。"],"SYN":["explain"],"TRAN":["是\u2026的原因"]},{"DEF":["to give a satisfactory explanation of why something has happened or why you did something"],"EXAMPLE":["Can you account for your movements on that night?"],"EXAMPLETRAN":["你能说明一下你那天晚上的行踪吗？"],"SYN":["explain"],"TRAN":["解释，说明"]},{"DEF":["to say where all the members of a group of people or things are, especially because you are worried that some of them may be lost"],"EXAMPLE":["Three days after the earthquake, more than 150 people had still to be accounted for."],"EXAMPLETRAN":["地震发生3天后，仍有150多人下落不明。"],"TRAN":["说明\u2026在何处"]}]}]}}]
@@ -2298,6 +2336,10 @@ public class WordSuggestDetail {
     }
 
     public static class MediaSentsPartBean {
+        public MediaSentsPartBean(List<SentBeanXX> sent) {
+            this.sent = sent;
+        }
+
         /**
          * more : media_sents
          * query : account
