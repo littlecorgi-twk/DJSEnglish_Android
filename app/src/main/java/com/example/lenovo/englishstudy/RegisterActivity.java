@@ -91,40 +91,30 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    public void requestVmessageVerify(final String phone, final String msgCode) {
+    public void requestVmessageVerify(final String email, final String password, final String phone, final String msgCode) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://47.102.206.19:8080/user/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
-        Call<MessageVerify> call = request.getVmessageVerifyCall(phone, msgCode);
+        Call<MessageVerify> call = request.getVmessageVerifyCall(email, password, phone, msgCode);
         call.enqueue(new retrofit2.Callback<MessageVerify>() {
             @Override
             public void onResponse(Call<MessageVerify> call, retrofit2.Response<MessageVerify> response) {
                 final MessageVerify messageVerify = response.body();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (messageVerify != null) {
-                            if (messageVerify.getStatus() == 0 && messageVerify.getMsg().equals("验证码正确")) {
-                                Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
-                            } else if (!flag3) {
-                                Toast.makeText(RegisterActivity.this, "验证码错误", Toast.LENGTH_SHORT).show();
-                            }
-                        }
+                if (messageVerify != null) {
+                    if (messageVerify.getStatus() == 0 && messageVerify.getMsg().equals("注册成功")) {
+                        Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+                    } else if (!flag3 && messageVerify.getStatus() == 1) {
+                        Toast.makeText(RegisterActivity.this, messageVerify.getMsg(), Toast.LENGTH_SHORT).show();
                     }
-                });
+                }
             }
 
             @Override
             public void onFailure(Call<MessageVerify> call, Throwable t) {
                 t.printStackTrace();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(RegisterActivity.this, "验证码错误", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                Toast.makeText(RegisterActivity.this, "验证码错误", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -140,27 +130,18 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<MessageVerify> call, retrofit2.Response<MessageVerify> response) {
                 final MessageVerify messageVerify = response.body();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (messageVerify != null) {
-                            if (messageVerify.getStatus() == 0 && messageVerify.getMsg().equals("发送成功")) {
-                                Toast.makeText(RegisterActivity.this, "发送成功", Toast.LENGTH_SHORT).show();
-                            }
-                        }
+                if (messageVerify != null) {
+                    if (messageVerify.getStatus() == 0 && messageVerify.getMsg().equals("发送成功")) {
+                        Toast.makeText(RegisterActivity.this, "发送成功", Toast.LENGTH_SHORT).show();
                     }
-                });
+                }
+
             }
 
             @Override
             public void onFailure(Call<MessageVerify> call, Throwable t) {
                 t.printStackTrace();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(RegisterActivity.this, "获取验证码失败", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                Toast.makeText(RegisterActivity.this, "获取验证码失败", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -176,7 +157,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         }
         if (password.length() >= 6 && password.length() <= 20 && flag2) {
-            requestVmessageVerify(e_phoneNumber.getText().toString(), e_messageVerify.getText().toString());
+            requestVmessageVerify("", password, e_phoneNumber.getText().toString(), e_messageVerify.getText().toString());
         } else {
             Toast.makeText(RegisterActivity.this, "密码为6~20位的数字字母组合", Toast.LENGTH_SHORT).show();
             flag3 = true;

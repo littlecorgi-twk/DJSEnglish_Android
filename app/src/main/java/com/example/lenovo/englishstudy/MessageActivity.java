@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -139,7 +140,8 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
                                 .setOnRootClickListener(this, 4));
 //                        View view = oneItem.getChildAt(1);
                         File file = compressImage(image);
-                        uploadImage(file);
+                        String filePath = file.getPath();
+                        uploadImage(filePath);
 
 
                     }
@@ -197,57 +199,46 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        recycleBitmap(bitmap);
+    //    recycleBitmap(bitmap);
         return file;
     }
 
 
-    public static void recycleBitmap(Bitmap... bitmaps) {
-        if (bitmaps == null) {
-            return;
-        }
-        for (Bitmap bm : bitmaps) {
-            if (null != bm && !bm.isRecycled()) {
-                bm.recycle();
-            }
-        }
-    }
 
-    public void uploadImage(File file) {
+
+    public void uploadImage(String filePath) {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://localhost:8080/user/")
+                .baseUrl("http://www.zhangshuo.fun:8080/user/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         final GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
+        File file = new File(filePath);
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        Log.d("5555","");
         MultipartBody.Part body = MultipartBody.Part.createFormData("upload_file", file.getName(), requestFile);
         Call<ImageMessage> call = request.upload(body);
         call.enqueue(new Callback<ImageMessage>() {
             @Override
             public void onResponse(Call<ImageMessage> call, Response<ImageMessage> response) {
+                Log.d("777788", response.toString());
                 final ImageMessage imageMessage = response.body();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (imageMessage != null) {
-                            if (imageMessage.getStatus() == 0) {
-                                Toast.makeText(MessageActivity.this, "上传成功", Toast.LENGTH_SHORT).show();
-                            }
-                        }
+
+                //Log.d("777777", imageMessage.toString());
+                if (imageMessage != null) {
+                    Log.d("777777", imageMessage.getStatus()+" ");
+                    if (imageMessage.getStatus() == 0) {
+                        Log.d("999999", "1");
+                        Toast.makeText(MessageActivity.this, "上传成功", Toast.LENGTH_SHORT).show();
                     }
-                });
+                }
+
 
             }
 
             @Override
             public void onFailure(Call<ImageMessage> call, Throwable t) {
                 t.printStackTrace();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(MessageActivity.this, "验证码错误", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                Toast.makeText(MessageActivity.this, "上传失败", Toast.LENGTH_SHORT).show();
             }
         });
     }
