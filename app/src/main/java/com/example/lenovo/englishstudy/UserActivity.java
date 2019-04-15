@@ -1,6 +1,8 @@
 package com.example.lenovo.englishstudy;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
@@ -49,10 +51,13 @@ public class UserActivity extends AppCompatActivity {
         u_photo = findViewById(R.id.u_photo);
         t_name = findViewById(R.id.t_name);
         t_name.setVisibility(View.GONE);
-        user_name = getIntent().getStringExtra("u_name");
+        SharedPreferences sharedPreferences = getSharedPreferences("data", Context.MODE_PRIVATE);
+         user_name = sharedPreferences.getString("user_name", "");
+         user_photo = sharedPreferences.getString("user_photo", "");
+//        user_name = getIntent().getStringExtra("u_name");
         u_name.setText(user_name);
         t_name.setText(user_name);
-        user_photo = getIntent().getStringExtra("u_photo");
+//        user_photo = getIntent().getStringExtra("u_photo");
         Glide.with(getContext()).load(user_photo).into(u_photo);
 //        back_button = findViewById(android.R.id.home);
         division = findViewById(R.id.division);
