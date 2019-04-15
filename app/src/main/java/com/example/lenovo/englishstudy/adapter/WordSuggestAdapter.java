@@ -1,6 +1,7 @@
 package com.example.lenovo.englishstudy.adapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,10 +27,16 @@ public class WordSuggestAdapter extends ArrayAdapter<WordSuggest.DataBean.Entrie
     private OnSearchHistoryListener onSearchHistoryListener;
     private ArrayList<SearchHistoryModel> mHistories;
 
-    public WordSuggestAdapter(Context context, int textViewResourceId, List<WordSuggest.DataBean.EntriesBean> objects,  ArrayList<SearchHistoryModel> histories) {
+//    public WordSuggestAdapter(Context context, int textViewResourceId, List<WordSuggest.DataBean.EntriesBean> objects,  ArrayList<SearchHistoryModel> histories) {
+//        super(context, textViewResourceId, objects);
+//        resoureId = textViewResourceId;
+//        this.mHistories = histories;
+//    }
+
+
+    public WordSuggestAdapter(@NonNull Context context, int textViewResourceId, @NonNull List<WordSuggest.DataBean.EntriesBean> objects) {
         super(context, textViewResourceId, objects);
-        resoureId = textViewResourceId;
-        this.mHistories = histories;
+        this.resoureId = textViewResourceId;
     }
 
     @Override
