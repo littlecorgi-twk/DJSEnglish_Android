@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/title2"
         android:layout_width="match_parent"
@@ -19,6 +19,7 @@
             android:textSize="22sp" />
 
     </android.support.v7.widget.Toolbar>
+
     <View
         android:layout_width="fill_parent"
         android:layout_height="1dp"
@@ -28,30 +29,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="历史记录"
-        android:textColor="#252525"
-        android:textSize="15dp"
-        android:layout_margin="15dp"
-        android:layout_alignParentLeft="true"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="15dp"
+            android:text="历史记录"
+            android:textColor="#252525"
+            android:textSize="15dp" />
 
-    <ImageView
-        android:id="@+id/delete"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:background="@drawable/ic_delete"
-        android:layout_alignParentRight="true"
-        android:layout_margin="15dp"/>
+        <ImageView
+            android:id="@+id/delete"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_margin="15dp"
+            android:background="@drawable/ic_delete" />
 
 
         <com.example.lenovo.englishstudy.userdefined.FlowLayout
             android:id="@+id/history_flowlayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_below="@+id/delete">
+            android:layout_below="@+id/delete"
+            android:layout_marginLeft="10dp">
 
         </com.example.lenovo.englishstudy.userdefined.FlowLayout>
 

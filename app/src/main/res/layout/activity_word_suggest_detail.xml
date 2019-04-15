@@ -49,8 +49,7 @@
                 <Button
                     android:id="@+id/button_wordSuggestDetail_ukspeech"
                     android:layout_width="20sp"
-                    android:layout_height="20sp"
-                     />
+                    android:layout_height="20sp" />
 
                 <TextView
                     android:id="@+id/tv_wordSuggestDetail_ukphone"

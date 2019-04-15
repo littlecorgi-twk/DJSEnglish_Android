@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
-public class ExplosionField extends View{
+public class ExplosionField extends View {
     private static final String TAG = "ExplosionField";
     private static final Canvas mCanvas = new Canvas();
     private ExplosionAnimation animator;

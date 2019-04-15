@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -41,23 +40,23 @@
 
         <ImageView
             android:id="@+id/end"
-            android:scaleType="centerCrop"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:background="@drawable/ic_end"
             android:layout_above="@+id/hezi"
-            android:layout_centerHorizontal="true"/>
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/ic_end"
+            android:scaleType="centerCrop" />
 
         <ImageView
             android:id="@+id/hezi"
-            android:scaleType="centerCrop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/ic_hezi"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="50dp"/>
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="50dp"
+            android:background="@drawable/ic_hezi"
+            android:scaleType="centerCrop" />
 
         <TextView
             android:id="@+id/answer1"
@@ -85,8 +84,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/answer1"
             android:layout_marginLeft="15dp"
-            android:textSize="22sp"
-            android:textColor="#11CDB5"/>
+            android:textColor="#11CDB5"
+            android:textSize="22sp" />
 
         <TextView
             android:id="@+id/answer3"
@@ -94,8 +93,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/answer2"
             android:layout_marginLeft="15dp"
-            android:textSize="22sp"
-            android:textColor="#11CDB5"/>
+            android:textColor="#11CDB5"
+            android:textSize="22sp" />
     </RelativeLayout>
 
 </LinearLayout>

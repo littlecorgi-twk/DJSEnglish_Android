@@ -9,7 +9,7 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.view.View;
 
-public class ExplosionAnimation  extends ValueAnimator {
+public class ExplosionAnimation extends ValueAnimator {
     private static final int DEFAULT_DURATION = 1500;
     private ParticleModel[][] mParticles;
     private Paint mPaint;

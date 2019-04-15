@@ -9,12 +9,12 @@ public class MoveImageView extends ImageView {
 
 
     public MoveImageView(Context context) {
-            super(context);
-        }
+        super(context);
+    }
 
     public void setMPointF(PointF pointF) {
-            setX(pointF.x);
-            setY(pointF.y);
-        }
+        setX(pointF.x);
+        setY(pointF.y);
+    }
 
 }

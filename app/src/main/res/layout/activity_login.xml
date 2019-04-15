@@ -15,45 +15,45 @@
             android:id="@+id/cancel"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginLeft="20dp"
             android:layout_centerVertical="true"
-            android:background="@drawable/ic_cancel"/>
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/ic_cancel" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:text="登录"
-            android:textSize="20dp"
             android:textColor="#252525"
-            android:layout_centerInParent="true"/>
+            android:textSize="20dp" />
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"
         android:layout_marginTop="180dp"
+        android:layout_marginRight="40dp"
         android:orientation="vertical">
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="手机号码"
-            android:textSize="18sp"
-            android:textColor="#E4090808"
             android:paddingBottom="20dp"
-            android:theme="@style/MyEditText"/>
+            android:textColor="#E4090808"
+            android:textSize="18sp"
+            android:theme="@style/MyEditText" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="35dp"
             android:hint="登录密码"
-            android:textSize="18sp"
-            android:textColor="#E4090808"
             android:paddingBottom="20dp"
-            android:theme="@style/MyEditText"/>
+            android:textColor="#E4090808"
+            android:textSize="18sp"
+            android:theme="@style/MyEditText" />
 
         <Button
             android:id="@+id/button_login"
@@ -62,8 +62,8 @@
             android:layout_marginTop="30dp"
             android:background="#11CDB5"
             android:text="登录"
-            android:textSize="15sp"
-            android:textColor="#ffffff"/>
+            android:textColor="#ffffff"
+            android:textSize="15sp" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -74,8 +74,8 @@
                 android:id="@+id/register"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:layout_alignParentLeft="true"
+                android:layout_marginTop="20dp"
                 android:text="快速注册"
                 android:textSize="13sp" />
 
@@ -86,16 +86,16 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="20dp"
                 android:text="忘记密码"
-                android:textSize="13sp"/>
+                android:textSize="13sp" />
 
             <ImageView
                 android:id="@+id/qq"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:scaleType="centerCrop"
-                android:background="@drawable/ic_qq"
                 android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true" />
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/ic_qq"
+                android:scaleType="centerCrop" />
         </RelativeLayout>
 
     </LinearLayout>

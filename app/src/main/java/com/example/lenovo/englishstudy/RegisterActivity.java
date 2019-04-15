@@ -1,14 +1,11 @@
 package com.example.lenovo.englishstudy;
 
 import android.graphics.Color;
+import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -29,10 +26,11 @@ public class RegisterActivity extends AppCompatActivity {
     private ImageView r_back;
     private TextView send_verify;
     private EditText e_phoneNumber, e_messageVerify, e_password;
-    private Boolean flag, flag2 = true , flag3 = false;
+    private Boolean flag, flag2 = true, flag3 = false;
     private TimeCount time;
     private Button register;
     private ToggleButton toggleButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +41,7 @@ public class RegisterActivity extends AppCompatActivity {
         toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if(isChecked) {
+                if (isChecked) {
                     e_password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                     e_password.setSelection(e_password.getText().toString().length());
                 } else {
@@ -76,18 +74,16 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 flag = true;
                 String number = e_phoneNumber.getText().toString();
-                for(int i = 0; i < number.length(); i++){
-                    if(number.charAt(i)<'0'||number.charAt(i)>'9') {
+                for (int i = 0; i < number.length(); i++) {
+                    if (number.charAt(i) < '0' || number.charAt(i) > '9') {
                         flag = false;
                         break;
                     }
                 }
-                if(number.length() == 11 && number.charAt(0) == '1' && flag) {
-                    Log.d("1234567",e_phoneNumber.getText().toString());
+                if (number.length() == 11 && number.charAt(0) == '1' && flag) {
                     requestMessageVerify(e_phoneNumber.getText().toString());
                     time.start();
                 } else {
-                    Log.d("33223", "1");
                     Toast.makeText(RegisterActivity.this, "请输入正确手机号", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -95,41 +91,30 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    public void requestVmessageVerify(final String phone, final String msgCode) {
+    public void requestVmessageVerify(final String email, final String password, final String phone, final String msgCode) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://47.102.206.19:8080/user/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
-        Call<MessageVerify> call = request.getVmessageVerifyCall(phone, msgCode);
+        Call<MessageVerify> call = request.getVmessageVerifyCall(email, password, phone, msgCode);
         call.enqueue(new retrofit2.Callback<MessageVerify>() {
             @Override
             public void onResponse(Call<MessageVerify> call, retrofit2.Response<MessageVerify> response) {
                 final MessageVerify messageVerify = response.body();
-                Log.d("34567",messageVerify.getMsg());
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (messageVerify != null) {
-                            if (messageVerify.getStatus() == 0 && messageVerify.getMsg().equals("验证码正确")) {
-                                Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
-                            }else if(!flag3){
-                                Toast.makeText(RegisterActivity.this, "验证码错误", Toast.LENGTH_SHORT).show();
-                            }
-                        }
+                if (messageVerify != null) {
+                    if (messageVerify.getStatus() == 0 && messageVerify.getMsg().equals("注册成功")) {
+                        Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+                    } else if (!flag3 && messageVerify.getStatus() == 1) {
+                        Toast.makeText(RegisterActivity.this, messageVerify.getMsg(), Toast.LENGTH_SHORT).show();
                     }
-                });
+                }
             }
 
             @Override
             public void onFailure(Call<MessageVerify> call, Throwable t) {
                 t.printStackTrace();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(RegisterActivity.this, "验证码错误", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                Toast.makeText(RegisterActivity.this, "验证码错误", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -145,28 +130,18 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<MessageVerify> call, retrofit2.Response<MessageVerify> response) {
                 final MessageVerify messageVerify = response.body();
-                Log.d("34567",messageVerify.getMsg());
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (messageVerify != null) {
-                            if (messageVerify.getStatus() == 0 && messageVerify.getMsg().equals("发送成功")) {
-                                Toast.makeText(RegisterActivity.this, "发送成功", Toast.LENGTH_SHORT).show();
-                            }
-                        }
+                if (messageVerify != null) {
+                    if (messageVerify.getStatus() == 0 && messageVerify.getMsg().equals("发送成功")) {
+                        Toast.makeText(RegisterActivity.this, "发送成功", Toast.LENGTH_SHORT).show();
                     }
-                });
+                }
+
             }
 
             @Override
             public void onFailure(Call<MessageVerify> call, Throwable t) {
                 t.printStackTrace();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(RegisterActivity.this, "获取验证码失败", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                Toast.makeText(RegisterActivity.this, "获取验证码失败", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -175,23 +150,19 @@ public class RegisterActivity extends AppCompatActivity {
         flag2 = true;
         flag3 = false;
         String password = e_password.getText().toString();
-        Log.d("33333",password);
-        for(int i = 0; i < password.length(); i++){
-            if(password.charAt(i)<'0'||(password.charAt(i)>'9'&&password.charAt(i)<'A')||(password.charAt(i)>'Z'&&password.charAt(i)<'a')||password.charAt(i)>'z') {
+        for (int i = 0; i < password.length(); i++) {
+            if (password.charAt(i) < '0' || (password.charAt(i) > '9' && password.charAt(i) < 'A') || (password.charAt(i) > 'Z' && password.charAt(i) < 'a') || password.charAt(i) > 'z') {
                 flag2 = false;
                 break;
             }
         }
-        Log.d("4444", flag2 + " ");
-        if(password.length() >=6 && password.length() <= 20 && flag2) {
-            requestVmessageVerify(e_phoneNumber.getText().toString(), e_messageVerify.getText().toString()  );
+        if (password.length() >= 6 && password.length() <= 20 && flag2) {
+            requestVmessageVerify("", password, e_phoneNumber.getText().toString(), e_messageVerify.getText().toString());
         } else {
-            Log.d("33223", "1");
             Toast.makeText(RegisterActivity.this, "密码为6~20位的数字字母组合", Toast.LENGTH_SHORT).show();
             flag3 = true;
         }
     }
-
 
 
 //    public void requestMessageVerify(final String phoneNumber) {
@@ -215,7 +186,6 @@ public class RegisterActivity extends AppCompatActivity {
 //            public void onResponse(Call call, Response response) throws IOException {
 //                final String responseText = response.body().string();
 //                final MessageVerify messageVerify = Utility.handleMessageVerifyResponse(responseText);
-//                Log.d("34567",messageVerify.getMsg());
 //                runOnUiThread(new Runnable() {
 //                    @Override
 //                    public void run() {
@@ -230,7 +200,7 @@ public class RegisterActivity extends AppCompatActivity {
 //        });
 //    }
 
-//    public void requestVmessageVerify(final String phone, final String msgCode) {
+    //    public void requestVmessageVerify(final String phone, final String msgCode) {
 //        final String messageVerifyUrl = "http://47.102.206.19:8080/user/check_msg.do";
 //        //  MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded; charset=UTF-8");
 //        RequestBody  requestBody = new FormBody.Builder().add("phone",phone).add("msgCode",msgCode).build();
@@ -251,7 +221,6 @@ public class RegisterActivity extends AppCompatActivity {
 //            public void onResponse(Call call, Response response) throws IOException {
 //                final String responseText = response.body().string();
 //                final MessageVerify messageVerify = Utility.handleMessageVerifyResponse(responseText);
-//                Log.d("34567",messageVerify.getMsg());
 //                runOnUiThread(new Runnable() {
 //                    @Override
 //                    public void run() {
@@ -277,7 +246,7 @@ public class RegisterActivity extends AppCompatActivity {
         public void onTick(long millisUntilFinished) {
             send_verify.setTextColor(Color.parseColor("#252525"));
             send_verify.setClickable(false);
-            send_verify.setText( millisUntilFinished / 1000 + " 秒后可重新发送");
+            send_verify.setText(millisUntilFinished / 1000 + " 秒后可重新发送");
         }
 
         @Override
