@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,9 @@ import com.example.lenovo.englishstudy.Util.GetRequest_Interface;
 import com.example.lenovo.englishstudy.WordSuggestDetailActivity;
 import com.example.lenovo.englishstudy.adapter.WordSuggestAdapter;
 import com.example.lenovo.englishstudy.bean.WordSuggest;
+import com.example.lenovo.englishstudy.searchHistory.OnSearchHistoryListener;
+import com.example.lenovo.englishstudy.searchHistory.SearchHistoryModel;
+import com.example.lenovo.englishstudy.searchHistory.SpHistoryStorage;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -42,24 +46,22 @@ public class SearchFragment extends Fragment {
     Unbinder unbinder;
     private ArrayList<WordSuggest.DataBean.EntriesBean> mEntries = new ArrayList<>();
     private WordSuggestAdapter adapter;
+    private ArrayList<SearchHistoryModel> mHistoryList = new ArrayList<>();
+    private SpHistoryStorage spHistoryStorage;
+    private OnSearchHistoryListener onSearchHistoryListener;
+
+    private int flag;
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.searchfragment, container, false);
         unbinder = ButterKnife.bind(this, view);
-        adapter = new WordSuggestAdapter(getContext(), R.layout.word_suggest_listview, mEntries);
+        adapter = new WordSuggestAdapter(getContext(), mEntries, true);
         lvSearchList.setAdapter(adapter);
-        lvSearchList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getContext(), WordSuggestDetailActivity.class);
-                intent.putExtra("Word", mEntries.get(position).getEntry());
-                getActivity().startActivity(intent);
-            }
-        });
+        spHistoryStorage = SpHistoryStorage.getInstance(getContext(), 100);
         // mListView.setTextFilterEnabled(true);
-
+        mHistoryList = spHistoryStorage.sortHistory();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -70,13 +72,50 @@ public class SearchFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String s) {
                 if (!TextUtils.isEmpty(s)) {
-                    adapter.notifyDataSetChanged();
-                    lvSearchList.setSelection(0);
+                    flag = 1;
                     requestWordSuggest(s);
                 } else {
                     lvSearchList.clearTextFilter();
+                    mHistoryList = spHistoryStorage.sortHistory();
+                    mEntries.clear();
+                    for (SearchHistoryModel searchHistoryModel : mHistoryList) {
+                        String[] str = new String[2];
+                        str = TextUtils.split(searchHistoryModel.getContent(), ",|\\-");
+                        mEntries.add(new WordSuggest.DataBean.EntriesBean(str[0], str[1]));
+                    }
+                    adapter = new WordSuggestAdapter(getContext(), mEntries, false);
+                    flag = 0;
+                    lvSearchList.setAdapter(adapter);
+                    lvSearchList.setSelection(0);
                 }
                 return false;
+            }
+        });
+
+        lvSearchList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getContext(), WordSuggestDetailActivity.class);
+                if (flag == 1) {
+                    intent.putExtra("Word", mEntries.get(position).getEntry());
+                    spHistoryStorage.save(mEntries.get(position).getEntry() + '-' + mEntries.get(position).getExplain());
+                } else {
+                    mHistoryList = spHistoryStorage.sortHistory();
+                    String[] str = new String[2];
+                    str = TextUtils.split(mHistoryList.get(position).getContent(), ",|\\-");
+                    intent.putExtra("Word", str[0]);
+                }
+                Log.d("1234", "clickItem");
+                getActivity().startActivity(intent);
+            }
+        });
+
+        adapter.setOnItemDeleteClickListener(new WordSuggestAdapter.onItemDeleteListener() {
+            @Override
+            public void onDeleteClick(int i) {
+                Log.d("1234", "clickDelete");
+                onSearchHistoryListener.onDelete(mHistoryList.get(i).getTime());
+                adapter.notifyDataSetChanged();
             }
         });
         return view;
@@ -95,77 +134,30 @@ public class SearchFragment extends Fragment {
         call.enqueue(new Callback<WordSuggest>() {
             @Override
             public void onResponse(Call<WordSuggest> call, final Response<WordSuggest> response) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        showWordSuggest(response.body());
-                    }
-                });
+                showWordSuggest(response.body());
             }
 
             @Override
             public void onFailure(Call<WordSuggest> call, Throwable t) {
                 t.printStackTrace();
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getContext(), "获取单词联想失败1", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                Toast.makeText(getContext(), "获取单词联想失败1", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    /*public void requestWordSuggest(final String word) {
-        String wordSuggestUrl = "http://dict.youdao.com/suggest?q=" + word +
-                "&le=eng&num=15&ver=2.0&doctype=json&keyfrom=mdict.7.2.0.android&model=honor&mid=5.6.1&imei=659135764921685&vendor=wandoujia&screen=1080x1800&ssid=superman&abtest=2";
-        HttpUtil.sendHttpRequest(wordSuggestUrl, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getContext(), "获取单词联想失败1", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                final String responseText = response.body().string();
-                final WordSuggest wordSuggest = Utility.handleWordSuggestResponse(responseText);
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (wordSuggest != null) {
-                            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
-                            editor.putString("wordSuggest", responseText);
-                            editor.apply();
-                            showWordSuggest(wordSuggest);
-                        } else {
-                            Toast.makeText(getContext(), "获取单词联想失败2", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-            }
-        });
-    }*/
-
     public void showWordSuggest(WordSuggest wordSuggest) {
+        mEntries.clear();
         if (!wordSuggest.getResult().getMsg().equals("success")) {
-            mEntries.clear();
             mEntries.add(new WordSuggest.DataBean.EntriesBean("查无此词！", ""));
-            adapter.notifyDataSetChanged();
-            lvSearchList.setSelection(0);
         } else {
-            mEntries.clear();
             for (WordSuggest.DataBean.EntriesBean entriesBean : wordSuggest.getData().getEntries()) {
                 mEntries.add(new WordSuggest.DataBean.EntriesBean(entriesBean.getEntry(), entriesBean.getExplain()));
             }
-            adapter.notifyDataSetChanged();
-            lvSearchList.setSelection(0);
         }
+        adapter = new WordSuggestAdapter(getContext(), mEntries, true);
+        // adapter.notifyDataSetChanged();
+        lvSearchList.setAdapter(adapter);
+        lvSearchList.setSelection(0);
     }
 
     /**

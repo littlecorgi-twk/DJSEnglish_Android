@@ -1,8 +1,8 @@
 package com.example.lenovo.englishstudy.Util;
 
-import com.example.lenovo.englishstudy.UserMessage;
 import com.example.lenovo.englishstudy.bean.ImageMessage;
 import com.example.lenovo.englishstudy.bean.MessageVerify;
+import com.example.lenovo.englishstudy.bean.UserMessage;
 import com.example.lenovo.englishstudy.bean.WordMeanig;
 import com.example.lenovo.englishstudy.bean.WordSuggest;
 import com.example.lenovo.englishstudy.bean.WordSuggestDetail;
@@ -10,7 +10,6 @@ import com.example.lenovo.englishstudy.bean.WordTranslate;
 
 import okhttp3.MultipartBody;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
