@@ -8,12 +8,10 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -163,8 +161,8 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
     }
 
     private void choosePhoto() {
-        Intent intentToPickPic = new Intent(Intent.ACTION_PICK, null);
-        intentToPickPic.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+        Intent intentToPickPic = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        // intentToPickPic.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
         startActivityForResult(intentToPickPic, 1);
     }
 
@@ -260,20 +258,15 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
         final GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
         File file = new File(filePath);
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-        Log.d("5555","");
         MultipartBody.Part body = MultipartBody.Part.createFormData("upload_file", file.getName(), requestFile);
         Call<ImageMessage> call = request.upload(body);
         call.enqueue(new Callback<ImageMessage>() {
             @Override
             public void onResponse(Call<ImageMessage> call, Response<ImageMessage> response) {
-                Log.d("777788", response.toString());
                 final ImageMessage imageMessage = response.body();
 
-                //Log.d("777777", imageMessage.toString());
                 if (imageMessage != null) {
-                    Log.d("777777", imageMessage.getStatus()+" ");
                     if (imageMessage.getStatus() == 0) {
-                        Log.d("999999", "1");
                         Toast.makeText(MessageActivity.this, "上传成功", Toast.LENGTH_SHORT).show();
                     }
                 }

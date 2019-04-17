@@ -148,7 +148,9 @@ public class WordSuggestDetailActivity extends AppCompatActivity {
                 wordDetailWebTrans += ';';
             }
             tvWordDetailWebTran.setText(wordDetailWebTrans);
-            if (!wordSuggestDetail.getEc().getExam_type().isEmpty()) {
+            if (wordSuggestDetail.getEc().getExam_type() == null) {
+                tvWordSuggestDetailExamType.setVisibility(View.GONE);
+            } else {
                 String examType = "";
                 List<String> examTypeString = wordSuggestDetail.getEc().getExam_type();
                 for (String a : examTypeString) {
@@ -157,8 +159,6 @@ public class WordSuggestDetailActivity extends AppCompatActivity {
                 }
                 examType = examType.substring(0, examType.length() - 1);
                 tvWordSuggestDetailExamType.setText(examType);
-            } else {
-                tvWordSuggestDetailExamType.setVisibility(View.GONE);
             }
 
             partsLayout.removeAllViews();
