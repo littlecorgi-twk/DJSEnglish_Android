@@ -1,16 +1,17 @@
 package com.example.lenovo.englishstudy;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.bigkoo.pickerview.TimePickerView;
 import com.example.lenovo.englishstudy.Util.GetRequest_Interface;
 import com.example.lenovo.englishstudy.bean.ImageMessage;
 import com.example.lenovo.englishstudy.userdefined.MyView;
@@ -28,6 +30,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import okhttp3.MediaType;
@@ -39,8 +42,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static org.litepal.LitePalApplication.getContext;
-
 public class MessageActivity extends AppCompatActivity implements MyView.OnRootClickListener {
     private LinearLayout oneItem;
     private String user_name;
@@ -48,6 +49,13 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
     private ImageView back_button;
     //   private CircleImageView imageView;
     private int CROP_REQUEST_CODE = 3;
+    private String sex1;
+    private MyView myView1, myView3, myView4;
+    private TimePickerView pickerView;
+    private int year;
+    private int month;
+    private int day;
+    private String time;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,18 +75,21 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
                 finish();
             }
         });
-        oneItem.addView(new MyView(this)
-                .initMine2("头像", user_photo, true)
-                .setOnRootClickListener(this, 1));
+        myView1 =  new MyView(this)
+                        .initMine2("头像", user_photo, true)
+                        .setOnRootClickListener(this, 1);
+        oneItem.addView(myView1);
         oneItem.addView(new MyView(this)
                 .initMine("昵称", user_name, true)
                 .setOnRootClickListener(this, 2));
-        oneItem.addView(new MyView(this)
+        myView3 = new MyView(this)
                 .initMine("性别", "女", true)
-                .setOnRootClickListener(this, 3));
-        oneItem.addView(new MyView(this)
+                .setOnRootClickListener(this, 3);
+        oneItem.addView(myView3);
+        myView4 = new MyView(this)
                 .initMine("生日", "", true)
-                .setOnRootClickListener(this, 4));
+                .setOnRootClickListener(this, 4);
+        oneItem.addView(myView4);
 
     }
 
@@ -96,9 +107,56 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
 
                 break;
             case 3:
+                AlertDialog.Builder builder = new AlertDialog.Builder(MessageActivity.this);
+                builder.setTitle("请选择性别");
+                final String[] sex = {"男", "女"};
+                //    设置一个单项选择下拉框
+                /**
+                 * 第一个参数指定我们要显示的一组下拉单选框的数据集合
+                 * 第二个参数代表索引，指定默认哪一个单选框被勾选上，1表示默认'女' 会被勾选上
+                 * 第三个参数给每一个单选项绑定一个监听器
+                 */
+                builder.setSingleChoiceItems(sex, 1, new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        dialog.dismiss();
+                        sex1 = sex[which];
+                        myView3.setRightText(sex1);
+                        oneItem.removeViewAt(2);
+                        oneItem.addView(myView3,2);
+                    }
+                });
+                builder.show();
 
+            //    linearLayout.removeViewAt(2);
+            //    textView.setText(sex1);
                 break;
             case 4:
+                pickerView = new TimePickerView.Builder(this, new TimePickerView.OnTimeSelectListener() {
+                    @Override
+                    public void onTimeSelect(Date date, View v) {
+                        time = getTime(date);
+                        myView4.setRightText(time);
+                        oneItem.removeViewAt(3);
+                        oneItem.addView(myView4, 3);
+                    }
+                }).build();
+                timeInit();
+                myView4.setRightText(time);
+                oneItem.removeViewAt(3);
+                oneItem.addView(myView4, 3);
+                pickerView.show();
+//                pickerView.setOnTimeSelectListener(new TimePickerView.OnTimeSelectListener() {
+//                    @Override
+//                    public void onTimeSelect(Date date) {
+//                        time = getTime(date);
+//                        myView4.setRightText(time);
+//                        oneItem.removeViewAt(3);
+//                        oneItem.addView(myView4, 3);
+//                    }
+//                });
 
                 break;
         }
@@ -126,25 +184,12 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
                     Bundle bundle = data.getExtras();
                     if (bundle != null) {
                         Bitmap image = bundle.getParcelable("data");
-                        oneItem.removeAllViews();
-                        oneItem.addView(new MyView(getContext())
-                                .initMine("头像", image, true)
-                                .setOnRootClickListener(this, 1));
-                        oneItem.addView(new MyView(getContext())
-                                .initMine("昵称", user_name, true)
-                                .setOnRootClickListener(this, 2));
-                        oneItem.addView(new MyView(getContext())
-                                .initMine("性别", "女", true)
-                                .setOnRootClickListener(this, 3));
-                        oneItem.addView(new MyView(getContext())
-                                .initMine("生日", "", true)
-                                .setOnRootClickListener(this, 4));
-//                        View view = oneItem.getChildAt(1);
+                        myView1.setRightIcon(image);
+                        oneItem.removeViewAt(0);
+                        oneItem.addView(myView1,0);
                         File file = compressImage(image);
                         String filePath = file.getPath();
                         uploadImage(filePath);
-
-
                     }
                     break;
 
@@ -244,5 +289,30 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
         });
     }
 
+    public void timeInit() {
+        pickerView.setDate(Calendar.getInstance());
+        final Calendar calendar = Calendar.getInstance();
+        year = calendar.get(Calendar.YEAR);
+        month = calendar.get(Calendar.MONTH);
+        day = calendar.get(Calendar.DAY_OF_MONTH);
+        if(month > 9) {
+            if(day < 10) {
+                time = year + "-" + (month+1) + "-0" + day;
+            } else {
+                time = year + "-" + (month+1) + "-" + day;
+            }
+        } else {
+            if(day < 10) {
+                time = year + "-0" + (month+1) + "-0" + day;
+            } else {
+                time = year + "-0" + (month+1) + "-" + day;
+            }
+        }
+    }
+
+    public static String getTime(Date date) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+        return format.format(date);
+    }
 
 }
