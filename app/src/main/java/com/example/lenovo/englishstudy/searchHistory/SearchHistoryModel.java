@@ -8,6 +8,7 @@ import java.io.Serializable;
  * @email a1203991686@126.com
  */
 public class SearchHistoryModel implements Serializable {
+
     private String time;
     private String content;
 
