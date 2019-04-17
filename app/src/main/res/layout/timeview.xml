@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:background="#E0E0E0"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/time_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="15dp"
+            android:layout_gravity="center_vertical"
+            android:textSize="22sp"
+            android:text="取消"
+            android:textColor="#536DFE"/>
+
+        <TextView
+            android:id="@+id/time_ensure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="15dp"
+            android:layout_gravity="center_vertical"
+            android:textSize="22sp"
+            android:text="确定"
+            android:textColor="#536DFE"/>
+
+    </RelativeLayout>
+
+
+
+</LinearLayout>
