@@ -1,13 +1,13 @@
 package com.example.lenovo.englishstudy.fragment;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +21,6 @@ import com.example.lenovo.englishstudy.Util.GetRequest_Interface;
 import com.example.lenovo.englishstudy.WordSuggestDetailActivity;
 import com.example.lenovo.englishstudy.adapter.WordSuggestAdapter;
 import com.example.lenovo.englishstudy.bean.WordSuggest;
-import com.example.lenovo.englishstudy.searchHistory.OnSearchHistoryListener;
 import com.example.lenovo.englishstudy.searchHistory.SearchHistoryModel;
 import com.example.lenovo.englishstudy.searchHistory.SpHistoryStorage;
 
@@ -48,7 +47,8 @@ public class SearchFragment extends Fragment {
     private WordSuggestAdapter adapter;
     private ArrayList<SearchHistoryModel> mHistoryList = new ArrayList<>();
     private SpHistoryStorage spHistoryStorage;
-    private OnSearchHistoryListener onSearchHistoryListener;
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
 
     private int flag;
 
@@ -57,11 +57,20 @@ public class SearchFragment extends Fragment {
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.searchfragment, container, false);
         unbinder = ButterKnife.bind(this, view);
-        adapter = new WordSuggestAdapter(getContext(), mEntries, true);
-        lvSearchList.setAdapter(adapter);
+
+        preferences = getActivity().getSharedPreferences("select", getActivity().MODE_PRIVATE);
+        editor = preferences.edit();
         spHistoryStorage = SpHistoryStorage.getInstance(getContext(), 100);
-        // mListView.setTextFilterEnabled(true);
         mHistoryList = spHistoryStorage.sortHistory();
+        mEntries.clear();
+        for (SearchHistoryModel searchHistoryModel : mHistoryList) {
+            String[] str = new String[2];
+            str = TextUtils.split(searchHistoryModel.getContent(), ",|\\-");
+            mEntries.add(new WordSuggest.DataBean.EntriesBean(str[0], str[1]));
+        }
+        adapter = new WordSuggestAdapter(getContext(), mEntries, false);
+        deleteItem();
+        lvSearchList.setAdapter(adapter);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -84,6 +93,7 @@ public class SearchFragment extends Fragment {
                         mEntries.add(new WordSuggest.DataBean.EntriesBean(str[0], str[1]));
                     }
                     adapter = new WordSuggestAdapter(getContext(), mEntries, false);
+                    deleteItem();
                     flag = 0;
                     lvSearchList.setAdapter(adapter);
                     lvSearchList.setSelection(0);
@@ -105,20 +115,22 @@ public class SearchFragment extends Fragment {
                     str = TextUtils.split(mHistoryList.get(position).getContent(), ",|\\-");
                     intent.putExtra("Word", str[0]);
                 }
-                Log.d("1234", "clickItem");
                 getActivity().startActivity(intent);
             }
         });
+        return view;
+    }
 
-        adapter.setOnItemDeleteClickListener(new WordSuggestAdapter.onItemDeleteListener() {
+    public void deleteItem() {
+        adapter.setOnItemDeleteClickListener(new WordSuggestAdapter.OnItemDeleteListener() {
             @Override
             public void onDeleteClick(int i) {
-                Log.d("1234", "clickDelete");
-                onSearchHistoryListener.onDelete(mHistoryList.get(i).getTime());
+                Toast.makeText(getContext(), "ClickButton", Toast.LENGTH_SHORT).show();
+                spHistoryStorage.remove(mHistoryList.get(i).getTime());
+                mEntries.remove(i);
                 adapter.notifyDataSetChanged();
             }
         });
-        return view;
     }
 
     public void requestWordSuggest(final String word) {
@@ -155,6 +167,7 @@ public class SearchFragment extends Fragment {
             }
         }
         adapter = new WordSuggestAdapter(getContext(), mEntries, true);
+        deleteItem();
         // adapter.notifyDataSetChanged();
         lvSearchList.setAdapter(adapter);
         lvSearchList.setSelection(0);
