@@ -10,9 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:iconifiedByDefault="false"
-        app:queryHint="请输入要搜索的单词">
-
-    </android.support.v7.widget.SearchView>
+        app:queryHint="请输入要搜索的单词" />
 
     <ListView
         android:id="@+id/lv_searchList"

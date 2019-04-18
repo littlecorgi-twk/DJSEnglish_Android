@@ -986,8 +986,10 @@ public class WordSuggestDetail {
 
     public static class EcBean {
 
+        List<String> strings = new ArrayList<>();
+
         public EcBean(List<String> exam_type) {
-            this.exam_type = exam_type;
+            this.exam_type = strings;
         }
 
         /**
