@@ -12,7 +12,7 @@
         android:layout_marginTop="10dp">
 
         <ImageView
-            android:id="@+id/m_back"
+            android:id="@+id/set_back"
             android:layout_width="10dp"
             android:layout_height="15dp"
             android:layout_centerVertical="true"
@@ -24,23 +24,45 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="修改资料"
+            android:text="设置昵称"
             android:textColor="#252525"
             android:textSize="20dp" />
     </RelativeLayout>
 
     <View
-        android:id="@+id/division"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
         android:background="#45ababab" />
 
-    <LinearLayout
-        android:id="@+id/m_one_item"
+    <EditText
+        android:id="@+id/e_set_name"
+        android:background="#ffffff"
+        android:layout_margin="30dp"
         android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="昵称"
+        android:paddingLeft="10dp"
+        android:textSize="18sp"/>
+
+    <Button
+        android:id="@+id/b_set_name"
+        android:background="#11CDB5"
+        android:layout_marginTop="0dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:text="修改"
+        android:textSize="18sp"
+        android:textColor="#ffffff"/>
+
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="vertical">
-    </LinearLayout>
+        android:layout_margin="30dp"
+        android:singleLine="false"
+        android:text="昵称要求：\n1.昵称长度在2~16个字符以内\n2.昵称必须是唯一的，不能和已有用户重复\n3.昵称不能包含空白字符，如空格、回车或者换行符"
+        android:textSize="13sp"
+        android:textColor="#C0BEBE"/>
 
 </LinearLayout>
