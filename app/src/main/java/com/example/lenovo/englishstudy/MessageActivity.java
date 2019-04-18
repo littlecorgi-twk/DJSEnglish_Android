@@ -48,13 +48,11 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
     private String user_photo;
     private ImageView back_button;
     //   private CircleImageView imageView;
-    private int CROP_REQUEST_CODE = 3;
+    private int SET_REQUEST_CODE = 4;
     private String sex1;
     private MyView myView1, myView3, myView4;
     private TimePickerView pickerView;
-    private int year;
-    private int month;
-    private int day;
+    private int choose = 1;
     private String time;
 
     @Override
@@ -104,7 +102,8 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
                 }
                 break;
             case 2:
-
+                Intent intent = new Intent(MessageActivity.this, SetNameActivity.class);
+                startActivityForResult(intent, SET_REQUEST_CODE);
                 break;
             case 3:
                 AlertDialog.Builder builder = new AlertDialog.Builder(MessageActivity.this);
@@ -116,11 +115,12 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
                  * 第二个参数代表索引，指定默认哪一个单选框被勾选上，1表示默认'女' 会被勾选上
                  * 第三个参数给每一个单选项绑定一个监听器
                  */
-                builder.setSingleChoiceItems(sex, 1, new DialogInterface.OnClickListener()
+                builder.setSingleChoiceItems(sex, choose, new DialogInterface.OnClickListener()
                 {
                     @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
+                        choose = which;
                         dialog.dismiss();
                         sex1 = sex[which];
                         myView3.setRightText(sex1);
@@ -134,6 +134,7 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
             //    textView.setText(sex1);
                 break;
             case 4:
+                Calendar calendar = Calendar.getInstance();
                 pickerView = new TimePickerView.Builder(this, new TimePickerView.OnTimeSelectListener() {
                     @Override
                     public void onTimeSelect(Date date, View v) {
@@ -142,8 +143,12 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
                         oneItem.removeViewAt(3);
                         oneItem.addView(myView4, 3);
                     }
-                }).build();
-                timeInit();
+                })
+                        .setRange(1900, calendar.get(Calendar.YEAR))
+                        .setType(new boolean[]{true, true, true, false, false, false})
+                        .setLabel("年", "月", "日", "", "", "")
+                        .isCenterLabel(true)
+                        .build();
                 myView4.setRightText(time);
                 oneItem.removeViewAt(3);
                 oneItem.addView(myView4, 3);
@@ -191,6 +196,8 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
                         String filePath = file.getPath();
                         uploadImage(filePath);
                     }
+                    break;
+                case 4:
                     break;
 
             }
@@ -289,29 +296,9 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
         });
     }
 
-    public void timeInit() {
-        pickerView.setDate(Calendar.getInstance());
-        final Calendar calendar = Calendar.getInstance();
-        year = calendar.get(Calendar.YEAR);
-        month = calendar.get(Calendar.MONTH);
-        day = calendar.get(Calendar.DAY_OF_MONTH);
-        if(month > 9) {
-            if(day < 10) {
-                time = year + "-" + (month+1) + "-0" + day;
-            } else {
-                time = year + "-" + (month+1) + "-" + day;
-            }
-        } else {
-            if(day < 10) {
-                time = year + "-0" + (month+1) + "-0" + day;
-            } else {
-                time = year + "-0" + (month+1) + "-" + day;
-            }
-        }
-    }
 
     public static String getTime(Date date) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         return format.format(date);
     }
 
