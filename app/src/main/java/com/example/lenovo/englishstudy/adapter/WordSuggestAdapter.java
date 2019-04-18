@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.example.lenovo.englishstudy.R;
 import com.example.lenovo.englishstudy.bean.WordSuggest;
-import com.example.lenovo.englishstudy.searchHistory.OnSearchHistoryListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +22,6 @@ import java.util.List;
 public class WordSuggestAdapter extends BaseAdapter {
 
     private Context mContext;
-    private OnSearchHistoryListener onSearchHistoryListener;
     private List<WordSuggest.DataBean.EntriesBean> mList = new ArrayList<>();
     private boolean flag; // flag为true代表搜索结果，false代表历史
 
@@ -74,9 +72,7 @@ public class WordSuggestAdapter extends BaseAdapter {
             viewHolder.mButtton_delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (onSearchHistoryListener != null) {
-                        mOnItemDeleteListener.onDeleteClick(position);
-                    }
+                    mOnItemDeleteListener.onDeleteClick(position);
                 }
             });
         }
@@ -86,13 +82,13 @@ public class WordSuggestAdapter extends BaseAdapter {
     /**
      * 删除按钮的监听接口
      */
-    public interface onItemDeleteListener {
+    public interface OnItemDeleteListener {
         void onDeleteClick(int i);
     }
 
-    private onItemDeleteListener mOnItemDeleteListener;
+    private OnItemDeleteListener mOnItemDeleteListener;
 
-    public void setOnItemDeleteClickListener(onItemDeleteListener mOnItemDeleteListener) {
+    public void setOnItemDeleteClickListener(OnItemDeleteListener mOnItemDeleteListener) {
         this.mOnItemDeleteListener = mOnItemDeleteListener;
     }
 

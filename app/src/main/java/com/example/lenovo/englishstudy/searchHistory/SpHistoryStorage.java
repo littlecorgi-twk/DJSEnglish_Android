@@ -59,8 +59,7 @@ public class SpHistoryStorage {
      * @param key
      */
     public void remove(String key) {
-        SharedPreferences sp = context.getSharedPreferences(SEARCH_HISTORY,
-                Context.MODE_PRIVATE);
+        SharedPreferences sp = context.getSharedPreferences(SEARCH_HISTORY, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.remove(key);
         editor.commit();
@@ -70,8 +69,7 @@ public class SpHistoryStorage {
      * 清空历史记录
      */
     public void clear() {
-        SharedPreferences sp = context.getSharedPreferences(SEARCH_HISTORY,
-                Context.MODE_PRIVATE);
+        SharedPreferences sp = context.getSharedPreferences(SEARCH_HISTORY, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.clear();
         editor.commit();
