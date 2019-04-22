@@ -25,4 +25,12 @@ public class MessageVerify {
     public void setMsg(String msg) {
         this.msg = msg;
     }
+
+    @Override
+    public String toString() {
+        return "MessageVerify{" +
+                "status=" + status +
+                ", msg='" + msg + '\'' +
+                '}';
+    }
 }

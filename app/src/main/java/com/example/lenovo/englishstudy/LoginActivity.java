@@ -3,11 +3,19 @@ package com.example.lenovo.englishstudy;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
+import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
+import com.example.lenovo.englishstudy.Util.GetRequest_Interface;
+import com.example.lenovo.englishstudy.bean.LoginMessage;
 import com.tencent.connect.UserInfo;
 import com.tencent.connect.auth.QQToken;
 import com.tencent.connect.common.Constants;
@@ -18,6 +26,12 @@ import com.tencent.tauth.UiError;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 
 public class LoginActivity extends AppCompatActivity {
     private ImageView cancel;
@@ -25,12 +39,23 @@ public class LoginActivity extends AppCompatActivity {
     private Tencent mTencent;
     //    private UserFragment userFragment = new UserFragment();
     private String user_name = "null", user_photo = " ";
-    private TextView register;
+    private TextView register, forget_password;
+    private EditText login_phone, login_password;
+    private Button button_login;
+    private ToggleButton toggleButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        forget_password = findViewById(R.id.forget_password);
+        forget_password.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this, FindPasswordActivity.class);
+                startActivity(intent);
+            }
+        });
         register = findViewById(R.id.register);
         register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,8 +81,28 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
-
-
+        login_phone = findViewById(R.id.login_phone);
+        login_password = findViewById(R.id.login_password);
+        button_login = findViewById(R.id.button_login);
+        button_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                requestLogin(login_phone.getText().toString(), login_password.getText().toString());
+            }
+        });
+        toggleButton = findViewById(R.id.l_toggle_button);
+        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (isChecked) {
+                    login_password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    login_password.setSelection(login_password.getText().toString().length());
+                } else {
+                    login_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    login_password.setSelection(login_password.getText().toString().length());
+                }
+            }
+        });
     }
 
     @Override
@@ -146,6 +191,39 @@ public class LoginActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public void requestLogin(final String phoneNumber, final String password) {
+        Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl("http://47.102.206.19:8080/user/")
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+        GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
+        Call<LoginMessage> call = request.getLoginCall(phoneNumber, password);
+        call.enqueue(new Callback<LoginMessage>() {
+            @Override
+            public void onResponse(Call<LoginMessage> call, Response<LoginMessage> response) {
+                LoginMessage loginMessage = response.body();
+                if(loginMessage != null) {
+                    if(loginMessage.getStatus() == 0 && loginMessage.getMsg().equals("登录成功")) {
+                        Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent();
+                        intent.putExtra("user_name", loginMessage.getData().getUser().getName() + " ");
+                        intent.putExtra("user_photo", user_photo);
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    } else if(loginMessage.getStatus() == 1) {
+                        Toast.makeText(LoginActivity.this, loginMessage.getMsg(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<LoginMessage> call, Throwable t) {
+                t.printStackTrace();
+                Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }

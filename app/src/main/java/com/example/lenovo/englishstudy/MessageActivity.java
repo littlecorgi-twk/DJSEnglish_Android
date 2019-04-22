@@ -101,7 +101,7 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
                 break;
             case 2:
                 Intent intent = new Intent(MessageActivity.this, SetNameActivity.class);
-                startActivityForResult(intent, SET_REQUEST_CODE);
+                startActivity(intent);
                 break;
             case 3:
                 AlertDialog.Builder builder = new AlertDialog.Builder(MessageActivity.this);
