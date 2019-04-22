@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,6 +22,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.CycleInterpolator;
 import android.view.animation.RotateAnimation;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -33,12 +35,15 @@ import com.example.lenovo.englishstudy.Util.GetRequest_Interface;
 import com.example.lenovo.englishstudy.animation.ExplosionField;
 import com.example.lenovo.englishstudy.animation.MoveImageView;
 import com.example.lenovo.englishstudy.animation.PointFTypeEvaluator;
+import com.example.lenovo.englishstudy.bean.WordList;
 import com.example.lenovo.englishstudy.bean.WordTranslate;
 import com.example.lenovo.englishstudy.db.Sentence;
 import com.example.lenovo.englishstudy.userdefined.FlowLayout;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -60,18 +65,15 @@ public class ChooseFragment extends Fragment {
     private Boolean flag1 = true;
     private Boolean flag2 = false;
     private Boolean flag3 = false;
-    private String mNames[] = {
-            "welcome", "android", "TextView",
-            "apple", "experience", "kobe bryant",
-            "jordan", "layout", "viewgroup",
-            "margin", "padding", "text",
-            "name", "type", "search", "logcat"
-    };
+    private List<String> mNames = new ArrayList<>();
+  //  private String mNames[] = {};
     private FlowLayout mFlowLayout;
+    private View view;
+    private ImageButton change_word;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.choosefragment, container, false);
+        view = inflater.inflate(R.layout.choosefragment, container, false);
         end = view.findViewById(R.id.end);
         end.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,10 +101,25 @@ public class ChooseFragment extends Fragment {
         ianswer.setVisibility(View.GONE);
         contain = view.findViewById(R.id.search);
         hezi = view.findViewById(R.id.hezi);
-        initChildViews(view);
+        change_word = view.findViewById(R.id.change_word);
+    //    initChildViews(view);
         return view;
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.d("999999", "1");
+        requestWordList();
+        change_word.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mFlowLayout.removeAllViews();
+                mNames.clear();
+                requestWordList();
+            }
+        });
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -271,10 +288,10 @@ public class ChooseFragment extends Fragment {
         lp.rightMargin = 10;
         lp.topMargin = 10;
         lp.bottomMargin = 10;
-        for (int i = 0; i < mNames.length; i++) {
+        for (int i = 0; i < mNames.size(); i++) {
             final TextView textView = new TextView(getContext());
             textView.setBackgroundDrawable(getResources().getDrawable(R.drawable.textview));
-            textView.setText(mNames[i]);
+            textView.setText(mNames.get(i));
             textView.setTextColor(Color.BLACK);
             mFlowLayout.addView(textView, lp);
 
@@ -313,86 +330,63 @@ public class ChooseFragment extends Fragment {
             @Override
             public void onResponse(Call<WordTranslate> call, Response<WordTranslate> response) {
                 final WordTranslate wordTranslate = response.body();
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (wordTranslate != null) {
-                            Sentence sentence = new Sentence();
-                            sentence.setSentence(word);
-                            sentence.setSentence_translate(wordTranslate.getTrans_result().get(0).getDst());
-                            sentence.save();
-                            if (sentence.save()) {
-                            } else {
-                            }
-                            answer3.setText(wordTranslate.getTrans_result().get(0).getDst());
-                            mFlowLayout.removeAllViews();
-                            initChildViews(getView());
-                        } else {
-                            Toast.makeText(getActivity(), "获取翻译失败", Toast.LENGTH_SHORT).show();
-                        }
+                if (wordTranslate != null) {
+                    Sentence sentence = new Sentence();
+                    sentence.setSentence(word);
+                    sentence.setSentence_translate(wordTranslate.getTrans_result().get(0).getDst());
+                    sentence.save();
+                    if (sentence.save()) {
+                    } else {
                     }
-                });
+                    answer3.setText(wordTranslate.getTrans_result().get(0).getDst());
+                    mFlowLayout.removeAllViews();
+                    initChildViews(getView());
+                } else {
+                    Toast.makeText(getActivity(), "获取翻译失败", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
             public void onFailure(Call<WordTranslate> call, Throwable t) {
                 t.printStackTrace();
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getActivity(), "获取翻译失败", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                Toast.makeText(getActivity(), "获取翻译失败", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    /*public void requestWordTranslate(final String word) {
-        String salt = String.valueOf(System.currentTimeMillis());
-        String wordTranslateUrl = "http://api.fanyi.baidu.com/api/trans/vip/translate?q="+ word +
-                "&from=en&to=zh&appid=20180809000192979&salt=1435660288"+"&sign=" + md5("20180809000192979"+ word + "1435660288" + "ty5IoV55tyJoTtK5WBid");
-
-        HttpUtil.sendHttpRequest(wordTranslateUrl, new Callback() {
+    public void requestWordList() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://47.102.206.19:8080/words/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
+        Call<WordList> call = request.getWordListCall();
+        call.enqueue(new Callback<WordList>() {
             @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getActivity(), "获取翻译失败", Toast.LENGTH_SHORT).show();
+            public void onResponse(Call<WordList> call, Response<WordList> response) {
+                Log.d("999999", "2");
+                final WordList wordList = response.body();
+                Log.d("999999", response.toString());
+                if(wordList != null) {
+                    Log.d("999999", wordList.toString());
+                    if(wordList.getStatus() == 0) {
+                        for (WordList.DataBean word : wordList.getData()) {
+                            Log.d("666666",word.getWord());
+                            mNames.add(word.getWord());
+                        }
+                        initChildViews(view);
                     }
-                });
+                }
             }
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                final String responseText = response.body().string();
-                final WordTranslate wordTranslate = Utility.handleWordTranslateResponse(responseText);
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if(wordTranslate != null) {
-                            Sentence sentence = new Sentence();
-                            sentence.setSentence(word);
-                            sentence.setSentence_translate(wordTranslate.getTrans_result().get(0).getDst());
-                            sentence.save();
-                            if (sentence.save()) {
-                            } else {
-                            }
-                            answer3.setText(wordTranslate.getTrans_result().get(0).getDst());
-                            mFlowLayout.removeAllViews();
-                            initChildViews(getView());
-                        }
-                        else {
-                            Toast.makeText(getActivity(), "获取翻译失败", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-
+            public void onFailure(Call<WordList> call, Throwable t) {
+                t.printStackTrace();
+                Toast.makeText(getActivity(), "获取单词失败", Toast.LENGTH_SHORT).show();
             }
         });
 
-    }*/
+    }
 
     public static String md5(String string) {
         if (TextUtils.isEmpty(string)) {
