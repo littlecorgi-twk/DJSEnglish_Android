@@ -46,7 +46,7 @@ public class UserFragment extends Fragment implements MyView.OnRootClickListener
         final String user_name = sharedPreferences.getString("user_name", "");
         final String user_photo = sharedPreferences.getString("user_photo", "");
 
-        if (user_name != "" && user_photo != "") {
+        if (!user_name.equals("null") && !user_photo.equals("")) {
             login.setText(user_name);
             login_msg.setText("点击查看个人主页");
             Glide.with(getContext()).load(user_photo).into(photo);
@@ -61,7 +61,7 @@ public class UserFragment extends Fragment implements MyView.OnRootClickListener
 //                    startActivityForResult(new Intent(getContext(), LoginActivity.class), 1);
                     Intent intent = new Intent(getActivity(), UserActivity.class);
 //                    intent.putExtra("u_name", user_name);
- //                   intent.putExtra("u_photo", user_photo);
+//                   intent.putExtra("u_photo", user_photo);
                     startActivity(intent);
                 }
 

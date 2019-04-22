@@ -18,15 +18,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SetNameActivity"></activity>
+        <activity android:name=".FindPasswordActivity"></activity>
+        <activity android:name=".SetNameActivity" />
 
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
 
-        <activity android:name=".MessageActivity"></activity>
+        <activity android:name=".MessageActivity" />
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".WordSuggestDetailActivity"></activity>
+        <activity android:name=".WordSuggestDetailActivity" />
         <activity android:name=".UserActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".ChooseHistoryActivity" />
@@ -57,7 +58,7 @@
         <activity
             android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
     </application>
 
 </manifest>

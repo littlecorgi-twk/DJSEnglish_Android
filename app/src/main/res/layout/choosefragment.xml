@@ -37,6 +37,29 @@
 
         </com.example.lenovo.englishstudy.userdefined.FlowLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/hezi"
+            android:gravity="center"
+            android:layout_marginBottom="180dp"
+            android:orientation="horizontal">
+        <ImageButton
+            android:id="@+id/change_word"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:scaleType="centerCrop"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_change_word"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="换一批"
+                android:textSize="18sp" />
+        </LinearLayout>
+
 
         <ImageView
             android:id="@+id/end"
