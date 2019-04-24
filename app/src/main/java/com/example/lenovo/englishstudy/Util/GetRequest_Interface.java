@@ -1,5 +1,6 @@
 package com.example.lenovo.englishstudy.Util;
 
+import com.example.lenovo.englishstudy.bean.ArticleList;
 import com.example.lenovo.englishstudy.bean.ImageMessage;
 import com.example.lenovo.englishstudy.bean.LoginMessage;
 import com.example.lenovo.englishstudy.bean.MessageVerify;
@@ -62,5 +63,9 @@ public interface GetRequest_Interface {
     @Headers("Content-Type: application/x-www-form-urlencoded")
     @POST("get_user_info.do")
     Call<UserMessage> getMessageCall();
+
+    @Headers("Content-Type: application/x-www-form-urlencoded")
+    @POST("article/get_list.do")
+    Call<ArticleList> getArticleList();
 
 }
