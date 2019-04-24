@@ -66,6 +66,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="35dp"
             android:hint="登录密码"
+            android:inputType="textPassword"
             android:paddingBottom="20dp"
             android:textColor="#E4090808"
             android:textSize="18sp"

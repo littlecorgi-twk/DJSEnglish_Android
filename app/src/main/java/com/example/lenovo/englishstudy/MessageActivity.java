@@ -48,7 +48,7 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
     //   private CircleImageView imageView;
     private int SET_REQUEST_CODE = 4;
     private String sex1;
-    private MyView myView1, myView3, myView4;
+    private MyView myView1, myView2, myView3, myView4;
     private TimePickerView pickerView;
     private int choose = 1;
     private String time;
@@ -71,13 +71,14 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
                 finish();
             }
         });
-        myView1 =  new MyView(this)
+        myView1 = new MyView(this)
                         .initMine2("头像", user_photo, true)
                         .setOnRootClickListener(this, 1);
         oneItem.addView(myView1);
-        oneItem.addView(new MyView(this)
+        myView2 = new MyView(this)
                 .initMine("昵称", user_name, true)
-                .setOnRootClickListener(this, 2));
+                .setOnRootClickListener(this, 2);
+        oneItem.addView(myView2);
         myView3 = new MyView(this)
                 .initMine("性别", "女", true)
                 .setOnRootClickListener(this, 3);
@@ -196,6 +197,10 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
                     }
                     break;
                 case 4:
+                    String user_name = data.getStringExtra("userName");
+                    myView2.setRightText(user_name);
+                    oneItem.removeViewAt(1);
+                    oneItem.addView(myView2, 1);
                     break;
 
             }
@@ -259,7 +264,7 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
 
     public void uploadImage(String filePath) {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://www.zhangshuo.fun:8080/user/")
+                .baseUrl("http://47.102.206.19:8080/user/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         final GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
