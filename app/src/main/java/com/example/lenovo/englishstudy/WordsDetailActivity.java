@@ -1,9 +1,10 @@
 package com.example.lenovo.englishstudy;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,7 @@ public class WordsDetailActivity extends AppCompatActivity {
     private TextView mWord;
     private TextView mPhoneticSymbol;
     private TextView mMeaning;
+    private int articleNumber;
 
     private String mNames[] = {
             "welcome", "android", "TextView",
@@ -41,6 +43,8 @@ public class WordsDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_words_detail);
+        Intent intent = getIntent();
+        articleNumber = intent.getIntExtra("ArticleNumber", 0);
         initPopupWindow();
         initChildViews();
     }
