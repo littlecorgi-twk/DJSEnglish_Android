@@ -6,19 +6,27 @@ package com.example.lenovo.englishstudy.viewPageCard;
  * @email a1203991686@126.com
  */
 public class CardItem {
-    private int mTextResource;
-    private int mTitleResource;
+    private String text;
+    private String imageUrl;
 
-    public CardItem(int title, int text) {
-        mTitleResource = title;
-        mTextResource = text;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public int getText() {
-        return mTextResource;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
-    public int getTitle() {
-        return mTitleResource;
+    public CardItem(String text, String imageUrl) {
+        this.text = text;
+        this.imageUrl = imageUrl;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 }
