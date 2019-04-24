@@ -316,7 +316,6 @@ public class ChooseFragment extends Fragment {
             });
         }
 
-
     }
 
     public void requestWordTranslate(final String word) {
