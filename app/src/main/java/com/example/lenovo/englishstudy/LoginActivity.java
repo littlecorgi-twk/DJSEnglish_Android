@@ -123,8 +123,6 @@ public class LoginActivity extends AppCompatActivity {
         public void onComplete(Object o) {
             initOpenIdAndToken(o);
             getUserInfo();
-
-
             Toast.makeText(getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
         }
 
@@ -208,8 +206,8 @@ public class LoginActivity extends AppCompatActivity {
                     if(loginMessage.getStatus() == 0 && loginMessage.getMsg().equals("登录成功")) {
                         Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent();
-                        intent.putExtra("user_name", loginMessage.getData().getUser().getName() + " ");
-                        intent.putExtra("user_photo", user_photo);
+                        intent.putExtra("user_name", loginMessage.getData().getUser().getName());
+                        intent.putExtra("user_photo", loginMessage.getData().getUser().getImg());
                         setResult(RESULT_OK, intent);
                         finish();
                     } else if(loginMessage.getStatus() == 1) {
