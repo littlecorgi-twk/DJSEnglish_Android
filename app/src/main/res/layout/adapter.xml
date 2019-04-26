@@ -7,6 +7,12 @@
     android:layout_gravity="center"
     app:cardUseCompatPadding="true">
 
+    <ImageView
+        android:id="@+id/iv_adapter_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/ic_chatroom"/>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
