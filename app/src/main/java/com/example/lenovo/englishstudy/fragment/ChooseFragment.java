@@ -69,7 +69,8 @@ public class ChooseFragment extends Fragment {
   //  private String mNames[] = {};
     private FlowLayout mFlowLayout;
     private View view;
-    private ImageButton change_word;
+    private ImageButton ichange_word;
+    private TextView tchange_word;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -101,7 +102,8 @@ public class ChooseFragment extends Fragment {
         ianswer.setVisibility(View.GONE);
         contain = view.findViewById(R.id.search);
         hezi = view.findViewById(R.id.hezi);
-        change_word = view.findViewById(R.id.change_word);
+        ichange_word = view.findViewById(R.id.image_change_word);
+        tchange_word = view.findViewById(R.id.text_change_word);
     //    initChildViews(view);
         return view;
     }
@@ -111,7 +113,15 @@ public class ChooseFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         Log.d("999999", "1");
         requestWordList();
-        change_word.setOnClickListener(new View.OnClickListener() {
+        ichange_word.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mFlowLayout.removeAllViews();
+                mNames.clear();
+                requestWordList();
+            }
+        });
+        tchange_word.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mFlowLayout.removeAllViews();

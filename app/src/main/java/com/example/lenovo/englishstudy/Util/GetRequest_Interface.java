@@ -16,6 +16,7 @@ import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -52,24 +53,32 @@ public interface GetRequest_Interface {
     Call<LoginMessage> getLoginCall(@Field("phoneNumber") String phoneNumber, @Field("password") String password);
     
     @Multipart
+//    @Headers("Content-Type: application/x-www-form-urlencoded")
     @POST("upload.do")
-    Call<ImageMessage> upload(@Part MultipartBody.Part file);
+    Call<ImageMessage> upload(@Part MultipartBody.Part file, @Header("token") String token);
 
     @Headers("Content-Type: application/x-www-form-urlencoded")
     @POST("get_words.do")
     Call<WordList> getWordListCall();
 
+    @FormUrlEncoded
     @Headers("Content-Type: application/x-www-form-urlencoded")
-    @POST("get_user_info.do")
-    Call<UserMessage> getMessageCall();
+    @POST("update_user_info.do")
+    Call<UserMessage> updateMessageCall(@Header("token") String token);
 
     @FormUrlEncoded
     @Headers("Content-Type: application/x-www-form-urlencoded")
     @POST("check_username.do")
     Call<MessageVerify> getUserNameCall(@Field("userName") String userName);
 
+    @FormUrlEncoded
+    @Headers("Content-Type: application/x-www-form-urlencoded")
+    @POST("forget_reset_password.do")
+    Call<MessageVerify> forgetPasswordCall(@Field("phoneNumber") String phoneNumber, @Field("msgCode") String msgCode, @Field("password") String password);
+
     @Headers("Content-Type: application/x-www-form-urlencoded")
     @POST("article/get_list.do")
     Call<ArticleList> getArticleList();
+
 
 }

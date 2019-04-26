@@ -1,6 +1,8 @@
 package com.example.lenovo.englishstudy;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.HideReturnsTransformationMethod;
@@ -38,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     private ImageView qq;
     private Tencent mTencent;
     //    private UserFragment userFragment = new UserFragment();
-    private String user_name = "null", user_photo = " ";
+    private String user_name = "null", user_photo = " ", token;
     private TextView register, forget_password;
     private EditText login_phone, login_password;
     private Button button_login;
@@ -205,6 +207,11 @@ public class LoginActivity extends AppCompatActivity {
                 if(loginMessage != null) {
                     if(loginMessage.getStatus() == 0 && loginMessage.getMsg().equals("登录成功")) {
                         Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+                        token = loginMessage.getData().getToken();
+                        SharedPreferences sharedPreferences = getSharedPreferences("user_token", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("token", token);
+                        editor.commit();
                         Intent intent = new Intent();
                         intent.putExtra("user_name", loginMessage.getData().getUser().getName());
                         intent.putExtra("user_photo", loginMessage.getData().getUser().getImg());
@@ -223,5 +230,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
 }
