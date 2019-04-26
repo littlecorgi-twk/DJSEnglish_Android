@@ -1,8 +1,10 @@
 package com.example.lenovo.englishstudy;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -12,6 +14,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -102,7 +105,7 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
                 break;
             case 2:
                 Intent intent = new Intent(MessageActivity.this, SetNameActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, 4);
                 break;
             case 3:
                 AlertDialog.Builder builder = new AlertDialog.Builder(MessageActivity.this);
@@ -152,16 +155,6 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
                 oneItem.removeViewAt(3);
                 oneItem.addView(myView4, 3);
                 pickerView.show();
-//                pickerView.setOnTimeSelectListener(new TimePickerView.OnTimeSelectListener() {
-//                    @Override
-//                    public void onTimeSelect(Date date) {
-//                        time = getTime(date);
-//                        myView4.setRightText(time);
-//                        oneItem.removeViewAt(3);
-//                        oneItem.addView(myView4, 3);
-//                    }
-//                });
-
                 break;
         }
     }
@@ -197,6 +190,7 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
                     }
                     break;
                 case 4:
+                    Log.d("787878", "2");
                     String user_name = data.getStringExtra("userName");
                     myView2.setRightText(user_name);
                     oneItem.removeViewAt(1);
@@ -263,6 +257,8 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
 
 
     public void uploadImage(String filePath) {
+        SharedPreferences sharedPreferences = getSharedPreferences("user_token", Context.MODE_PRIVATE);
+        final String token = sharedPreferences.getString("token", "");
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://47.102.206.19:8080/user/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -271,15 +267,21 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
         File file = new File(filePath);
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("upload_file", file.getName(), requestFile);
-        Call<ImageMessage> call = request.upload(body);
+        Call<ImageMessage> call = request.upload(body, token);
         call.enqueue(new Callback<ImageMessage>() {
             @Override
             public void onResponse(Call<ImageMessage> call, Response<ImageMessage> response) {
                 final ImageMessage imageMessage = response.body();
-
+                Log.d("878787", "0");
                 if (imageMessage != null) {
+                    Log.d("878787", imageMessage.toString());
                     if (imageMessage.getStatus() == 0) {
+                        Log.d("878787", "1");
+                        Log.d("878787", imageMessage.getData().getUrl());
                         Toast.makeText(MessageActivity.this, "上传成功", Toast.LENGTH_SHORT).show();
+                    } else if (imageMessage.getStatus() == 1) {
+                        Log.d("878787", "2");
+                        Toast.makeText(MessageActivity.this, "用户未登录", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -289,6 +291,7 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
             @Override
             public void onFailure(Call<ImageMessage> call, Throwable t) {
                 t.printStackTrace();
+                Log.d("878787","3");
                 Toast.makeText(MessageActivity.this, "上传失败", Toast.LENGTH_SHORT).show();
             }
         });

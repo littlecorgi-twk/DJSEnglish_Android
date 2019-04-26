@@ -62,15 +62,14 @@ public class SetNameActivity extends AppCompatActivity {
             public void onResponse(Call<MessageVerify> call, Response<MessageVerify> response) {
                 final MessageVerify messageVerify = response.body();
                 if(messageVerify != null) {
-                    Log.d("787878", messageVerify.toString());
                     if(messageVerify.getStatus() == 0 && messageVerify.getMsg().equals("昵称可用")) {
-                        Log.d("787878", "3");
                         Toast.makeText(SetNameActivity.this, "昵称修改成功", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent();
                         intent.putExtra("userName", userName);
-                        setResult(RESULT_OK);
+                        Log.d("787878", "1");
+                        setResult(RESULT_OK, intent);
+                        finish();
                     }else if(messageVerify.getStatus() == 1 && messageVerify.getMsg().equals("昵称重复")) {
-                        Log.d("787878", "4");
                         Toast.makeText(SetNameActivity.this, messageVerify.getMsg(), Toast.LENGTH_SHORT).show();
                     }
                 }
