@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,6 +46,7 @@ public class WordsDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_words_detail);
         Intent intent = getIntent();
         articleNumber = intent.getIntExtra("ArticleNumber", 0);
+        Log.d("ArticleNumber", articleNumber + "");
         initPopupWindow();
         initChildViews();
     }
