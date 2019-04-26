@@ -2,19 +2,16 @@ package com.example.lenovo.englishstudy.viewPageCard;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.example.lenovo.englishstudy.R;
 import com.example.lenovo.englishstudy.WordsDetailActivity;
 
@@ -65,25 +62,21 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
     }
 
     @Override
-    public Object instantiateItem(final ViewGroup container, int position) {
+    public Object instantiateItem(final ViewGroup container, final int position) {
         View view = LayoutInflater.from(container.getContext())
                 .inflate(R.layout.adapter, container, false);
         container.addView(view);
         bind(mData.get(position), view);
         cardView = view.findViewById(R.id.cardView);
-        View.OnClickListener onClickListener = null;
-        for (int i = 0; i < getCount(); i++) {
-            final int finalI = i;
-            onClickListener = new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context, WordsDetailActivity.class);
-                    intent.putExtra("ArticleNumber", finalI);
-                    context.startActivity(intent);
-                }
-            };
-        }
-        cardView.setOnClickListener(onClickListener);
+
+        cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, WordsDetailActivity.class);
+                intent.putExtra("ArticleNumber", position);
+                context.startActivity(intent);
+            }
+        });
 
         if (mBaseElevation == 0) {
             mBaseElevation = cardView.getCardElevation();
@@ -102,18 +95,12 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
 
     private void bind(CardItem item, View view) {
         final TextView contentTextView = view.findViewById(R.id.contentTextView);
+        ImageView imageView = view.findViewById(R.id.iv_adapter_background);
         contentTextView.setText(item.getText());
+        Log.d("ArticleNumber", item.getImageUrl());
         Glide.with(context)
                 .load(item.getImageUrl())
-                .asBitmap()//签到整体 背景
-                .into(new SimpleTarget<Bitmap>(180, 180) {        //设置宽高
-                    @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                        Drawable drawable = new BitmapDrawable(resource);
-                        // contentTextView.setBackground(drawable);    //设置背景
-                        contentTextView.setBackgroundResource(R.drawable.ic_chatroom2);
-                    }
-                });
+                .into(imageView);
     }
 
 }
