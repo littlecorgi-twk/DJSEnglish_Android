@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,7 +96,6 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
         final TextView contentTextView = view.findViewById(R.id.contentTextView);
         ImageView imageView = view.findViewById(R.id.iv_adapter_background);
         contentTextView.setText(item.getText());
-        Log.d("ArticleNumber", item.getImageUrl());
         Glide.with(context)
                 .load(item.getImageUrl())
                 .into(imageView);

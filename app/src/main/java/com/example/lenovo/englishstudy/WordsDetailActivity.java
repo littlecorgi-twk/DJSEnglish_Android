@@ -8,14 +8,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lenovo.englishstudy.Util.GetRequest_Interface;
-import com.example.lenovo.englishstudy.bean.WordMeanig;
+import com.example.lenovo.englishstudy.bean.ArticleDetail;
+import com.example.lenovo.englishstudy.bean.WordSuggestDetail;
 import com.example.lenovo.englishstudy.userdefined.FlowLayout;
 
 import retrofit2.Call;
@@ -24,13 +27,18 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class WordsDetailActivity extends AppCompatActivity {
+public class WordsDetailActivity extends AppCompatActivity implements View.OnTouchListener {
 
     private PopupWindow popupWindow;
     private TextView mWord;
     private TextView mPhoneticSymbol;
     private TextView mMeaning;
+    private Button mButton;
     private int articleNumber;
+    private float x1;
+    private float y1;
+    private float x2;
+    private float y2;
 
     private String mNames[] = {
             "welcome", "android", "TextView",
@@ -46,7 +54,6 @@ public class WordsDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_words_detail);
         Intent intent = getIntent();
         articleNumber = intent.getIntExtra("ArticleNumber", 0);
-        Log.d("ArticleNumber", articleNumber + "");
         initPopupWindow();
         initChildViews();
     }
@@ -67,6 +74,9 @@ public class WordsDetailActivity extends AppCompatActivity {
         mWord = view.findViewById(R.id.tv_word);
         mPhoneticSymbol = view.findViewById(R.id.tv_phonetic_symbol);
         mMeaning = view.findViewById(R.id.tv_meaning);
+        mButton = view.findViewById(R.id.button_word_detail_popup_window_changeHeight);
+
+        mButton.setOnTouchListener(this);
     }
 
     void initChildViews() {
@@ -94,89 +104,94 @@ public class WordsDetailActivity extends AppCompatActivity {
 
     public void requestWordMeaning(final String word) {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("q=account&")
+                .baseUrl("http://dict.youdao.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
 
-        retrofit2.Call<WordMeanig> call = request.getWordMeaningCall(word);
+        retrofit2.Call<WordSuggestDetail> call = request.getWordSuggestDetailCall(word);
 
-        call.enqueue(new Callback<WordMeanig>() {
+        call.enqueue(new Callback<WordSuggestDetail>() {
             @Override
-            public void onResponse(retrofit2.Call<WordMeanig> call, final Response<WordMeanig> response) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        showWordMeaning(response.body());
-                    }
-                });
+            public void onResponse(retrofit2.Call<WordSuggestDetail> call, final Response<WordSuggestDetail> response) {
+                showWordMeaning(response.body());
             }
 
             @Override
-            public void onFailure(Call<WordMeanig> call, Throwable t) {
+            public void onFailure(Call<WordSuggestDetail> call, Throwable t) {
                 t.printStackTrace();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(WordsDetailActivity.this, "获取单词联想失败1", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                Toast.makeText(WordsDetailActivity.this, "获取单词联想失败1", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    /*public void requestWordMeaning(final String word) {
-        String wordMeaningUrl = "http://dict.youdao.com/jsonapi?jsonversion=2&client=mobile&q=" + word +
-            "&dicts=%7B%22count%22%3A99%2C%22dicts%22%3A%5B%5B%22ec%22%2C%22ce%22%2C%22newcj%22%2C%22newjc%22%2C%22kc%22%2C%22ck%22%2C%22fc%22%2C%22cf%22%2C%22multle%22%2C%22jtj%22%2C%22pic_dict%22%2C%22tc%22%2C%22ct%22%2C%22typos%22%2C%22special%22%2C%22tcb%22%2C%22baike%22%2C%22lang%22%2C%22simple%22%2C%22wordform%22%2C%22exam_dict%22%2C%22ctc%22%2C%22web_search%22%2C%22auth_sents_part%22%2C%22ec21%22%2C%22phrs%22%2C%22input%22%2C%22wikipedia_digest%22%2C%22ee%22%2C%22collins%22%2C%22ugc%22%2C%22media_sents_part%22%2C%22syno%22%2C%22rel_word%22%2C%22longman%22%2C%22ce_new%22%2C%22le%22%2C%22newcj_sents%22%2C%22blng_sents_part%22%2C%22hh%22%5D%2C%5B%22ugc%22%5D%2C%5B%22longman%22%5D%2C%5B%22newjc%22%5D%2C%5B%22newcj%22%5D%2C%5B%22web_trans%22%5D%2C%5B%22fanyi%22%5D%5D%7D&keyfrom=mdict.7.2.0.android&model=honor&mid=5.6.1&imei=659135764921685&vendor=wandoujia&screen=1080x1800&ssid=superman&network=wifi&abtest=2&xmlVersion=5.1";
-        HttpUtil.sendHttpRequest(wordMeaningUrl, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(WordsDetailActivity.this, "获取单词释义失败", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                final String responseText = response.body().string();
-                final WordMeanig wordMeanig = Utility.handleWordMeaningResponse(responseText);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (wordMeanig != null) {
-                            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(WordsDetailActivity.this).edit();
-                            editor.putString("wordMeaning", responseText);
-                            editor.apply();
-                            showWordMeaning(wordMeanig);
-                        } else {
-                            Toast.makeText(WordsDetailActivity.this, "获取单词释义失败", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-            }
-        });
-
-    }*/
-
-    public void showWordMeaning(WordMeanig wordMeanig) {
-        if (wordMeanig.getSimple().getQuery().equals("no word!")) {
+    public void showWordMeaning(WordSuggestDetail wordSuggestDetail) {
+        if (wordSuggestDetail.getEc().getWord().isEmpty()) {
             mWord.setText("查无此词...");
             mPhoneticSymbol.setText("");
             mMeaning.setText("");
         } else {
-            mWord.setText(wordMeanig.getSimple().getQuery());
-            String phoneticSymbol = "/" + wordMeanig.getSimple().getWord().get(0).getUkphone() + "/";
+            mWord.setText(wordSuggestDetail.getEc().getWord().get(0).getReturnphrase().getL().getI());
+            String phoneticSymbol = "/" + wordSuggestDetail.getSimple().getWord().get(0).getUkphone() + "/";
             mPhoneticSymbol.setText(phoneticSymbol);
             String meaning = "";
-            for (WordMeanig.EcBean.WordBean.TrsBean trsBean : wordMeanig.getEc().getWord().get(0).getTrs()) {
+            for (WordSuggestDetail.EcBean.WordBean.TrsBean trsBean : wordSuggestDetail.getEc().getWord().get(0).getTrs()) {
                 meaning = meaning.concat(trsBean.getTr().get(0).getL().getI().get(0)).concat("\n");
             }
             mMeaning.setText(meaning);
         }
+    }
+
+    public void requestArticleDetail(final int id) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://47.102.206.19:8080/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
+
+        retrofit2.Call<ArticleDetail> call = request.getArticleDetail(id);
+
+        call.enqueue(new Callback<ArticleDetail>() {
+            @Override
+            public void onResponse(retrofit2.Call<ArticleDetail> call, final Response<ArticleDetail> response) {
+                initChildViews();
+            }
+
+            @Override
+            public void onFailure(Call<ArticleDetail> call, Throwable t) {
+                t.printStackTrace();
+                Toast.makeText(WordsDetailActivity.this, "获取单词联想失败1", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        //继承了Activity的onTouchEvent方法，直接监听点击事件
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            //当手指按下的时候
+            y1 = event.getY();
+        }
+        if (event.getAction() == MotionEvent.ACTION_MOVE) {
+            //当手指移动的时候
+            y2 = event.getY();
+            if (y1 - y2 > 50) {
+                Toast.makeText(WordsDetailActivity.this, "向上滑", Toast.LENGTH_SHORT).show();
+                popupWindow.setHeight(100);
+                popupWindow.showAtLocation(LayoutInflater.from(WordsDetailActivity.this).inflate(R.layout.activity_words_detail, null), Gravity.BOTTOM, 0, 0);
+            } else if (y2 - y1 > 50) {
+                Toast.makeText(WordsDetailActivity.this, "向下滑", Toast.LENGTH_SHORT).show();
+                popupWindow.setHeight((int) y2);
+                popupWindow.showAtLocation(LayoutInflater.from(WordsDetailActivity.this).inflate(R.layout.activity_words_detail, null), Gravity.BOTTOM, 0, 0);
+            }
+        }
+        if (event.getAction() == MotionEvent.ACTION_UP) {
+            Log.i("Lgq", "sssssssll离开了lllll==");
+//            updview(nowpersion);
+        }
+        return super.onTouchEvent(event);
+//        return false;
     }
 }
