@@ -10,6 +10,7 @@ import android.view.View;
  * @Date 2019-01-24 17:33
  * @email a1203991686@126.com
  */
+
 public class ShadowTransformer implements ViewPager.OnPageChangeListener, ViewPager.PageTransformer {
     private ViewPager mViewPager;
     private CardAdapter mAdapter;
