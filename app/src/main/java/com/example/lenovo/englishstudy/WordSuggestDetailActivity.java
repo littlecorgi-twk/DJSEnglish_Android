@@ -105,7 +105,6 @@ public class WordSuggestDetailActivity extends AppCompatActivity {
         if (wordSuggestDetail.getEc().getWord().isEmpty()) {
             tvWordSuggestDetailContent.setText("查无此词！！！");
         } else {
-            tvWordSuggestDetailContent.setText("adsf");
             tvWordSuggestDetailContent.setText(wordSuggestDetail.getEc().getWord().get(0).getReturnphrase().getL().getI());
             tvWordSuggestDetailUkphone.setText(new StringBuffer("英" + '/' + wordSuggestDetail.getSimple().getWord().get(0).getUkphone() + '/'));
             tvWordSuggestDetailUsphone.setText(new StringBuffer("美" + '/' + wordSuggestDetail.getSimple().getWord().get(0).getUsphone() + '/'));
