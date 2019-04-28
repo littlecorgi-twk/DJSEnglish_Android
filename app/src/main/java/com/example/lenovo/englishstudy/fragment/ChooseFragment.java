@@ -304,7 +304,6 @@ public class ChooseFragment extends Fragment {
             textView.setText(mNames.get(i));
             textView.setTextColor(Color.BLACK);
             mFlowLayout.addView(textView, lp);
-
             textView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
