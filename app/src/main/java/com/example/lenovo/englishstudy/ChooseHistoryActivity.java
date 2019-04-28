@@ -102,6 +102,14 @@ public class ChooseHistoryActivity extends AppCompatActivity {
             textView.setTextColor(Color.BLACK);
             textView.setBackgroundDrawable(getResources().getDrawable(R.drawable.textview));
             mFlowLayout.addView(textView, lp);
+            textView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    mFlowLayout.removeView(textView);
+                    DataSupport.deleteAll(Sentence.class, "sentence = ?", textView.getText().toString());
+                    return true;  //false则表示长按会同时触发onLongClick和onClick 是否消耗长按事件
+                }
+            });
             textView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
