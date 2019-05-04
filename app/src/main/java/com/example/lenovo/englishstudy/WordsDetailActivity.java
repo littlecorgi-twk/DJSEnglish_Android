@@ -189,9 +189,7 @@ public class WordsDetailActivity extends AppCompatActivity implements View.OnTou
         }
         if (event.getAction() == MotionEvent.ACTION_UP) {
             Log.i("Lgq", "sssssssll离开了lllll==");
-//            updview(nowpersion);
         }
         return super.onTouchEvent(event);
-//        return false;
     }
 }
