@@ -15,11 +15,15 @@ import android.widget.Button;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.FrameLayout.LayoutParams;
 
 import com.example.lenovo.englishstudy.Util.GetRequest_Interface;
 import com.example.lenovo.englishstudy.bean.ArticleDetail;
 import com.example.lenovo.englishstudy.bean.WordSuggestDetail;
 import com.example.lenovo.englishstudy.userdefined.FlowLayout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,18 +39,9 @@ public class WordsDetailActivity extends AppCompatActivity implements View.OnTou
     private TextView mMeaning;
     private Button mButton;
     private int articleNumber;
-    private float x1;
     private float y1;
-    private float x2;
     private float y2;
-
-    private String mNames[] = {
-            "welcome", "android", "TextView",
-            "apple", "jamy", "kobe bryant",
-            "jordan", "layout", "viewgroup",
-            "margin", "padding", "text",
-            "name", "type", "search", "logcat"
-    };
+    private View vPopupWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +49,73 @@ public class WordsDetailActivity extends AppCompatActivity implements View.OnTou
         setContentView(R.layout.activity_words_detail);
         Intent intent = getIntent();
         articleNumber = intent.getIntExtra("ArticleNumber", 0);
+        requestArticleDetail(articleNumber);
         initPopupWindow();
-        initChildViews();
+    }
+
+    public void requestArticleDetail(final int id) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://47.102.206.19:8080/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        final GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
+
+        retrofit2.Call<ArticleDetail> call = request.getArticleDetail(id);
+
+        call.enqueue(new Callback<ArticleDetail>() {
+            @Override
+            public void onResponse(retrofit2.Call<ArticleDetail> call, final Response<ArticleDetail> response) {
+                initChildViews(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<ArticleDetail> call, Throwable t) {
+                t.printStackTrace();
+                Toast.makeText(WordsDetailActivity.this, "获取单词联想失败1", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    void initChildViews(ArticleDetail articleDetail) {
+        FlowLayout mFlowLayout = findViewById(R.id.fl_wordDetail);
+        ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lp.leftMargin = 5;
+        lp.rightMargin = 5;
+        lp.topMargin = 5;
+        lp.bottomMargin = 5;
+        char[] chs = articleDetail.getData().getText().toCharArray();
+        List<String> stringList = new ArrayList<>();
+        StringBuffer tempStr = new StringBuffer();
+        int j = 0;
+        for (int i = 0; i < chs.length; i++) {
+            if (chs[i] != ' ') {
+                tempStr.append(chs[i]);
+                j++;
+                if (i == chs.length - 1){
+                    j = 0;
+                    stringList.add(tempStr.toString());
+                }
+            } else {
+                j = 0;
+                stringList.add(tempStr.toString());
+                tempStr = new StringBuffer();
+            }
+        }
+        for (String mWord : stringList) {
+            final TextView mTextView = new TextView(this);
+            mTextView.setText(mWord);
+            mTextView.setTextColor(Color.BLACK);
+            mTextView.setBackgroundDrawable(getResources().getDrawable(R.drawable.textview));
+            mFlowLayout.addView(mTextView, lp);
+            mTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    requestWordMeaning(mTextView.getText().toString());
+                    popupWindow.showAtLocation(LayoutInflater.from(WordsDetailActivity.this).inflate(R.layout.activity_words_detail, null), Gravity.BOTTOM, 0, 0);
+                }
+            });
+        }
     }
 
     void initPopupWindow() {
@@ -76,30 +136,7 @@ public class WordsDetailActivity extends AppCompatActivity implements View.OnTou
         mMeaning = view.findViewById(R.id.tv_meaning);
         mButton = view.findViewById(R.id.button_word_detail_popup_window_changeHeight);
 
-        mButton.setOnTouchListener(this);
-    }
-
-    void initChildViews() {
-        FlowLayout mFlowLayout = findViewById(R.id.fl_wordDetail);
-        ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        lp.leftMargin = 5;
-        lp.rightMargin = 5;
-        lp.topMargin = 5;
-        lp.bottomMargin = 5;
-        for (int i = 0; i < mNames.length; i++) {
-            final TextView mTextView = new TextView(this);
-            mTextView.setText(mNames[i]);
-            mTextView.setTextColor(Color.BLACK);
-            mTextView.setBackgroundDrawable(getResources().getDrawable(R.drawable.textview));
-            mFlowLayout.addView(mTextView, lp);
-            mTextView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    requestWordMeaning(mTextView.getText().toString());
-                    popupWindow.showAtLocation(LayoutInflater.from(WordsDetailActivity.this).inflate(R.layout.activity_words_detail, null), Gravity.BOTTOM, 0, 0);
-                }
-            });
-        }
+        mButton.setOnTouchListener(this); // 重写了onTouch，就有可能把performClick给屏蔽了，这样这些点击操作就没办法完成了，所以就会有了这个警告
     }
 
     public void requestWordMeaning(final String word) {
@@ -127,7 +164,7 @@ public class WordsDetailActivity extends AppCompatActivity implements View.OnTou
     }
 
     public void showWordMeaning(WordSuggestDetail wordSuggestDetail) {
-        if (wordSuggestDetail.getEc().getWord().isEmpty()) {
+        if (wordSuggestDetail.getEc() == null) {
             mWord.setText("查无此词...");
             mPhoneticSymbol.setText("");
             mMeaning.setText("");
@@ -143,32 +180,11 @@ public class WordsDetailActivity extends AppCompatActivity implements View.OnTou
         }
     }
 
-    public void requestArticleDetail(final int id) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://47.102.206.19:8080/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
-
-        retrofit2.Call<ArticleDetail> call = request.getArticleDetail(id);
-
-        call.enqueue(new Callback<ArticleDetail>() {
-            @Override
-            public void onResponse(retrofit2.Call<ArticleDetail> call, final Response<ArticleDetail> response) {
-                initChildViews();
-            }
-
-            @Override
-            public void onFailure(Call<ArticleDetail> call, Throwable t) {
-                t.printStackTrace();
-                Toast.makeText(WordsDetailActivity.this, "获取单词联想失败1", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+
+        final LayoutInflater mLayoutInflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
+        vPopupWindow = mLayoutInflater.inflate(R.layout.word_detail_popup_window, null, false);
         //继承了Activity的onTouchEvent方法，直接监听点击事件
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             //当手指按下的时候
@@ -178,13 +194,27 @@ public class WordsDetailActivity extends AppCompatActivity implements View.OnTou
             //当手指移动的时候
             y2 = event.getY();
             if (y1 - y2 > 50) {
-                Toast.makeText(WordsDetailActivity.this, "向上滑", Toast.LENGTH_SHORT).show();
-                popupWindow.setHeight(100);
-                popupWindow.showAtLocation(LayoutInflater.from(WordsDetailActivity.this).inflate(R.layout.activity_words_detail, null), Gravity.BOTTOM, 0, 0);
+                Toast.makeText(WordsDetailActivity.this, "向上滑" + (y1 - y2), Toast.LENGTH_SHORT).show();
+//                LayoutParams lp = (LayoutParams) vPopupWindow.getLayoutParams();
+                LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, 139);
+                vPopupWindow.setLayoutParams(lp);
+                popupWindow.setContentView(vPopupWindow);
+                popupWindow.setHeight(LayoutParams.MATCH_PARENT);
+                popupWindow.setWidth(LayoutParams.MATCH_PARENT);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        popupWindow.showAtLocation(mLayoutInflater.inflate(R.layout.activity_words_detail, null, false), Gravity.BOTTOM, 0, 0);
+                    }
+                });
             } else if (y2 - y1 > 50) {
-                Toast.makeText(WordsDetailActivity.this, "向下滑", Toast.LENGTH_SHORT).show();
-                popupWindow.setHeight((int) y2);
-                popupWindow.showAtLocation(LayoutInflater.from(WordsDetailActivity.this).inflate(R.layout.activity_words_detail, null), Gravity.BOTTOM, 0, 0);
+                Toast.makeText(WordsDetailActivity.this, "向下滑" + (y2 - y1), Toast.LENGTH_SHORT).show();
+                LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, 139);
+                vPopupWindow.setLayoutParams(lp);
+                popupWindow.setContentView(vPopupWindow);
+                popupWindow.setHeight(LayoutParams.WRAP_CONTENT);
+                popupWindow.setWidth(LayoutParams.WRAP_CONTENT);
+                popupWindow.showAtLocation(mLayoutInflater.inflate(R.layout.activity_words_detail, null, false), Gravity.BOTTOM, 0, 0);
             }
         }
         if (event.getAction() == MotionEvent.ACTION_UP) {

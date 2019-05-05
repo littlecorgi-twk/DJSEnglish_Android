@@ -72,7 +72,7 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, WordsDetailActivity.class);
-                intent.putExtra("ArticleNumber", position);
+                intent.putExtra("ArticleNumber", mData.get(position).getId());
                 context.startActivity(intent);
             }
         });
