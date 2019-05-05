@@ -1,10 +1,4 @@
 <resources>
-    <string name="app_name">English Study</string>
+    <string name="app_name">独角兽英语</string>
 
-    <string name="title_1">Cool card</string>
-    <string name="title_2">OK card</string>
-    <string name="title_3">Bad card</string>
-    <string name="title_4">Ugly card</string>
-
-    <string name="text_1">Lorem ipsum dolor sit amet, consectetur adipiscing elit.  Etiam eget ligula eu lectus lobortis condimentum.</string>
 </resources>
