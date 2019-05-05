@@ -105,17 +105,19 @@ public class SearchFragment extends Fragment {
         lvSearchList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getContext(), WordSuggestDetailActivity.class);
-                if (flag == 1) {
-                    intent.putExtra("Word", mEntries.get(position).getEntry());
-                    spHistoryStorage.save(mEntries.get(position).getEntry() + '-' + mEntries.get(position).getExplain());
-                } else {
-                    mHistoryList = spHistoryStorage.sortHistory();
-                    String[] str = new String[2];
-                    str = TextUtils.split(mHistoryList.get(position).getContent(), ",|\\-");
-                    intent.putExtra("Word", str[0]);
+                if (!mEntries.get(position).getEntry().equals("查无此词！")) {
+                    Intent intent = new Intent(getContext(), WordSuggestDetailActivity.class);
+                    if (flag == 1) {
+                        intent.putExtra("Word", mEntries.get(position).getEntry());
+                        spHistoryStorage.save(mEntries.get(position).getEntry() + '-' + mEntries.get(position).getExplain());
+                    } else {
+                        mHistoryList = spHistoryStorage.sortHistory();
+                        String[] str = new String[2];
+                        str = TextUtils.split(mHistoryList.get(position).getContent(), ",|\\-");
+                        intent.putExtra("Word", str[0]);
+                    }
+                    getActivity().startActivity(intent);
                 }
-                getActivity().startActivity(intent);
             }
         });
         return view;

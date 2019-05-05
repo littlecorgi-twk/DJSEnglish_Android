@@ -77,6 +77,7 @@ public interface GetRequest_Interface {
     @POST("article/get_list.do")
     Call<ArticleList> getArticleList();
 
+    @FormUrlEncoded
     @Headers("Content-Type: application/x-www-form-urlencoded")
     @POST("article/get_detail.do")
     Call<ArticleDetail> getArticleDetail(@Field("articleId") int id);

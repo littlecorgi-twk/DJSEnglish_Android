@@ -8,6 +8,15 @@ package com.example.lenovo.englishstudy.viewPageCard;
 public class CardItem {
     private String text;
     private String imageUrl;
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getImageUrl() {
         return imageUrl;
@@ -17,9 +26,10 @@ public class CardItem {
         this.imageUrl = imageUrl;
     }
 
-    public CardItem(String text, String imageUrl) {
+    public CardItem(String text, String imageUrl, int id) {
         this.text = text;
         this.imageUrl = imageUrl;
+        this.id = id;
     }
 
     public String getText() {
