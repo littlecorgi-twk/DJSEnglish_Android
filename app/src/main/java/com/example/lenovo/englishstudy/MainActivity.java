@@ -24,6 +24,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
     private UserFragment userFragment;
     private SearchFragment mSearchFragment;
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
