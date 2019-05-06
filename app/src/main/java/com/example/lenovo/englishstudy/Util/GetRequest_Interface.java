@@ -2,6 +2,7 @@ package com.example.lenovo.englishstudy.Util;
 
 import com.example.lenovo.englishstudy.bean.ArticleDetail;
 import com.example.lenovo.englishstudy.bean.ArticleList;
+import com.example.lenovo.englishstudy.bean.FriendList;
 import com.example.lenovo.englishstudy.bean.ImageMessage;
 import com.example.lenovo.englishstudy.bean.LoginMessage;
 import com.example.lenovo.englishstudy.bean.MessageVerify;
@@ -81,5 +82,9 @@ public interface GetRequest_Interface {
     @Headers("Content-Type: application/x-www-form-urlencoded")
     @POST("article/get_detail.do")
     Call<ArticleDetail> getArticleDetail(@Field("articleId") int id);
+
+    @Headers("Content-Type: application/x-www-form-urlencoded")
+    @POST("friend/get_list.do")
+    Call<FriendList> getFriendList(@Header("token") String token);
 
 }
