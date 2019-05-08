@@ -59,10 +59,14 @@ public interface GetRequest_Interface {
     @POST("get_words.do")
     Call<WordList> getWordListCall();
 
+    @Headers("Content-Type: application/x-www-form-urlencoded")
+    @POST("get_user_info.do")
+    Call<UserMessage> getMessageCall(@Header("token") String token);
+
     @FormUrlEncoded
     @Headers("Content-Type: application/x-www-form-urlencoded")
     @POST("update_user_info.do")
-    Call<UserMessage> updateMessageCall(@Header("token") String token);
+    Call<MessageVerify> updateMessageCall(@Field("name") String name, @Field("msg") String msg, @Field("sex") String sex, @Field("stage") String stage, @Header("token") String token);
 
     @FormUrlEncoded
     @Headers("Content-Type: application/x-www-form-urlencoded")

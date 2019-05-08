@@ -1,5 +1,7 @@
 package com.example.lenovo.englishstudy;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -17,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.example.lenovo.englishstudy.animation.ExplosionField;
 import com.example.lenovo.englishstudy.db.Sentence;
 import com.example.lenovo.englishstudy.userdefined.FlowLayout;
 
@@ -105,7 +108,8 @@ public class ChooseHistoryActivity extends AppCompatActivity {
             textView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    mFlowLayout.removeView(textView);
+                 // mFlowLayout.removeView(textView);
+                    setSelfAndChildDisappearOnClick(textView);
                     DataSupport.deleteAll(Sentence.class, "sentence = ?", textView.getText().toString());
                     return true;  //false则表示长按会同时触发onLongClick和onClick 是否消耗长按事件
                 }
@@ -153,6 +157,32 @@ public class ChooseHistoryActivity extends AppCompatActivity {
                 getWindow().setAttributes(wBackground);
             }
         });
+
+    }
+
+    /**
+     * 为自己以及子View添加破碎动画，动画结束后，把View消失掉
+     *
+     * @param view 可能是ViewGroup的view
+     */
+    private void setSelfAndChildDisappearOnClick(final View view) {
+        if (view instanceof ViewGroup) {
+            ViewGroup viewGroup = (ViewGroup) view;
+            for (int i = 0; i < viewGroup.getChildCount(); i++) {
+                setSelfAndChildDisappearOnClick(viewGroup.getChildAt(i));
+            }
+        } else {
+
+            new ExplosionField(ChooseHistoryActivity.this).explode(view,
+                    new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            view.setVisibility(View.GONE);
+
+                        }
+                    });
+        }
 
     }
 

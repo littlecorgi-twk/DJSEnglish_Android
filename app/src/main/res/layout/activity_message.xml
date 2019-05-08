@@ -27,6 +27,16 @@
             android:text="修改资料"
             android:textColor="#252525"
             android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/message_finish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:text="完成"
+            android:textSize="18dp"/>
     </RelativeLayout>
 
     <View
