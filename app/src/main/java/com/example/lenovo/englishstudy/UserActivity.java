@@ -5,7 +5,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.ListFragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -17,15 +21,21 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.lenovo.englishstudy.adapter.FragmentAdpter;
 import com.example.lenovo.englishstudy.userdefined.ObservableScrollView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static org.litepal.LitePalApplication.getContext;
 
 public class UserActivity extends AppCompatActivity {
-    private ObservableScrollView observableScrollView;
-    private Toolbar toolbar;
+    private ObservableScrollView mObservableScrollView;
+    private Toolbar mToolbar;
+    private TabLayout mTabLayout;
+    private ViewPager mViewPager;
     private ImageView back_button;
     private View division;
     private CircleImageView u_photo;
@@ -39,8 +49,9 @@ public class UserActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
-        observableScrollView = findViewById(R.id.o_scrollView);
-        observableScrollView.fullScroll(ScrollView.FOCUS_UP);
+        mViewPager = findViewById(R.id.user_viewpager);
+        mObservableScrollView = findViewById(R.id.o_scrollView);
+        mObservableScrollView.fullScroll(ScrollView.FOCUS_UP);
         edit_button = findViewById(R.id.edit);
         back_button = findViewById(R.id.u_back);
         back_button.setOnClickListener(new View.OnClickListener() {
@@ -54,36 +65,33 @@ public class UserActivity extends AppCompatActivity {
         t_name = findViewById(R.id.t_name);
         t_name.setVisibility(View.GONE);
         SharedPreferences sharedPreferences = getSharedPreferences("data", Context.MODE_PRIVATE);
-         user_name = sharedPreferences.getString("user_name", "");
-         user_photo = sharedPreferences.getString("user_photo", "");
+        user_name = sharedPreferences.getString("user_name", "");
+        user_photo = sharedPreferences.getString("user_photo", "");
 
-//        user_name = getIntent().getStringExtra("u_name");
         u_name.setText(user_name);
         t_name.setText(user_name);
-//        user_photo = getIntent().getStringExtra("u_photo");
         Glide.with(getContext()).load(user_photo).into(u_photo);
-//        back_button = findViewById(android.R.id.home);
         division = findViewById(R.id.division);
         division.setVisibility(View.GONE);
-        toolbar = findViewById(R.id.user_toolbar);
-        setSupportActionBar(toolbar);
+        mToolbar = findViewById(R.id.user_toolbar);
+        setSupportActionBar(mToolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-//            actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
         }
         initView();
+        initViewPager();
     }
 
     private void initView() {
         final float title_height = getResources().getDimension(R.dimen.title_height);
         final float head_height = getResources().getDimension(R.dimen.head_height);
-        observableScrollView.setOnScrollListener(new ObservableScrollView.ScrollViewListener() {
+        mObservableScrollView.setOnScrollListener(new ObservableScrollView.ScrollViewListener() {
             @Override
             public void onScrollChanged(ObservableScrollView observableScrollView, int oldy, int dy, boolean isUp) {
-                float move_distance = head_height - title_height;
+                float move_distance = 280;
                 if (!isUp && dy <= move_distance) {
-                    toolbar.setBackgroundColor(ContextCompat.getColor(UserActivity.this, R.color.color_white));
+                    mToolbar.setBackgroundColor(ContextCompat.getColor(UserActivity.this, R.color.color_white));
                     TitleAlphaChange(dy, move_distance);
 
                 } else if (!isUp && dy > move_distance) {
@@ -116,6 +124,27 @@ public class UserActivity extends AppCompatActivity {
         });
     }
 
+    private void initViewPager() {
+        mTabLayout = findViewById(R.id.user_tab);
+        List<String> titles = new ArrayList<>();
+        titles.add("我的关注");
+        titles.add("我的圈子");
+        for(int i = 0; i < titles.size(); i++) {
+            mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(i)));
+        }
+        List<Fragment> fragments = new ArrayList<>();
+        for(int i = 0; i < titles.size(); i++) {
+            fragments.add(new ListFragment());
+        }
+        FragmentAdpter fragmentAdpter = new FragmentAdpter(getSupportFragmentManager(), fragments, titles);
+        //给viewpager设置适配器
+        mViewPager.setAdapter(fragmentAdpter);
+        //把tablayout和viewpager关联起来
+        mTabLayout.setupWithViewPager(mViewPager);
+//        //给tablayout设置适配器
+//        mTabLayout.setTabsFromPagerAdapter(fragmentAdpter);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -129,7 +158,7 @@ public class UserActivity extends AppCompatActivity {
     private void TitleAlphaChange(int dy, float mHeaderHeight) {
         float percent = (float) Math.abs(dy) / Math.abs(mHeaderHeight);
         int alpha = (int) (percent * 255);
-        toolbar.getBackground().setAlpha(alpha);
+        mToolbar.getBackground().setAlpha(alpha);
     }
 
     private void HeaderTranslate(float distance) {

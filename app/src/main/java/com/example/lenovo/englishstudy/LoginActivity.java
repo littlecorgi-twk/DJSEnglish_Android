@@ -147,19 +147,13 @@ public class LoginActivity extends AppCompatActivity {
             public void onComplete(Object o) {
                 try {
                     user_name = ((JSONObject) o).getString("nickname");
-                    user_photo = ((JSONObject) o).getString("figureurl_qq_2");
+                    user_photo = ((JSONObject) o).getString("figureurl_qq_1");
 
-//                    UserFragment userFragment = new UserFragment();
-//                    Bundle bundle = new Bundle();
-//                    bundle.putString("user_name",user_name);
-//                    bundle.putString("user_photo",user_photo);
-//                    userFragment.setArguments(bundle);
                     Intent intent = new Intent();
                     intent.putExtra("user_name", user_name);
                     intent.putExtra("user_photo", user_photo);
                     setResult(RESULT_OK, intent);
                     finish();
-
 
                 } catch (JSONException e) {
                     e.printStackTrace();
