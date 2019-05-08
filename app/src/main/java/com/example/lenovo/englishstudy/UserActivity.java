@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +33,7 @@ public class UserActivity extends AppCompatActivity {
     private Button edit_button;
     private String user_name;
     private String user_photo;
+    private final int REFRESH_CODE = 6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,7 @@ public class UserActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("data", Context.MODE_PRIVATE);
          user_name = sharedPreferences.getString("user_name", "");
          user_photo = sharedPreferences.getString("user_photo", "");
+
 //        user_name = getIntent().getStringExtra("u_name");
         u_name.setText(user_name);
         t_name.setText(user_name);
@@ -108,7 +111,7 @@ public class UserActivity extends AppCompatActivity {
                 Intent intent = new Intent(UserActivity.this, MessageActivity.class);
                 intent.putExtra("u_name", user_name);
                 intent.putExtra("u_photo", user_photo);
-                startActivity(intent);
+                startActivityForResult(intent, REFRESH_CODE);
             }
         });
     }
@@ -131,5 +134,20 @@ public class UserActivity extends AppCompatActivity {
 
     private void HeaderTranslate(float distance) {
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK) {
+            switch(requestCode) {
+                case REFRESH_CODE:
+                    String name = data.getStringExtra("user_name");
+                    user_photo = data.getStringExtra("user_photo");
+                    u_name.setText(name);
+                    t_name.setText(name);
+                    Glide.with(getContext()).load(user_photo).into(u_photo);
+            }
+        }
     }
 }

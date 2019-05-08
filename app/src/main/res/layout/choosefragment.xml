@@ -35,7 +35,7 @@
             <com.example.lenovo.englishstudy.userdefined.FlowLayout
                 android:id="@+id/flowlayout"
                 android:layout_width="match_parent"
-                android:layout_height="220dp"
+                android:layout_height="170dp"
                 android:layout_margin="10dp">
 
             </com.example.lenovo.englishstudy.userdefined.FlowLayout>
@@ -80,14 +80,13 @@
                 android:id="@+id/hezi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:scaleType="centerCrop"
                 android:layout_marginTop="200dp"
-                android:layout_marginBottom="60dp"
+                android:layout_marginBottom="80dp"
                 android:layout_below="@+id/change_layout"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/ic_hezi"
-                android:scaleType="centerCrop" />
+                android:background="@drawable/ic_hezi" />
 
             <TextView
                 android:id="@+id/answer1"
