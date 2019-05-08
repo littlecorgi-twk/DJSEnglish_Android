@@ -52,6 +52,7 @@ public class UserFragment extends Fragment implements MyView.OnRootClickListener
             Glide.with(getContext()).load(user_photo).into(photo);
             iflogin = TRUE;
         }
+
         log.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,6 +72,25 @@ public class UserFragment extends Fragment implements MyView.OnRootClickListener
         return view;
     }
 
+    //Fragment由不可见变为可见
+    @Override
+    public void onStart() {
+        super.onStart();
+        SharedPreferences sharedPreferences2 = getActivity().getSharedPreferences("user_info", Context.MODE_PRIVATE);
+        String imageUrl = sharedPreferences2.getString("user_photo", "");
+        String name = sharedPreferences2.getString("user_name", "");
+        if (!name.equals("") && !imageUrl.equals("")) {
+            login.setText(name);
+            Glide.with(getContext()).load(imageUrl).into(photo);
+            SharedPreferences sharedPreferences = getActivity().getSharedPreferences("data", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("user_name", name);
+            editor.putString("user_photo", imageUrl);
+            editor.commit();
+        }
+
+
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

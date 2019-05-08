@@ -4,7 +4,7 @@ public class UserMessage {
 
     /**
      * status : 0
-     * data : {"id":1,"name":"zhang","username":"zhangshuo123","msg":"aaa","img":"null","email":"944733142@qq.com","phone":"18066877585"}
+     * data : {"id":22,"name":"张","stage":"男","sex":"小学二年级","msg":"后台工作人员","img":"http://47.102.206.19/images/default.jpg","phone":"18066877585"}
      */
 
     private int status;
@@ -28,21 +28,21 @@ public class UserMessage {
 
     public static class DataBean {
         /**
-         * id : 1
-         * name : zhang
-         * username : zhangshuo123
-         * msg : aaa
-         * img : null
-         * email : 944733142@qq.com
+         * id : 22
+         * name : 张
+         * stage : 男
+         * sex : 小学二年级
+         * msg : 后台工作人员
+         * img : http://47.102.206.19/images/default.jpg
          * phone : 18066877585
          */
 
         private int id;
         private String name;
-        private String username;
+        private String stage;
+        private String sex;
         private String msg;
         private String img;
-        private String email;
         private String phone;
 
         public int getId() {
@@ -61,12 +61,20 @@ public class UserMessage {
             this.name = name;
         }
 
-        public String getUsername() {
-            return username;
+        public String getStage() {
+            return stage;
         }
 
-        public void setUsername(String username) {
-            this.username = username;
+        public void setStage(String stage) {
+            this.stage = stage;
+        }
+
+        public String getSex() {
+            return sex;
+        }
+
+        public void setSex(String sex) {
+            this.sex = sex;
         }
 
         public String getMsg() {
@@ -83,14 +91,6 @@ public class UserMessage {
 
         public void setImg(String img) {
             this.img = img;
-        }
-
-        public String getEmail() {
-            return email;
-        }
-
-        public void setEmail(String email) {
-            this.email = email;
         }
 
         public String getPhone() {

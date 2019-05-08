@@ -18,11 +18,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bigkoo.pickerview.TimePickerView;
 import com.example.lenovo.englishstudy.Util.GetRequest_Interface;
 import com.example.lenovo.englishstudy.bean.ImageMessage;
+import com.example.lenovo.englishstudy.bean.MessageVerify;
+import com.example.lenovo.englishstudy.bean.UserMessage;
 import com.example.lenovo.englishstudy.userdefined.MyView;
 
 import java.io.ByteArrayOutputStream;
@@ -45,16 +48,19 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MessageActivity extends AppCompatActivity implements MyView.OnRootClickListener {
     private LinearLayout oneItem;
-    private String user_name;
+    private String user_name, name;
     private String user_photo;
     private ImageView back_button;
     //   private CircleImageView imageView;
     private int SET_REQUEST_CODE = 4;
-    private String sex1;
-    private MyView myView1, myView2, myView3, myView4;
+    private String sex1, stage1;
+    private MyView myView1, myView2, myView3, myView4, myView5;
     private TimePickerView pickerView;
-    private int choose = 1;
+    private int choose = 0;
     private String time;
+    private TextView finish;
+    private String token ;
+    private String imageUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +68,12 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
         setContentView(R.layout.activity_message);
         oneItem = findViewById(R.id.m_one_item);
         back_button = findViewById(R.id.m_back);
+        finish = findViewById(R.id.message_finish);
         user_name = getIntent().getStringExtra("u_name");
         user_photo = getIntent().getStringExtra("u_photo");
-        initView();
+        SharedPreferences sharedPreferences = getSharedPreferences("user_token", Context.MODE_PRIVATE);
+        token = sharedPreferences.getString("token", "");
+        getMessage(token);
     }
 
     public void initView() {
@@ -79,18 +88,35 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
                         .setOnRootClickListener(this, 1);
         oneItem.addView(myView1);
         myView2 = new MyView(this)
-                .initMine("昵称", user_name, true)
+                .initMine("昵称", name, true)
                 .setOnRootClickListener(this, 2);
         oneItem.addView(myView2);
         myView3 = new MyView(this)
-                .initMine("性别", "女", true)
+                .initMine("性别", sex1, true)
                 .setOnRootClickListener(this, 3);
         oneItem.addView(myView3);
         myView4 = new MyView(this)
                 .initMine("生日", "", true)
                 .setOnRootClickListener(this, 4);
         oneItem.addView(myView4);
+        myView5 = new MyView(this)
+                .initMine("学习阶段", stage1, false)
+                .setOnRootClickListener(this, 5);
+        oneItem.addView(myView5);
+        finish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateMessage(name,"",sex1,stage1,token);
+                SharedPreferences sharedPreferences = getSharedPreferences("user_info", Context.MODE_PRIVATE);
+                imageUrl = sharedPreferences.getString("user_photo", "");
+                Intent intent = new Intent();
+                intent.putExtra("user_photo", imageUrl);
+                intent.putExtra("user_name", name);
+                setResult(RESULT_OK, intent);
+                finish();
+            }
 
+        });
     }
 
     @Override
@@ -156,6 +182,37 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
                 oneItem.addView(myView4, 3);
                 pickerView.show();
                 break;
+
+            case 5:
+                AlertDialog.Builder builder2 = new AlertDialog.Builder(MessageActivity.this);
+                builder2.setTitle("请选择学习阶段");
+                final String[] stage = {"高考", "四级", "六级", "考研", "托福/雅思"};
+                //    设置一个单项选择下拉框
+                /**
+                 * 第一个参数指定我们要显示的一组下拉单选框的数据集合
+                 * 第二个参数代表索引，指定默认哪一个单选框被勾选上，1表示默认'女' 会被勾选上
+                 * 第三个参数给每一个单选项绑定一个监听器
+                 */
+                builder2.setSingleChoiceItems(stage, choose, new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        choose = which;
+                        dialog.dismiss();
+                        stage1 = stage[which];
+                        myView5.setRightText(stage1);
+                        oneItem.removeViewAt(4);
+                        oneItem.addView(myView5,4);
+                    }
+                });
+                builder2.show();
+
+                //    linearLayout.removeViewAt(2);
+                //    textView.setText(sex1);
+                break;
+
+
         }
     }
 
@@ -186,13 +243,13 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
                         oneItem.addView(myView1,0);
                         File file = compressImage(image);
                         String filePath = file.getPath();
-                        uploadImage(filePath);
+                        uploadImage(filePath, token);
                     }
                     break;
                 case 4:
                     Log.d("787878", "2");
-                    String user_name = data.getStringExtra("userName");
-                    myView2.setRightText(user_name);
+                    name = data.getStringExtra("userName");
+                    myView2.setRightText(name);
                     oneItem.removeViewAt(1);
                     oneItem.addView(myView2, 1);
                     break;
@@ -253,12 +310,42 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
         return file;
     }
 
+    public void getMessage(String token) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://47.102.206.19:8080/user/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        final GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
+        Call<UserMessage> call = request.getMessageCall(token);
+        call.enqueue(new Callback<UserMessage>() {
+            @Override
+            public void onResponse(Call<UserMessage> call, Response<UserMessage> response) {
+                final UserMessage userMessage = response.body();
+                if(userMessage != null) {
+                    if(userMessage.getStatus() == 0) {
+                        name = userMessage.getData().getName();
+                        stage1 = userMessage.getData().getStage();
+                        sex1 = userMessage.getData().getSex();
+                        initView();
+                        Log.d("222222", name+" "+stage1+" "+sex1);
+                    } else if(userMessage.getStatus() == 1) {
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserMessage> call, Throwable t) {
+                t.printStackTrace();
+                Toast.makeText(MessageActivity.this, "获取用户信息失败", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
 
 
-    public void uploadImage(String filePath) {
-        SharedPreferences sharedPreferences = getSharedPreferences("user_token", Context.MODE_PRIVATE);
-        final String token = sharedPreferences.getString("token", "");
+
+    public void uploadImage(String filePath, String token) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://47.102.206.19:8080/user/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -278,6 +365,12 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
                     if (imageMessage.getStatus() == 0) {
                         Log.d("878787", "1");
                         Log.d("878787", imageMessage.getData().getUrl());
+                        imageUrl = imageMessage.getData().getUrl();
+                        SharedPreferences sharedPreferences = getSharedPreferences("user_info", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("user_photo", imageUrl);
+                        editor.putString("user_name", name);
+                        editor.commit();
                         Toast.makeText(MessageActivity.this, "上传成功", Toast.LENGTH_SHORT).show();
                     } else if (imageMessage.getStatus() == 1) {
                         Log.d("878787", "2");
@@ -297,6 +390,33 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
         });
     }
 
+    public void updateMessage(String name, String msg, String sex, String stage, String token) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://47.102.206.19:8080/user/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        final GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
+        Call<MessageVerify> call = request.updateMessageCall(name, msg, sex, stage, token);
+        call.enqueue(new Callback<MessageVerify>() {
+            @Override
+            public void onResponse(Call<MessageVerify> call, Response<MessageVerify> response) {
+                final MessageVerify message = response.body();
+                if(message != null) {
+                    if(message.getStatus() == 0 && message.getMsg().equals("更新信息成功")) {
+                        Toast.makeText(MessageActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
+                    } else if(message.getStatus() == 1 && message.getMsg().equals("更新失败")) {
+                        Toast.makeText(MessageActivity.this, "修改失败", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MessageVerify> call, Throwable t) {
+                t.printStackTrace();
+                Toast.makeText(MessageActivity.this, "修改失败", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
     public static String getTime(Date date) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
