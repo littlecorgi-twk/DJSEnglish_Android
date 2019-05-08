@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">独角兽英语</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
