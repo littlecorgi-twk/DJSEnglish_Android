@@ -12,7 +12,7 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
-public class ClientThread implements Runnable{
+public class ClientThread implements Runnable {
 
     private Socket socket;
     private ObjectInputStream ois;
@@ -21,7 +21,7 @@ public class ClientThread implements Runnable{
     private Handler sendHandler;
 
 
-    public ClientThread(Handler handler){
+    public ClientThread(Handler handler) {
         this.sendHandler = handler;
     }
 
@@ -69,9 +69,9 @@ public class ClientThread implements Runnable{
                 }
             };
             Looper.loop();
-        }catch (SocketTimeoutException e) {
+        } catch (SocketTimeoutException e) {
             System.out.println("网络连接请求超时！！！");
-        }catch (SocketException e) {
+        } catch (SocketException e) {
             System.out.println("连接服务器失败！");
         } catch (IOException e) {
             e.printStackTrace();
