@@ -32,14 +32,15 @@
                 android:layout_marginTop="24dp" />
         </LinearLayout>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <Button
+            android:id="@+id/button_adapter_collection"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_gravity="top|end"
-            android:layout_marginTop="-5dp"
+            android:layout_marginTop="0dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:src="@drawable/ic_bookmark_24dp" />
+            style="?android:attr/borderlessButtonStyle"
+            android:background="@drawable/ic_bookmark_24dp" />
 
     </FrameLayout>
 

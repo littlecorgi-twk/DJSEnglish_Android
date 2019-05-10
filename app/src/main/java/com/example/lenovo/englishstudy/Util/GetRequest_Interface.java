@@ -49,7 +49,7 @@ public interface GetRequest_Interface {
     @Headers("Content-Type: application/x-www-form-urlencoded")
     @POST("login.do")
     Call<LoginMessage> getLoginCall(@Field("phoneNumber") String phoneNumber, @Field("password") String password);
-    
+
     @Multipart
 //    @Headers("Content-Type: application/x-www-form-urlencoded")
     @POST("upload.do")
@@ -91,4 +91,19 @@ public interface GetRequest_Interface {
     @POST("friend/get_list.do")
     Call<FriendList> getFriendList(@Header("token") String token);
 
+    @Headers("Content-Type: application/x-www-form-urlencoded")
+    @POST("article/like_article.do")
+    Call<MessageVerify> getLikeArticle(@Header("token") String token, @Field("articleId") int id);
+
+    @Headers("Content-Type: application/x-www-form-urlencoded")
+    @POST("article/dislike_article.do")
+    Call<MessageVerify> getDislikeArticle(@Header("token") String token, @Field("articleId") int id);
+
+    @Headers("Content-Type: application/x-www-form-urlencoded")
+    @POST("article/add_collection.do")
+    Call<MessageVerify> getAddCollection(@Header("token") String token, @Field("articleId") int id);
+
+    @Headers("Content-Type: application/x-www-form-urlencoded")
+    @POST("article/del_collection.do")
+    Call<MessageVerify> getDelCollection(@Header("token") String token, @Field("articleId") int id);
 }

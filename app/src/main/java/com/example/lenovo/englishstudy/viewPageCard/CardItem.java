@@ -1,42 +1,24 @@
 package com.example.lenovo.englishstudy.viewPageCard;
 
+import com.example.lenovo.englishstudy.bean.ArticleList;
+
 /**
  * @author littlecorgi
  * @Date 2019-01-24 18:16
  * @email a1203991686@126.com
  */
 public class CardItem {
-    private String text;
-    private String imageUrl;
-    private int id;
+    private ArticleList.DataBean.ListBean mArticle;
 
-    public int getId() {
-        return id;
+    public ArticleList.DataBean.ListBean getmArticle() {
+        return mArticle;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setmArticle(ArticleList.DataBean.ListBean mArticle) {
+        this.mArticle = mArticle;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public CardItem(String text, String imageUrl, int id) {
-        this.text = text;
-        this.imageUrl = imageUrl;
-        this.id = id;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
+    public CardItem(ArticleList.DataBean.ListBean mArticle) {
+        this.mArticle = mArticle;
     }
 }
