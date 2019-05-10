@@ -43,15 +43,15 @@ public class ClientActivity extends AppCompatActivity {
         adapter = new MsgAdapter(list);
         msgRecyclerView.setAdapter(adapter);
 
-        handler = new Handler(){
+        handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                if(msg.what==0){
-                    Msg msg1 = new Msg(msg.obj.toString(),Msg.TYPE_RECEIVED);
+                if (msg.what == 0) {
+                    Msg msg1 = new Msg(msg.obj.toString(), Msg.TYPE_RECEIVED);
                     list.add(msg1);
                     //当有新消息时，刷新RecyclerView中的显示
-                    adapter.notifyItemInserted(list.size()-1);
-                    msgRecyclerView.scrollToPosition(list.size()-1);
+                    adapter.notifyItemInserted(list.size() - 1);
+                    msgRecyclerView.scrollToPosition(list.size() - 1);
                 }
             }
         };
@@ -61,15 +61,15 @@ public class ClientActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String content = inputText.getText().toString();
-                if(!"".equals(content)&&content!=null){
-                    Msg msg = new Msg(content,Msg.TYPE_SEND);
+                if (!"".equals(content) && content != null) {
+                    Msg msg = new Msg(content, Msg.TYPE_SEND);
                     list.add(msg);
                     Message message = new Message();
                     message.what = 1;
                     message.obj = content;
                     clientThread.receiveHandler.sendMessage(message);
-                    adapter.notifyItemInserted(list.size()-1);//有新消息刷新显示
-                    msgRecyclerView.scrollToPosition(list.size()-1);//将RecyclerView定义到最后一行
+                    adapter.notifyItemInserted(list.size() - 1);//有新消息刷新显示
+                    msgRecyclerView.scrollToPosition(list.size() - 1);//将RecyclerView定义到最后一行
                     inputText.setText("");//清空输入框
                 }
             }

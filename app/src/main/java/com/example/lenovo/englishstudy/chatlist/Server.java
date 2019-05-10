@@ -16,21 +16,23 @@ public class Server {
         try {
             ServerSocket server = new ServerSocket(8888);
             System.out.println("服务器已启动，正在等待连接...");
-            while(true){
+            while (true) {
                 Socket socket = server.accept();
-                System.out.println("客户端"+ socket.getInetAddress().getHostAddress()+"已连接");
-                UserThread userThread = new UserThread(socket,vector);
+                System.out.println("客户端" + socket.getInetAddress().getHostAddress() + "已连接");
+                UserThread userThread = new UserThread(socket, vector);
                 es.execute(userThread);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    static class UserThread implements Runnable{
+
+    static class UserThread implements Runnable {
         private Socket socket;
         private Vector<UserThread> vector;
         private ObjectInputStream ois;
         private ObjectOutputStream oos;
+
         public UserThread() {
         }
 
@@ -46,7 +48,7 @@ public class Server {
                 return ois.readObject();
             } catch (IOException e) {
                 vector.remove(this);
-                System.out.println("ip为"+socket.getInetAddress() + "的客户退出了聊天室!");
+                System.out.println("ip为" + socket.getInetAddress() + "的客户退出了聊天室!");
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
@@ -63,15 +65,15 @@ public class Server {
                 int n = 0;
                 Msg message;
 
-                while(true) {
-                    if((message = (Msg) getContext())!=null) {
+                while (true) {
+                    if ((message = (Msg) getContext()) != null) {
                         System.out.println(socket.getLocalAddress() + "+" + message.getContent());
                         for (UserThread ut : vector) {
                             if (ut.socket != socket) {
                                 ut.oos.writeObject(message);
                             }
                         }
-                    }else{
+                    } else {
                         break;
                     }
                 }

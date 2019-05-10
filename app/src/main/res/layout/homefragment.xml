@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.example.lenovo.englishstudy.pullextend.PullToRefreshLinearLayout
         android:id="@+id/lin_refresh"
@@ -14,16 +15,20 @@
             android:layout_height="match_parent"
             android:fillViewport="true">
 
-            <LinearLayout
+            <android.support.percent.PercentFrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:background="#5CF0F1F3">
 
                 <android.support.v4.view.ViewPager
                     android:id="@+id/vp_WordCard"
                     android:layout_width="match_parent"
-                    android:layout_height="500dp"
+                    android:layout_height="550dp"
+                    app:layout_aspectRatio="@fraction/circle_article_aspectRatio"
+                    app:layout_widthPercent="100%"
                     android:layout_gravity="bottom"
                     android:clipToPadding="false"
                     android:overScrollMode="never"
@@ -33,7 +38,7 @@
                     android:paddingRight="@dimen/card_padding"
                     android:paddingBottom="30dp" />
 
-            </LinearLayout>
+            </android.support.percent.PercentFrameLayout>
         </com.example.lenovo.englishstudy.pullextend.VerticalScrollView>
     </com.example.lenovo.englishstudy.pullextend.PullToRefreshLinearLayout>
 </LinearLayout>

@@ -120,7 +120,7 @@ public class HomeFragment extends Fragment {
         activity = getActivity();
         mCardAdapter = new CardPagerAdapter(activity);
         for (int i = 0; i < articleList.getData().getTotal(); i++) {
-            mCardAdapter.addCardItem(new CardItem(articleList.getData().getList().get(i).getText(), articleList.getData().getList().get(i).getImg(), articleList.getData().getList().get(i).getId()));
+            mCardAdapter.addCardItem(new CardItem(articleList.getData().getList().get(i)));
         }
         mCardShadowTransformer = new ShadowTransformer(mViewPager, mCardAdapter);
         mCardShadowTransformer.enableScaling(true);
