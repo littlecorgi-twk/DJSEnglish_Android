@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.ListFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -22,6 +21,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.lenovo.englishstudy.adapter.FragmentAdpter;
+import com.example.lenovo.englishstudy.fragment.ListFragment;
 import com.example.lenovo.englishstudy.userdefined.ObservableScrollView;
 
 import java.util.ArrayList;
@@ -124,11 +124,12 @@ public class UserActivity extends AppCompatActivity {
         });
     }
 
+
     private void initViewPager() {
         mTabLayout = findViewById(R.id.user_tab);
         List<String> titles = new ArrayList<>();
-        titles.add("我的关注");
-        titles.add("我的圈子");
+        titles.add("我的动态");
+        titles.add("我的评论");
         for(int i = 0; i < titles.size(); i++) {
             mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(i)));
         }
@@ -137,12 +138,13 @@ public class UserActivity extends AppCompatActivity {
             fragments.add(new ListFragment());
         }
         FragmentAdpter fragmentAdpter = new FragmentAdpter(getSupportFragmentManager(), fragments, titles);
-        //给viewpager设置适配器
-        mViewPager.setAdapter(fragmentAdpter);
         //把tablayout和viewpager关联起来
         mTabLayout.setupWithViewPager(mViewPager);
+        //给viewpager设置适配器
+        mViewPager.setAdapter(fragmentAdpter);
 //        //给tablayout设置适配器
-//        mTabLayout.setTabsFromPagerAdapter(fragmentAdpter);
+        mTabLayout.setTabsFromPagerAdapter(fragmentAdpter);
+
     }
 
     @Override
