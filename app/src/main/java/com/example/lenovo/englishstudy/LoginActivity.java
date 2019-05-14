@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -148,7 +147,8 @@ public class LoginActivity extends AppCompatActivity {
             public void onComplete(Object o) {
                 try {
                     user_name = ((JSONObject) o).getString("nickname");
-                    user_photo = ((JSONObject) o).getString("figureurl_qq_2");
+                    user_photo = ((JSONObject) o).getString("figureurl_qq_1");
+
                     Intent intent = new Intent();
                     intent.putExtra("user_name", user_name);
                     intent.putExtra("user_photo", user_photo);
@@ -178,7 +178,6 @@ public class LoginActivity extends AppCompatActivity {
         JSONObject jb = (JSONObject) object;
         try {
             String openID = jb.getString("openid");  //openid用户唯一标识
-            Log.d("7264653", openID);
             String access_token = jb.getString("access_token");
             String expires = jb.getString("expires_in");
             mTencent.setOpenId(openID);

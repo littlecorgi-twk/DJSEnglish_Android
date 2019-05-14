@@ -66,7 +66,7 @@ public class ChooseFragment extends Fragment {
     private Boolean flag2 = false;
     private Boolean flag3 = false;
     private List<String> mNames = new ArrayList<>();
-  //  private String mNames[] = {};
+    //  private String mNames[] = {};
     private FlowLayout mFlowLayout;
     private View view;
     private ImageButton ichange_word;
@@ -104,7 +104,7 @@ public class ChooseFragment extends Fragment {
         hezi = view.findViewById(R.id.hezi);
         ichange_word = view.findViewById(R.id.image_change_word);
         tchange_word = view.findViewById(R.id.text_change_word);
-    //    initChildViews(view);
+        //    initChildViews(view);
         return view;
     }
 
@@ -375,11 +375,11 @@ public class ChooseFragment extends Fragment {
                 Log.d("999999", "2");
                 final WordList wordList = response.body();
                 Log.d("999999", response.toString());
-                if(wordList != null) {
+                if (wordList != null) {
                     Log.d("999999", wordList.toString());
-                    if(wordList.getStatus() == 0) {
+                    if (wordList.getStatus() == 0) {
                         for (WordList.DataBean word : wordList.getData()) {
-                            Log.d("666666",word.getWord());
+                            Log.d("666666", word.getWord());
                             mNames.add(word.getWord());
                         }
                         initChildViews(view);
