@@ -1,9 +1,12 @@
 package com.example.lenovo.englishstudy;
 
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +17,7 @@ import android.widget.Toast;
 import com.example.lenovo.englishstudy.Util.GetRequest_Interface;
 import com.example.lenovo.englishstudy.bean.WordSuggestDetail;
 
+import java.io.IOException;
 import java.util.List;
 
 import butterknife.BindView;
@@ -65,6 +69,11 @@ public class WordSuggestDetailActivity extends AppCompatActivity {
     @BindView(R.id.tv_wordSuggestDetail_media_sents)
     TextView tvWordSuggestDetailMediaSents;
 
+    private MediaPlayer mMediaPlayer_en;
+    private MediaPlayer mMediaPlayer_us = new MediaPlayer();
+    private String mUsSpeak;
+    private String mEnSpeak;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +83,42 @@ public class WordSuggestDetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String word = intent.getStringExtra("Word");
         requestWordSuggestDetail(word);
+
+        buttonWordSuggestDetailUkspeech.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMediaPlayer_en = new MediaPlayer();
+                mMediaPlayer_en.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                if (mEnSpeak != null) {
+                    try {
+                        mMediaPlayer_en.setDataSource(mEnSpeak);
+                        mMediaPlayer_en.prepare();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    mMediaPlayer_en.start();
+                }
+            }
+        });
+
+        buttonWordSuggestDetailUsspeech.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMediaPlayer_us = new MediaPlayer();
+                mMediaPlayer_us.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                Toast.makeText(WordSuggestDetailActivity.this, "Click", Toast.LENGTH_SHORT).show();
+                Log.d("UsSpeak", mUsSpeak);
+                if (mUsSpeak != null) {
+                    try {
+                        mMediaPlayer_us.setDataSource(mUsSpeak);
+                        mMediaPlayer_us.prepare();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    mMediaPlayer_us.start();
+                }
+            }
+        });
     }
 
     public void requestWordSuggestDetail(final String word) {
@@ -101,7 +146,7 @@ public class WordSuggestDetailActivity extends AppCompatActivity {
 
     }
 
-    public void showWordSuggestDetail(WordSuggestDetail wordSuggestDetail) {
+    public void showWordSuggestDetail(final WordSuggestDetail wordSuggestDetail) {
         if (wordSuggestDetail.getEc().getWord().isEmpty()) {
             tvWordSuggestDetailContent.setText("查无此词！！！");
         } else {
@@ -181,6 +226,9 @@ public class WordSuggestDetailActivity extends AppCompatActivity {
                 tvPartsItemMeaning.setText(webTrans);
                 partsLayout.addView(view);
             }
+
+            mUsSpeak = wordSuggestDetail.getLongman().getWordList().get(0).getEntry().getHead().get(0).getVIDEOCAL().get(0);
+            mEnSpeak = wordSuggestDetail.getLongman().getWordList().get(0).getEntry().getHead().get(0).getVIDEOCAL().get(0);
         }
     }
 }
