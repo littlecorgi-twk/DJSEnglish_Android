@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -147,8 +148,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onComplete(Object o) {
                 try {
                     user_name = ((JSONObject) o).getString("nickname");
-                    user_photo = ((JSONObject) o).getString("figureurl_qq_1");
-
+                    user_photo = ((JSONObject) o).getString("figureurl_qq_2");
                     Intent intent = new Intent();
                     intent.putExtra("user_name", user_name);
                     intent.putExtra("user_photo", user_photo);
@@ -178,6 +178,7 @@ public class LoginActivity extends AppCompatActivity {
         JSONObject jb = (JSONObject) object;
         try {
             String openID = jb.getString("openid");  //openid用户唯一标识
+            Log.d("7264653", openID);
             String access_token = jb.getString("access_token");
             String expires = jb.getString("expires_in");
             mTencent.setOpenId(openID);
@@ -189,9 +190,9 @@ public class LoginActivity extends AppCompatActivity {
 
     public void requestLogin(final String phoneNumber, final String password) {
         Retrofit retrofit = new Retrofit.Builder()
-                            .baseUrl("http://47.102.206.19:8080/user/")
-                            .addConverterFactory(GsonConverterFactory.create())
-                            .build();
+                .baseUrl("http://47.102.206.19:8080/user/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
         GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
         Call<LoginMessage> call = request.getLoginCall(phoneNumber, password);
         call.enqueue(new Callback<LoginMessage>() {
@@ -224,7 +225,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-
 
 
 }

@@ -2,10 +2,13 @@ package com.example.lenovo.englishstudy.userdefined;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.widget.ScrollView;
 
 public class ObservableScrollView extends ScrollView {
     private ScrollViewListener scrollViewListener = null;
+    private float mDownPosX = 0;
+    private float mDownPosY = 0;
 
     public ObservableScrollView(Context context) {
         super(context);
@@ -37,5 +40,30 @@ public class ObservableScrollView extends ScrollView {
 
     public interface ScrollViewListener {
         void onScrollChanged(ObservableScrollView observableScrollView, int oldy, int dy, boolean isUp);
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        final float x = ev.getX();
+        final float y = ev.getY();
+
+        final int action = ev.getAction();
+        switch(action) {
+            case MotionEvent.ACTION_DOWN:
+                mDownPosX = x;
+                mDownPosY = y;
+                break;
+            case MotionEvent.ACTION_MOVE:
+                final float deltaX = Math.abs(x - mDownPosX);
+                final float deltaY = Math.abs(y - mDownPosY);
+                //是否是左右滑动
+                if(deltaX > deltaY) {
+                    return false;
+                }else {
+                    return true;
+                }
+
+        }
+        return super.onInterceptTouchEvent(ev);
     }
 }

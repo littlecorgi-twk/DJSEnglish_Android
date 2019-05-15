@@ -84,8 +84,8 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
             }
         });
         myView1 = new MyView(this)
-                        .initMine2("头像", user_photo, true)
-                        .setOnRootClickListener(this, 1);
+                .initMine2("头像", user_photo, true)
+                .setOnRootClickListener(this, 1);
         oneItem.addView(myView1);
         myView2 = new MyView(this)
                 .initMine("昵称", name, true)
@@ -108,9 +108,17 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
             public void onClick(View view) {
                 updateMessage(name,"",sex1,stage1,token);
                 SharedPreferences sharedPreferences = getSharedPreferences("user_info", Context.MODE_PRIVATE);
-                imageUrl = sharedPreferences.getString("user_photo", "");
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("user_name", name);
+                editor.commit();
+                SharedPreferences sharedPreferences2 = getSharedPreferences("user_info", Context.MODE_PRIVATE);
+                imageUrl = sharedPreferences2.getString("user_photo", "");
                 Intent intent = new Intent();
-                intent.putExtra("user_photo", imageUrl);
+                if(imageUrl!="") {
+                    intent.putExtra("user_photo", imageUrl);
+                }else{
+                    intent.putExtra("user_photo", user_photo);
+                }
                 intent.putExtra("user_name", name);
                 setResult(RESULT_OK, intent);
                 finish();
@@ -158,8 +166,8 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
                 });
                 builder.show();
 
-            //    linearLayout.removeViewAt(2);
-            //    textView.setText(sex1);
+                //    linearLayout.removeViewAt(2);
+                //    textView.setText(sex1);
                 break;
             case 4:
                 Calendar calendar = Calendar.getInstance();
@@ -306,7 +314,7 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-    //    recycleBitmap(bitmap);
+        //    recycleBitmap(bitmap);
         return file;
     }
 
@@ -369,7 +377,6 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
                         SharedPreferences sharedPreferences = getSharedPreferences("user_info", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("user_photo", imageUrl);
-                        editor.putString("user_name", name);
                         editor.commit();
                         Toast.makeText(MessageActivity.this, "上传成功", Toast.LENGTH_SHORT).show();
                     } else if (imageMessage.getStatus() == 1) {

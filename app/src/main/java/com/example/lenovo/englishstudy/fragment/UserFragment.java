@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +14,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.lenovo.englishstudy.LoginActivity;
+import com.example.lenovo.englishstudy.R;
+import com.example.lenovo.englishstudy.SettingActivity;
 import com.example.lenovo.englishstudy.UserActivity;
 import com.example.lenovo.englishstudy.userdefined.MyView;
-import com.example.lenovo.englishstudy.R;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -79,15 +81,23 @@ public class UserFragment extends Fragment implements MyView.OnRootClickListener
         SharedPreferences sharedPreferences2 = getActivity().getSharedPreferences("user_info", Context.MODE_PRIVATE);
         String imageUrl = sharedPreferences2.getString("user_photo", "");
         String name = sharedPreferences2.getString("user_name", "");
-        if (!name.equals("") && !imageUrl.equals("")) {
+        if (!name.equals("")) {
+            Log.d("12345", name);
             login.setText(name);
-            Glide.with(getContext()).load(imageUrl).into(photo);
-            SharedPreferences sharedPreferences = getActivity().getSharedPreferences("data", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("user_name", name);
-            editor.putString("user_photo", imageUrl);
-            editor.commit();
         }
+        if (!imageUrl.equals("")) {
+            Glide.with(getContext()).load(imageUrl).into(photo);
+        }
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("data", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        if(!name.equals("")) {
+            editor.putString("user_name", name);
+        }
+        if(!imageUrl.equals("")) {
+            editor.putString("user_photo", imageUrl);
+        }
+        editor.commit();
+
 
 
     }
@@ -152,6 +162,9 @@ public class UserFragment extends Fragment implements MyView.OnRootClickListener
                 break;
             case 2:
                 //    startActivity(new Intent(getContext(), MyCollectionActivity.class));
+                break;
+            case 6:
+                startActivity(new Intent(getContext(), SettingActivity.class));
                 break;
         }
 
