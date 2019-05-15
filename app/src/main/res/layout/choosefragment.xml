@@ -82,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:scaleType="centerCrop"
                 android:layout_marginTop="200dp"
-                android:layout_marginBottom="80dp"
+                android:layout_marginBottom="120dp"
                 android:layout_below="@+id/change_layout"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
