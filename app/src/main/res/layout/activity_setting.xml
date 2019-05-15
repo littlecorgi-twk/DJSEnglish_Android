@@ -4,9 +4,59 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".SettingActivity">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp">
 
+        <ImageButton
+            android:id="@+id/m_back"
+            android:layout_width="10dp"
+            android:layout_height="15dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/u_back"
+            android:scaleType="centerCrop" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="设置"
+            android:textColor="#252525"
+            android:textSize="20dp" />
 
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/division"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="#45ababab" />
+
+    <LinearLayout
+        android:id="@+id/setting_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#ffffff"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="退出登录"
+            android:textSize="20dp"
+            android:textColor="#FF5252"/>
+    </LinearLayout>
 </LinearLayout>
