@@ -87,6 +87,11 @@ public interface GetRequest_Interface {
     @POST("article/get_detail.do")
     Call<ArticleDetail> getArticleDetail(@Field("articleId") int id);
 
+    @FormUrlEncoded
+    @Headers("Content-Type: application/x-www-form-urlencoded")
+    @POST("article/get_detail.do")
+    Call<ArticleDetail> getArticleDetail(@Header("token") String token, @Field("articleId") int id);
+
     @Headers("Content-Type: application/x-www-form-urlencoded")
     @POST("friend/get_list.do")
     Call<FriendList> getFriendList(@Header("token") String token);
