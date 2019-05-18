@@ -91,18 +91,22 @@ public interface GetRequest_Interface {
     @POST("friend/get_list.do")
     Call<FriendList> getFriendList(@Header("token") String token);
 
+    @FormUrlEncoded
     @Headers("Content-Type: application/x-www-form-urlencoded")
     @POST("article/like_article.do")
     Call<MessageVerify> getLikeArticle(@Header("token") String token, @Field("articleId") int id);
 
+    @FormUrlEncoded
     @Headers("Content-Type: application/x-www-form-urlencoded")
     @POST("article/dislike_article.do")
     Call<MessageVerify> getDislikeArticle(@Header("token") String token, @Field("articleId") int id);
 
+    @FormUrlEncoded
     @Headers("Content-Type: application/x-www-form-urlencoded")
     @POST("article/add_collection.do")
     Call<MessageVerify> getAddCollection(@Header("token") String token, @Field("articleId") int id);
 
+    @FormUrlEncoded
     @Headers("Content-Type: application/x-www-form-urlencoded")
     @POST("article/del_collection.do")
     Call<MessageVerify> getDelCollection(@Header("token") String token, @Field("articleId") int id);
