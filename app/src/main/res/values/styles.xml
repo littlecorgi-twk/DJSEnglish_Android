@@ -33,6 +33,10 @@
         <item name="colorControlNormal">@color/color_white</item>
     </style>
 
-
+    <!--Toolbar主题的设置,Application使用的是这个主题-->
+    <style name="ToolBarBaseTheme" parent="AppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 
 </resources>

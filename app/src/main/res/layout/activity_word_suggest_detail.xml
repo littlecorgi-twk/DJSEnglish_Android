@@ -56,7 +56,6 @@
                     android:id="@+id/tv_wordSuggestDetail_ukphone"
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
-                    android:text="英"
                     android:textColor="#5C666666" />
 
                 <Button
@@ -70,7 +69,6 @@
                     android:id="@+id/tv_wordSuggestDetail_usphone"
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
-                    android:text="美"
                     android:textColor="#5C666666" />
             </LinearLayout>
 
