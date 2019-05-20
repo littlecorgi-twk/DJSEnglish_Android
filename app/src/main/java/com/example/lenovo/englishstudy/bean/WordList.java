@@ -43,8 +43,8 @@ public class WordList {
         private String word;
         private String soundMark;
         private String pos;
-        private long updateTime;
-        private long createTime;
+        private String updateTime;
+        private String createTime;
         private String mean;
 
         public int getId() {
@@ -79,19 +79,19 @@ public class WordList {
             this.pos = pos;
         }
 
-        public long getUpdateTime() {
+        public String getUpdateTime() {
             return updateTime;
         }
 
-        public void setUpdateTime(long updateTime) {
+        public void setUpdateTime(String updateTime) {
             this.updateTime = updateTime;
         }
 
-        public long getCreateTime() {
+        public String getCreateTime() {
             return createTime;
         }
 
-        public void setCreateTime(long createTime) {
+        public void setCreateTime(String createTime) {
             this.createTime = createTime;
         }
 

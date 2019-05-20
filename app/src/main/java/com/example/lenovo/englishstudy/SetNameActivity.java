@@ -52,7 +52,7 @@ public class SetNameActivity extends AppCompatActivity {
 
     public void requestUserName(final String userName) {
         Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("http://47.102.206.19:8080/user/")
+                        .baseUrl("http://www.zhangshuo.fun/user/")
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
         GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);

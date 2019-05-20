@@ -1,39 +1,53 @@
 package com.example.lenovo.englishstudy;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout.LayoutParams;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.FrameLayout.LayoutParams;
 
 import com.example.lenovo.englishstudy.Util.GetRequest_Interface;
 import com.example.lenovo.englishstudy.bean.ArticleDetail;
+import com.example.lenovo.englishstudy.bean.MessageVerify;
 import com.example.lenovo.englishstudy.bean.WordSuggestDetail;
 import com.example.lenovo.englishstudy.userdefined.FlowLayout;
+import com.example.lenovo.englishstudy.viewPageCard.AnimationTools;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class WordsDetailActivity extends AppCompatActivity implements View.OnTouchListener {
+public class WordsDetailActivity extends AppCompatActivity {
 
+    @BindView(R.id.tb_words_detail)
+    Toolbar tbWordsDetail;
+    @BindView(R.id.fl_wordDetail)
+    FlowLayout flWordDetail;
     private PopupWindow popupWindow;
     private TextView mWord;
     private TextView mPhoneticSymbol;
@@ -43,15 +57,77 @@ public class WordsDetailActivity extends AppCompatActivity implements View.OnTou
     private float y1;
     private float y2;
     private View vPopupWindow;
+    private boolean flag1;
+    private boolean flag2;
+    private String token;
+    private ImageView mButtonLike;
+    private ImageView mButtonCollection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_words_detail);
+        ButterKnife.bind(this);
+        SharedPreferences sharedPreferences = getSharedPreferences("user_token", Context.MODE_PRIVATE);
+        token = sharedPreferences.getString("token", "");
         Intent intent = getIntent();
         articleNumber = intent.getIntExtra("ArticleNumber", 0);
-        requestArticleDetail(articleNumber);
+        if (token.equals(""))
+            requestArticleDetail(articleNumber);
+        else
+            requestArticleDetailToken(token, articleNumber);
         initPopupWindow();
+        tbWordsDetail.inflateMenu(R.menu.toolbar_words_detail);
+        tbWordsDetail.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        tbWordsDetail.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.action_likes:
+                        if (flag1) {
+                            flag1 = false;
+                            requestGetDislikeArticle(articleNumber);
+                            tbWordsDetail.getMenu().getItem(1).setIcon(R.drawable.ic_like_unheater);
+
+                        } else {
+                            flag1 = true;
+                            requestGetLikeArticle(articleNumber);
+                            tbWordsDetail.getMenu().getItem(1).setIcon(R.drawable.ic_like_heater);
+                        }
+                        break;
+                    case R.id.action_notifications:
+                        if (flag2) {
+                            flag2 = false;
+                            requestGetDelCollection(articleNumber);
+                            tbWordsDetail.getMenu().getItem(0).setIcon(R.drawable.ic_collection_unstar);
+                        } else {
+                            flag2 = true;
+                            requestGetAddCollection(articleNumber);
+                            tbWordsDetail.getMenu().getItem(0).setIcon(R.drawable.ic_collection_star);
+                        }
+                        break;
+
+                }
+                return true;
+            }
+        });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_words_detail, menu);
+        MenuItem item = menu.findItem(R.id.action_likes);
+        mButtonLike = (ImageView) MenuItemCompat.getActionView(item);
+        mButtonLike.setBackgroundResource(R.drawable.ic_like_unheater);
+        item = menu.findItem(R.id.action_notifications);
+        mButtonCollection = (ImageView) MenuItemCompat.getActionView(item);
+        mButtonCollection.setBackgroundResource(R.drawable.ic_collection_unstar);
+        return true;
     }
 
     public void requestArticleDetail(final int id) {
@@ -62,29 +138,76 @@ public class WordsDetailActivity extends AppCompatActivity implements View.OnTou
 
         final GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
 
-        retrofit2.Call<ArticleDetail> call = request.getArticleDetail(id);
+        Call<ArticleDetail> call = request.getArticleDetail(id);
 
         call.enqueue(new Callback<ArticleDetail>() {
             @Override
-            public void onResponse(retrofit2.Call<ArticleDetail> call, final Response<ArticleDetail> response) {
+            public void onResponse(Call<ArticleDetail> call, final Response<ArticleDetail> response) {
                 initChildViews(response.body());
+                flag1 = response.body().getData().isIsLike();
+                if (flag1) {
+                    tbWordsDetail.getMenu().getItem(1).setIcon(R.drawable.ic_like_heater);
+                } else {
+                    tbWordsDetail.getMenu().getItem(1).setIcon(R.drawable.ic_like_unheater);
+                }
+                flag2 = response.body().getData().isIsCollection();
+                if (flag2) {
+                    tbWordsDetail.getMenu().getItem(0).setIcon(R.drawable.ic_collection_star);
+                } else {
+                    tbWordsDetail.getMenu().getItem(0).setIcon(R.drawable.ic_collection_unstar);
+                }
             }
 
             @Override
             public void onFailure(Call<ArticleDetail> call, Throwable t) {
                 t.printStackTrace();
-                Toast.makeText(WordsDetailActivity.this, "获取单词联想失败1", Toast.LENGTH_SHORT).show();
+                Toast.makeText(WordsDetailActivity.this, "requestArticleDetail获取单词联想失败1", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void requestArticleDetailToken(String token, final int id) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://47.102.206.19:8080/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        final GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
+
+        Call<ArticleDetail> call = request.getArticleDetail(token, id);
+
+        call.enqueue(new Callback<ArticleDetail>() {
+            @Override
+            public void onResponse(Call<ArticleDetail> call, final Response<ArticleDetail> response) {
+                initChildViews(response.body());
+                flag1 = response.body().getData().isIsLike();
+                if (flag1) {
+                    tbWordsDetail.getMenu().getItem(1).setIcon(R.drawable.ic_like_heater);
+                } else {
+                    tbWordsDetail.getMenu().getItem(1).setIcon(R.drawable.ic_like_unheater);
+                }
+                flag2 = response.body().getData().isIsCollection();
+                if (flag2) {
+                    tbWordsDetail.getMenu().getItem(0).setIcon(R.drawable.ic_collection_star);
+                } else {
+                    tbWordsDetail.getMenu().getItem(0).setIcon(R.drawable.ic_collection_unstar);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArticleDetail> call, Throwable t) {
+                t.printStackTrace();
+                Toast.makeText(WordsDetailActivity.this, "requestArticleDetail获取单词联想失败1", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     void initChildViews(ArticleDetail articleDetail) {
-        FlowLayout mFlowLayout = findViewById(R.id.fl_wordDetail);
         ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        lp.leftMargin = 5;
-        lp.rightMargin = 5;
-        lp.topMargin = 5;
-        lp.bottomMargin = 5;
+//        lp.leftMargin = 5;
+//        lp.rightMargin = 5;
+//        lp.topMargin = 5;
+//        lp.bottomMargin = 5;
         char[] chs = articleDetail.getData().getText().toCharArray();
         List<String> stringList = new ArrayList<>();
         StringBuffer tempStr = new StringBuffer();
@@ -93,7 +216,7 @@ public class WordsDetailActivity extends AppCompatActivity implements View.OnTou
             if (chs[i] != ' ') {
                 tempStr.append(chs[i]);
                 j++;
-                if (i == chs.length - 1){
+                if (i == chs.length - 1) {
                     j = 0;
                     stringList.add(tempStr.toString());
                 }
@@ -108,7 +231,7 @@ public class WordsDetailActivity extends AppCompatActivity implements View.OnTou
             mTextView.setText(mWord);
             mTextView.setTextColor(Color.BLACK);
             mTextView.setBackgroundDrawable(getResources().getDrawable(R.drawable.textview));
-            mFlowLayout.addView(mTextView, lp);
+            flWordDetail.addView(mTextView, lp);
             mTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -135,9 +258,6 @@ public class WordsDetailActivity extends AppCompatActivity implements View.OnTou
         mWord = view.findViewById(R.id.tv_word);
         mPhoneticSymbol = view.findViewById(R.id.tv_phonetic_symbol);
         mMeaning = view.findViewById(R.id.tv_meaning);
-        mButton = view.findViewById(R.id.button_word_detail_popup_window_changeHeight);
-
-        mButton.setOnTouchListener(this); // 重写了onTouch，就有可能把performClick给屏蔽了，这样这些点击操作就没办法完成了，所以就会有了这个警告
     }
 
     public void requestWordMeaning(final String word) {
@@ -148,18 +268,18 @@ public class WordsDetailActivity extends AppCompatActivity implements View.OnTou
 
         GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
 
-        retrofit2.Call<WordSuggestDetail> call = request.getWordSuggestDetailCall(word);
+        Call<WordSuggestDetail> call = request.getWordSuggestDetailCall(word);
 
         call.enqueue(new Callback<WordSuggestDetail>() {
             @Override
-            public void onResponse(retrofit2.Call<WordSuggestDetail> call, final Response<WordSuggestDetail> response) {
+            public void onResponse(Call<WordSuggestDetail> call, final Response<WordSuggestDetail> response) {
                 showWordMeaning(response.body());
             }
 
             @Override
             public void onFailure(Call<WordSuggestDetail> call, Throwable t) {
                 t.printStackTrace();
-                Toast.makeText(WordsDetailActivity.this, "获取单词联想失败1", Toast.LENGTH_SHORT).show();
+                Toast.makeText(WordsDetailActivity.this, "requestWordMeaning获取单词联想失败1", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -181,46 +301,115 @@ public class WordsDetailActivity extends AppCompatActivity implements View.OnTou
         }
     }
 
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
+    public void requestGetLikeArticle(final int id) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://www.zhangshuo.fun/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
-        final LayoutInflater mLayoutInflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
-        vPopupWindow = mLayoutInflater.inflate(R.layout.word_detail_popup_window, null, false);
-        //继承了Activity的onTouchEvent方法，直接监听点击事件
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            //当手指按下的时候
-            y1 = event.getY();
-        }
-        if (event.getAction() == MotionEvent.ACTION_MOVE) {
-            //当手指移动的时候
-            y2 = event.getY();
-            if (y1 - y2 > 50) {
-                Toast.makeText(WordsDetailActivity.this, "向上滑" + (y1 - y2), Toast.LENGTH_SHORT).show();
-//                LayoutParams lp = (LayoutParams) vPopupWindow.getLayoutParams();
-                LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, 139);
-                vPopupWindow.setLayoutParams(lp);
-                popupWindow.setContentView(vPopupWindow);
-                popupWindow.setHeight(LayoutParams.MATCH_PARENT);
-                popupWindow.setWidth(LayoutParams.MATCH_PARENT);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        popupWindow.showAtLocation(mLayoutInflater.inflate(R.layout.activity_words_detail, null, false), Gravity.BOTTOM, 0, 0);
-                    }
-                });
-            } else if (y2 - y1 > 50) {
-                Toast.makeText(WordsDetailActivity.this, "向下滑" + (y2 - y1), Toast.LENGTH_SHORT).show();
-                LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, 139);
-                vPopupWindow.setLayoutParams(lp);
-                popupWindow.setContentView(vPopupWindow);
-                popupWindow.setHeight(LayoutParams.WRAP_CONTENT);
-                popupWindow.setWidth(LayoutParams.WRAP_CONTENT);
-                popupWindow.showAtLocation(mLayoutInflater.inflate(R.layout.activity_words_detail, null, false), Gravity.BOTTOM, 0, 0);
+        final GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
+
+        Call<MessageVerify> call = request.getLikeArticle(token, id);
+
+        call.enqueue(new Callback<MessageVerify>() {
+            @Override
+            public void onResponse(Call<MessageVerify> call, final Response<MessageVerify> response) {
+                if (response.body().getStatus() == 0) {
+                    Toast.makeText(WordsDetailActivity.this, "requestGetLikeArticle" + response.body().getMsg(), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(WordsDetailActivity.this, "requestGetLikeArticle" + response.body().getMsg(), Toast.LENGTH_SHORT).show();
+                }
             }
-        }
-        if (event.getAction() == MotionEvent.ACTION_UP) {
-            Log.i("Lgq", "sssssssll离开了lllll==");
-        }
-        return super.onTouchEvent(event);
+
+            @Override
+            public void onFailure(Call<MessageVerify> call, Throwable t) {
+                t.printStackTrace();
+                Toast.makeText(WordsDetailActivity.this, "获取单词联想失败1", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void requestGetDislikeArticle(final int id) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://www.zhangshuo.fun/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        final GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
+
+        Call<MessageVerify> call = request.getDislikeArticle(token, id);
+
+        call.enqueue(new Callback<MessageVerify>() {
+            @Override
+            public void onResponse(Call<MessageVerify> call, final Response<MessageVerify> response) {
+                if (response.body().getStatus() == 0) {
+                    Toast.makeText(WordsDetailActivity.this, "requestGetDislikeArticle" + response.body().getMsg(), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(WordsDetailActivity.this, "requestGetDislikeArticle" + response.body().getMsg(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MessageVerify> call, Throwable t) {
+                t.printStackTrace();
+                Toast.makeText(WordsDetailActivity.this, "获取单词联想失败1", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void requestGetAddCollection(final int id) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://www.zhangshuo.fun/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        final GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
+
+        Call<MessageVerify> call = request.getAddCollection(token, id);
+
+        call.enqueue(new Callback<MessageVerify>() {
+            @Override
+            public void onResponse(Call<MessageVerify> call, final Response<MessageVerify> response) {
+                if (response.body().getStatus() == 0) {
+                    Toast.makeText(WordsDetailActivity.this, "requestGetAddCollection" + response.body().getMsg(), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(WordsDetailActivity.this, "requestGetAddCollection" + response.body().getMsg(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MessageVerify> call, Throwable t) {
+                t.printStackTrace();
+                Toast.makeText(WordsDetailActivity.this, "获取单词联想失败1", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void requestGetDelCollection(final int id) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://www.zhangshuo.fun/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        final GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
+
+        Call<MessageVerify> call = request.getDelCollection(token, id);
+
+        call.enqueue(new Callback<MessageVerify>() {
+            @Override
+            public void onResponse(Call<MessageVerify> call, final Response<MessageVerify> response) {
+                if (response.body().getStatus() == 0) {
+                    Toast.makeText(WordsDetailActivity.this, "requestGetDelCollection" + response.body().getMsg(), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(WordsDetailActivity.this, "requestGetDelCollection" + response.body().getMsg(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MessageVerify> call, Throwable t) {
+                t.printStackTrace();
+                Toast.makeText(WordsDetailActivity.this, "获取单词联想失败1", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

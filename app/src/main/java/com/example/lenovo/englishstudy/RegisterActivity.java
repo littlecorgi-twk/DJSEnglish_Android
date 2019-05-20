@@ -94,7 +94,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void requestRegister(final String phone, final String password, final String msgCode) {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://47.102.206.19:8080/user/")
+                .baseUrl("http://www.zhangshuo.fun/user/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
@@ -124,7 +124,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void requestMessageVerify(final String phoneNumber) {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://47.102.206.19:8080/user/")
+                .baseUrl("http://www.zhangshuo.fun/user/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);

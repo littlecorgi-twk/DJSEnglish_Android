@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start">
+
+        <TextView
+            android:id="@+id/answer1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:text="造句结果 "
+            android:textColor="#11CDB5"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/ianswer"
+            android:layout_width="20dp"
+            android:layout_height="25dp"
+            android:layout_toRightOf="@id/answer1"
+            android:background="@drawable/ic_answer"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/answer2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/answer1"
+            android:layout_marginLeft="15dp"
+            android:textColor="#11CDB5"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/answer3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/answer2"
+            android:layout_marginLeft="15dp"
+            android:textColor="#11CDB5"
+            android:textSize="22sp" />
+    </RelativeLayout>
+
+</FrameLayout>

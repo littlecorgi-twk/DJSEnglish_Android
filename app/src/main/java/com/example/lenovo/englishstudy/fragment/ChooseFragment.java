@@ -343,15 +343,13 @@ public class ChooseFragment extends Fragment {
                     sentence.setSentence(word);
                     sentence.setSentence_translate(wordTranslate.getTrans_result().get(0).getDst());
                     sentence.save();
-                    if (sentence.save()) {
-                    } else {
-                    }
                     answer3.setText(wordTranslate.getTrans_result().get(0).getDst());
                     mFlowLayout.removeAllViews();
                     initChildViews(getView());
                 } else {
                     Toast.makeText(getActivity(), "获取翻译失败", Toast.LENGTH_SHORT).show();
                 }
+
             }
 
             @Override
@@ -364,7 +362,7 @@ public class ChooseFragment extends Fragment {
 
     public void requestWordList() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://47.102.206.19:8080/words/")
+                .baseUrl("http://www.zhangshuo.fun/words/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
@@ -390,7 +388,8 @@ public class ChooseFragment extends Fragment {
             @Override
             public void onFailure(Call<WordList> call, Throwable t) {
                 t.printStackTrace();
-                Toast.makeText(getActivity(), "获取单词失败", Toast.LENGTH_SHORT).show();
+                Log.d("0000000",t.toString());
+                Toast.makeText(getContext(), "获取单词失败", Toast.LENGTH_SHORT).show();
             }
         });
 
