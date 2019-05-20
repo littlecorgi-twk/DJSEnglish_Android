@@ -100,7 +100,7 @@ public class FindPasswordActivity extends AppCompatActivity {
 
     public void requestForgetPassword(final String phoneNumber, final String msgCode, final String password) {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://47.102.206.19:8080/user/")
+                .baseUrl("http://www.zhangshuo.fun/user/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
@@ -129,7 +129,7 @@ public class FindPasswordActivity extends AppCompatActivity {
 
     public void requestMessageVerify(final String phoneNumber) {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://47.102.206.19:8080/user/")
+                .baseUrl("http://www.zhangshuo.fun/user/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);

@@ -320,7 +320,7 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
 
     public void getMessage(String token) {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://47.102.206.19:8080/user/")
+                .baseUrl("http://www.zhangshuo.fun/user/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         final GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
@@ -337,7 +337,7 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
                         initView();
                         Log.d("222222", name+" "+stage1+" "+sex1);
                     } else if(userMessage.getStatus() == 1) {
-
+                        Toast.makeText(MessageActivity.this, "用户未登录, 无法获取当前用户信息", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -355,7 +355,7 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
 
     public void uploadImage(String filePath, String token) {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://47.102.206.19:8080/user/")
+                .baseUrl("http://www.zhangshuo.fun/user/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         final GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
@@ -399,7 +399,7 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
 
     public void updateMessage(String name, String msg, String sex, String stage, String token) {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://47.102.206.19:8080/user/")
+                .baseUrl("http://www.zhangshuo.fun/user/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         final GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
