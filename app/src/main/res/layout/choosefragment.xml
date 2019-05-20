@@ -9,7 +9,7 @@
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:background="#ffffff"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
@@ -18,9 +18,14 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="选词造句"
-            android:textColor="#ffffff"
+            android:textColor="#252525"
             android:textSize="22sp" />
     </android.support.v7.widget.Toolbar>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="#45ababab" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -89,60 +94,67 @@
                         android:scaleType="centerCrop" />
                 </LinearLayout>
 
-                <LinearLayout
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="25"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:layout_weight="20">
 
-                    <ImageView
-                        android:id="@+id/hezi"
-                        android:layout_width="wrap_content"
-                        android:layout_height="140dp"
-                        android:layout_gravity="center"
-                        android:background="@drawable/ic_hezi"
-                        android:scaleType="centerCrop" />
-                </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:id="@+id/hezi"
+                            android:layout_width="wrap_content"
+                            android:layout_height="180dp"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@drawable/ic_hezi"
+                            android:scaleType="centerCrop" />
+
+                    </LinearLayout>
+                    <include layout="@layout/answerlayout" />
+
+                </FrameLayout>
+
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/answer1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="550dp"
-                android:text="造句结果 "
-                android:textColor="#11CDB5"
-                android:textSize="20sp" />
+            <!--<TextView-->
+            <!--android:id="@+id5dp"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentTop="true"-->
+            <!--android:layout_marginLeft="15dp"-->
+            <!--android:text="造句结果 "-->
+            <!--android:textColor="#11CDB5"-->
+            <!--android:textSize="20sp" />-->
 
-            <ImageView
-                android:id="@+id/ianswer"
-                android:layout_width="20dp"
-                android:layout_height="25dp"
-                android:layout_marginTop="550dp"
-                android:layout_toRightOf="@id/answer1"
-                android:background="@drawable/ic_answer"
-                android:scaleType="centerCrop" />
+            <!--<ImageView-->
+            <!--android:id="@+id/ianswer"-->
+            <!--android:layout_width="20dp"-->
+            <!--android:layout_height="25dp"-->
+            <!--android:layout_marginTop="550dp"-->
+            <!--android:layout_toRightOf="@id/answer1"-->
+            <!--android:background="@drawable/ic_answer"-->
+            <!--android:scaleType="centerCrop" />-->
 
-            <TextView
-                android:id="@+id/answer2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/answer1"
-                android:layout_marginLeft="15dp"
-                android:textColor="#11CDB5"
-                android:textSize="22sp" />
+            <!--<TextView-->
+            <!--android:id="@+id/answer2"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/answer1"-->
+            <!--android:layout_marginLeft="15dp"-->
+            <!--android:textColor="#11CDB5"-->
+            <!--android:textSize="22sp" />-->
 
-            <TextView
-                android:id="@+id/answer3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/answer2"
-                android:layout_marginLeft="15dp"
-                android:textColor="#11CDB5"
-                android:textSize="22sp" />
+            <!--<TextView-->
+            <!--android:id="@+id/answer3"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/answer2"-->
+            <!--android:layout_marginLeft="15dp"-->
+            <!--android:textColor="#11CDB5"-->
+            <!--android:textSize="22sp" />-->
 
 
         </RelativeLayout>
