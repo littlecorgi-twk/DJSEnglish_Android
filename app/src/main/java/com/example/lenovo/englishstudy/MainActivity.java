@@ -1,9 +1,11 @@
 package com.example.lenovo.englishstudy;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
@@ -33,6 +35,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);//设置透明状态栏
+        }
+
         bottomNavigationBar = findViewById(R.id.navigation_bar);
 
         /** 导航基础设置 包括按钮选中效果 导航栏背景色等 */
@@ -70,7 +77,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
                 .initialise(); //initialise 一定要放在 所有设置的最后一项
 
         init();
-
     }
 
     private void init() {

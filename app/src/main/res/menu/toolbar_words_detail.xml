@@ -5,12 +5,10 @@
         android:id="@+id/action_notifications"
         android:icon="@drawable/ic_collection_unstar"
         android:title="colletcion"
-        app:actionViewClass="android.widget.Button"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_likes"
         android:icon="@drawable/ic_like_unheater"
         android:title="like"
-        app:actionViewClass="android.widget.Button"
         app:showAsAction="ifRoom" />
 </menu>

@@ -18,15 +18,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ClientActivity"></activity>
-        <activity android:name=".FindPasswordActivity"></activity>
-        <activity android:name=".SettingActivity"></activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:windowSoftInputMode="adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ClientActivity" />
+        <activity android:name=".FindPasswordActivity" />
+        <activity android:name=".SettingActivity" />
         <activity android:name=".SetNameActivity" />
-
-        <uses-library
-            android:name="org.apache.http.legacy"
-            android:required="false" />
-
         <activity android:name=".MessageActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".WordSuggestDetailActivity" />
@@ -34,16 +38,9 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".ChooseHistoryActivity" />
         <activity android:name=".WordsDetailActivity" />
-        <activity
-            android:name=".MainActivity"
-            android:label=""
-            android:windowSoftInputMode="adjustPan">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
         <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"
@@ -61,15 +58,14 @@
             android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        
         <provider
-            android:authorities="com.example.lenovo.englishstudy.fileprovider"
             android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.example.lenovo.englishstudy.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"/>
+                android:resource="@xml/file_paths" />
         </provider>
     </application>
 

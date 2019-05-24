@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,15 +16,15 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.FrameLayout.LayoutParams;
+import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.lenovo.englishstudy.Util.GetRequest_Interface;
 import com.example.lenovo.englishstudy.bean.ArticleDetail;
 import com.example.lenovo.englishstudy.bean.MessageVerify;
@@ -47,11 +49,14 @@ public class WordsDetailActivity extends AppCompatActivity {
     Toolbar tbWordsDetail;
     @BindView(R.id.fl_wordDetail)
     FlowLayout flWordDetail;
+    @BindView(R.id.iv_words_detail_headImage)
+    ImageView ivWordsDetailHeadImage;
+    @BindView(R.id.collapsing_toolbar_layout)
+    CollapsingToolbarLayout collapsingToolbarLayout;
     private PopupWindow popupWindow;
     private TextView mWord;
     private TextView mPhoneticSymbol;
     private TextView mMeaning;
-    private Button mButton;
     private int articleNumber;
     private float y1;
     private float y2;
@@ -59,22 +64,29 @@ public class WordsDetailActivity extends AppCompatActivity {
     private boolean flag1;
     private boolean flag2;
     private String token;
-    private Button mButtonLike;
-    private Button mButtonCollection;
+    private ImageView mButtonLike;
+    private ImageView mButtonCollection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_words_detail);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);//设置透明状态栏
+        }
+
         ButterKnife.bind(this);
         SharedPreferences sharedPreferences = getSharedPreferences("user_token", Context.MODE_PRIVATE);
         token = sharedPreferences.getString("token", "");
         Intent intent = getIntent();
         articleNumber = intent.getIntExtra("ArticleNumber", 0);
-        requestArticleDetail(articleNumber);
+        if (token.equals(""))
+            requestArticleDetail(articleNumber);
+        else
+            requestArticleDetailToken(token, articleNumber);
         initPopupWindow();
-        requestGetLikeArticle(articleNumber);
-        requestGetAddCollection(articleNumber);
+        // setSupportActionBar(tbWordsDetail);
         tbWordsDetail.inflateMenu(R.menu.toolbar_words_detail);
         tbWordsDetail.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,17 +94,6 @@ public class WordsDetailActivity extends AppCompatActivity {
                 finish();
             }
         });
-        if (flag1) {
-            tbWordsDetail.getMenu().getItem(0).setIcon(R.drawable.ic_like_heater);
-        } else {
-            tbWordsDetail.getMenu().getItem(0).setIcon(R.drawable.ic_like_unheater);
-        }
-        if (flag2) {
-            tbWordsDetail.getMenu().getItem(1).setIcon(R.drawable.ic_collection_star);
-        } else {
-            tbWordsDetail.getMenu().getItem(1).setIcon(R.drawable.ic_collection_unstar);
-        }
-
         tbWordsDetail.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
@@ -101,31 +102,26 @@ public class WordsDetailActivity extends AppCompatActivity {
                         if (flag1) {
                             flag1 = false;
                             requestGetDislikeArticle(articleNumber);
-                            Toast.makeText(getApplicationContext(), "取消喜欢", Toast.LENGTH_SHORT).show();
-                            AnimationTools.scale(mButtonLike);
-                            tbWordsDetail.getMenu().getItem(0).setIcon(R.drawable.ic_like_unheater);
+                            AnimationTools.scale(tbWordsDetail.getMenu().getItem(1).getActionView());
+                            tbWordsDetail.getMenu().getItem(1).setIcon(R.drawable.ic_like_unheater);
                         } else {
                             flag1 = true;
                             requestGetLikeArticle(articleNumber);
-                            Toast.makeText(getApplicationContext(), "喜欢", Toast.LENGTH_SHORT).show();
-                            AnimationTools.scale(mButtonLike);
-                            tbWordsDetail.getMenu().getItem(0).setIcon(R.drawable.ic_like_heater);
+                            AnimationTools.scale(tbWordsDetail.getMenu().getItem(1).getActionView());
+                            tbWordsDetail.getMenu().getItem(1).setIcon(R.drawable.ic_like_heater);
                         }
                         break;
                     case R.id.action_notifications:
-                        Toast.makeText(WordsDetailActivity.this, "asdf", Toast.LENGTH_SHORT).show();
                         if (flag2) {
                             flag2 = false;
                             requestGetDelCollection(articleNumber);
-                            Toast.makeText(getApplicationContext(), "取消收藏", Toast.LENGTH_SHORT).show();
-//                    AnimationTools.scale(notifications);
-                            tbWordsDetail.getMenu().getItem(1).setIcon(R.drawable.ic_collection_unstar);
+                            AnimationTools.scale(tbWordsDetail.getMenu().getItem(0).getActionView());
+                            tbWordsDetail.getMenu().getItem(0).setIcon(R.drawable.ic_collection_unstar);
                         } else {
                             flag2 = true;
                             requestGetAddCollection(articleNumber);
-                            Toast.makeText(getApplicationContext(), "收藏", Toast.LENGTH_SHORT).show();
-//                    AnimationTools.scale(notifications);
-                            tbWordsDetail.getMenu().getItem(1).setIcon(R.drawable.ic_collection_star);
+                            AnimationTools.scale(tbWordsDetail.getMenu().getItem(0).getActionView());
+                            tbWordsDetail.getMenu().getItem(0).setIcon(R.drawable.ic_collection_star);
                         }
                         break;
 
@@ -133,15 +129,20 @@ public class WordsDetailActivity extends AppCompatActivity {
                 return true;
             }
         });
+        collapsingToolbarLayout.setTitle("独角兽英语-享受阅读的乐趣");
+        collapsingToolbarLayout.setCollapsedTitleTextColor(Color.WHITE);
+        collapsingToolbarLayout.setExpandedTitleColor(Color.WHITE);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_words_detail, menu);
         MenuItem item = menu.findItem(R.id.action_likes);
-        Button mButtonLike = (Button) MenuItemCompat.getActionView(item);
+        mButtonLike = (ImageView) MenuItemCompat.getActionView(item);
+        mButtonLike.setBackgroundResource(R.drawable.ic_like_unheater);
         item = menu.findItem(R.id.action_notifications);
-        Button mButtonCollection = (Button) MenuItemCompat.getActionView(item);
+        mButtonCollection = (ImageView) MenuItemCompat.getActionView(item);
+        mButtonCollection.setBackgroundResource(R.drawable.ic_collection_unstar);
         return true;
     }
 
@@ -160,23 +161,72 @@ public class WordsDetailActivity extends AppCompatActivity {
             public void onResponse(Call<ArticleDetail> call, final Response<ArticleDetail> response) {
                 initChildViews(response.body());
                 flag1 = response.body().getData().isIsLike();
+                if (flag1) {
+                    tbWordsDetail.getMenu().getItem(1).setIcon(R.drawable.ic_like_heater);
+                } else {
+                    tbWordsDetail.getMenu().getItem(1).setIcon(R.drawable.ic_like_unheater);
+                }
                 flag2 = response.body().getData().isIsCollection();
+                if (flag2) {
+                    tbWordsDetail.getMenu().getItem(0).setIcon(R.drawable.ic_collection_star);
+                } else {
+                    tbWordsDetail.getMenu().getItem(0).setIcon(R.drawable.ic_collection_unstar);
+                }
             }
 
             @Override
             public void onFailure(Call<ArticleDetail> call, Throwable t) {
                 t.printStackTrace();
-                Toast.makeText(WordsDetailActivity.this, "获取单词联想失败1", Toast.LENGTH_SHORT).show();
+                Toast.makeText(WordsDetailActivity.this, "requestArticleDetail获取单词联想失败1", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void requestArticleDetailToken(String token, final int id) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://47.102.206.19:8080/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        final GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
+
+        Call<ArticleDetail> call = request.getArticleDetail(token, id);
+
+        call.enqueue(new Callback<ArticleDetail>() {
+            @Override
+            public void onResponse(Call<ArticleDetail> call, final Response<ArticleDetail> response) {
+                initChildViews(response.body());
+                flag1 = response.body().getData().isIsLike();
+                if (flag1) {
+                    tbWordsDetail.getMenu().getItem(1).setIcon(R.drawable.ic_like_heater);
+                } else {
+                    tbWordsDetail.getMenu().getItem(1).setIcon(R.drawable.ic_like_unheater);
+                }
+                flag2 = response.body().getData().isIsCollection();
+                if (flag2) {
+                    tbWordsDetail.getMenu().getItem(0).setIcon(R.drawable.ic_collection_star);
+                } else {
+                    tbWordsDetail.getMenu().getItem(0).setIcon(R.drawable.ic_collection_unstar);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArticleDetail> call, Throwable t) {
+                t.printStackTrace();
+                Toast.makeText(WordsDetailActivity.this, "requestArticleDetail获取单词联想失败1", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     void initChildViews(ArticleDetail articleDetail) {
+        Glide.with(WordsDetailActivity.this)
+                .load(articleDetail.getData().getImg())
+                .into(ivWordsDetailHeadImage);
         ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-//        lp.leftMargin = 5;
-//        lp.rightMargin = 5;
-//        lp.topMargin = 5;
-//        lp.bottomMargin = 5;
+        lp.leftMargin = 10;
+        lp.rightMargin = 10;
+        lp.topMargin = 10;
+        lp.bottomMargin = 10;
         char[] chs = articleDetail.getData().getText().toCharArray();
         List<String> stringList = new ArrayList<>();
         StringBuffer tempStr = new StringBuffer();
@@ -195,11 +245,13 @@ public class WordsDetailActivity extends AppCompatActivity {
                 tempStr = new StringBuffer();
             }
         }
+        Log.d("12344567", stringList.toString());
         for (String mWord : stringList) {
             final TextView mTextView = new TextView(this);
             mTextView.setText(mWord);
             mTextView.setTextColor(Color.BLACK);
-            mTextView.setBackgroundDrawable(getResources().getDrawable(R.drawable.textview));
+            // mTextView.setBackgroundDrawable(getResources().getDrawable(R.drawable.textview));
+            mTextView.setTextSize(16);
             flWordDetail.addView(mTextView, lp);
             mTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -248,7 +300,7 @@ public class WordsDetailActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<WordSuggestDetail> call, Throwable t) {
                 t.printStackTrace();
-                Toast.makeText(WordsDetailActivity.this, "获取单词联想失败1", Toast.LENGTH_SHORT).show();
+                Toast.makeText(WordsDetailActivity.this, "requestWordMeaning获取单词联想失败1", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -284,9 +336,9 @@ public class WordsDetailActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<MessageVerify> call, final Response<MessageVerify> response) {
                 if (response.body().getStatus() == 0) {
-                    Toast.makeText(WordsDetailActivity.this, response.body().getMsg(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(WordsDetailActivity.this, "requestGetLikeArticle" + response.body().getMsg(), Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(WordsDetailActivity.this, response.body().getMsg(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(WordsDetailActivity.this, "requestGetLikeArticle" + response.body().getMsg(), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -312,9 +364,9 @@ public class WordsDetailActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<MessageVerify> call, final Response<MessageVerify> response) {
                 if (response.body().getStatus() == 0) {
-                    Toast.makeText(WordsDetailActivity.this, response.body().getMsg(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(WordsDetailActivity.this, "requestGetDislikeArticle" + response.body().getMsg(), Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(WordsDetailActivity.this, response.body().getMsg(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(WordsDetailActivity.this, "requestGetDislikeArticle" + response.body().getMsg(), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -340,9 +392,9 @@ public class WordsDetailActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<MessageVerify> call, final Response<MessageVerify> response) {
                 if (response.body().getStatus() == 0) {
-                    Toast.makeText(WordsDetailActivity.this, response.body().getMsg(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(WordsDetailActivity.this, "requestGetAddCollection" + response.body().getMsg(), Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(WordsDetailActivity.this, response.body().getMsg(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(WordsDetailActivity.this, "requestGetAddCollection" + response.body().getMsg(), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -368,9 +420,9 @@ public class WordsDetailActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<MessageVerify> call, final Response<MessageVerify> response) {
                 if (response.body().getStatus() == 0) {
-                    Toast.makeText(WordsDetailActivity.this, response.body().getMsg(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(WordsDetailActivity.this, "requestGetDelCollection" + response.body().getMsg(), Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(WordsDetailActivity.this, response.body().getMsg(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(WordsDetailActivity.this, "requestGetDelCollection" + response.body().getMsg(), Toast.LENGTH_SHORT).show();
                 }
             }
 
