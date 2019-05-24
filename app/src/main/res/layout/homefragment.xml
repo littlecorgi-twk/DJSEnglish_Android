@@ -1,43 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.example.lenovo.englishstudy.pullextend.PullToRefreshLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/lin_refresh"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
-    <com.example.lenovo.englishstudy.pullextend.PullToRefreshLinearLayout
-        android:id="@+id/lin_refresh"
+    <com.example.lenovo.englishstudy.pullextend.VerticalScrollView
+        android:id="@+id/sv_scrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-        <com.example.lenovo.englishstudy.pullextend.VerticalScrollView
-            android:id="@+id/sv_scrollView"
+        <android.support.percent.PercentFrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fillViewport="true">
+            android:layout_gravity="center"
+            android:background="#5CF0F1F3"
+            android:gravity="center"
+            android:orientation="vertical">
 
-            <android.support.percent.PercentFrameLayout
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/tb_home_fragment"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:orientation="vertical"
-                android:background="#5CF0F1F3">
+                android:layout_height="?attr/actionBarSize"
+                app:navigationIcon="?attr/homeAsUpIndicator"/>
 
-                <android.support.v4.view.ViewPager
-                    android:id="@+id/vp_WordCard"
-                    app:layout_aspectRatio="@fraction/circle_article_aspectRatio"
-                    app:layout_widthPercent="100%"
-                    app:layout_heightPercent="90%"
-                    android:layout_gravity="bottom"
-                    android:clipToPadding="false"
-                    android:overScrollMode="never"
-                    android:paddingStart="@dimen/card_padding"
-                    android:paddingLeft="@dimen/card_padding"
-                    android:paddingEnd="@dimen/card_padding"
-                    android:paddingRight="@dimen/card_padding"
-                    android:paddingBottom="30dp" />
+            <android.support.v4.view.ViewPager
+                android:id="@+id/vp_WordCard"
+                android:layout_gravity="bottom"
+                android:clipToPadding="false"
+                android:overScrollMode="never"
+                android:paddingTop="30dp"
+                android:paddingStart="@dimen/card_padding"
+                android:paddingEnd="@dimen/card_padding"
+                android:paddingBottom="30dp"
+                app:layout_aspectRatio="@fraction/circle_article_aspectRatio"
+                app:layout_heightPercent="90%"
+                app:layout_widthPercent="100%" />
 
-            </android.support.percent.PercentFrameLayout>
-        </com.example.lenovo.englishstudy.pullextend.VerticalScrollView>
-    </com.example.lenovo.englishstudy.pullextend.PullToRefreshLinearLayout>
-</LinearLayout>
+        </android.support.percent.PercentFrameLayout>
+
+    </com.example.lenovo.englishstudy.pullextend.VerticalScrollView>
+
+</com.example.lenovo.englishstudy.pullextend.PullToRefreshLinearLayout>

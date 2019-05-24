@@ -6,12 +6,14 @@ import com.example.lenovo.englishstudy.bean.FriendList;
 import com.example.lenovo.englishstudy.bean.ImageMessage;
 import com.example.lenovo.englishstudy.bean.LoginMessage;
 import com.example.lenovo.englishstudy.bean.MessageVerify;
+import com.example.lenovo.englishstudy.bean.SexagenaryCycle;
 import com.example.lenovo.englishstudy.bean.UserMessage;
 import com.example.lenovo.englishstudy.bean.WordList;
 import com.example.lenovo.englishstudy.bean.WordSuggest;
 import com.example.lenovo.englishstudy.bean.WordSuggestDetail;
 import com.example.lenovo.englishstudy.bean.WordTranslate;
 
+import io.reactivex.Observable;
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -22,6 +24,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface GetRequest_Interface {
@@ -80,7 +83,7 @@ public interface GetRequest_Interface {
 
     @Headers("Content-Type: application/x-www-form-urlencoded")
     @POST("article/get_list.do")
-    Call<ArticleList> getArticleList();
+    Observable<ArticleList> getArticleList();
 
     @FormUrlEncoded
     @Headers("Content-Type: application/x-www-form-urlencoded")
@@ -115,4 +118,7 @@ public interface GetRequest_Interface {
     @Headers("Content-Type: application/x-www-form-urlencoded")
     @POST("article/del_collection.do")
     Call<MessageVerify> getDelCollection(@Header("token") String token, @Field("articleId") int id);
+
+    @GET("api/holiday/single/{data}")
+    Call<SexagenaryCycle> getSexagenaryCycle(@Path("data") String data);
 }
