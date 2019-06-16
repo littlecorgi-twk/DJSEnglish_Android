@@ -150,6 +150,8 @@ public class ChooseHistoryActivity extends AppCompatActivity {
         wBackground.alpha = 0.4f;
         getWindow().setAttributes(wBackground);
 
+
+
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
