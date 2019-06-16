@@ -66,4 +66,5 @@ public class ObservableScrollView extends ScrollView {
         }
         return super.onInterceptTouchEvent(ev);
     }
+
 }

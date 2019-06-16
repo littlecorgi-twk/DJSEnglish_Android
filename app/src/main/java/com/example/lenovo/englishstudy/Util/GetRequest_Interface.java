@@ -95,6 +95,12 @@ public interface GetRequest_Interface {
     @POST("article/get_detail.do")
     Call<ArticleDetail> getArticleDetail(@Header("token") String token, @Field("articleId") int id);
 
+    @FormUrlEncoded
+    @Headers("Content-Type: application/x-www-form-urlencoded")
+    @POST("qq_login.do")
+    Call<LoginMessage> getQQLoginCall(@Field("qqId") String id);
+
+
     @Headers("Content-Type: application/x-www-form-urlencoded")
     @POST("friend/get_list.do")
     Call<FriendList> getFriendList(@Header("token") String token);

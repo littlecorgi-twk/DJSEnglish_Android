@@ -4,6 +4,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -11,24 +12,31 @@ import android.widget.Toast;
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.example.lenovo.englishstudy.fragment.ChatroomFragment;
-import com.example.lenovo.englishstudy.fragment.HomeFragment;
 import com.example.lenovo.englishstudy.fragment.ChooseFragment;
+import com.example.lenovo.englishstudy.fragment.HomeFragment;
 import com.example.lenovo.englishstudy.fragment.SearchFragment;
 import com.example.lenovo.englishstudy.fragment.UserFragment;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationBar.OnTabSelectedListener {
     private BottomNavigationBar bottomNavigationBar;
-    //  private int lastSelectedPosition = 0;
-    //  private String TAG = MainActivity.class.getSimpleName();
     private HomeFragment homeFragment;
     private ChooseFragment chooseFragment;
     private ChatroomFragment chatroomFragment;
     private UserFragment userFragment;
-    private SearchFragment mSearchFragment;
+    private SearchFragment searchFragment;
+    private static final String HOME_FRAGMENT_KEY = "homeFragment";
+    private static final String CHOOSE_FRAGMENT_KEY = "chooseFragment";
+    private static final String CHATROOM_FRAGMENT_KEY = "chatroomFragment";
+    private static final String USER_FRAGMENT_KEY = "userFragment";
+    private static final String SEARCH_FRAGMENT_KEY = "searchFragment";
+    private int  lastSelectedPosition = 0;
 
+
+    //不保留活动
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
+        Log.d("123456","3");
+    //    super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -73,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
                 .addItem(new BottomNavigationItem(R.drawable.ic_search2, "搜索").setInactiveIconResource(R.drawable.ic_search))
                 .addItem(new BottomNavigationItem(R.drawable.ic_chatroom2, "聊天室").setInactiveIconResource(R.drawable.ic_chatroom))
                 .addItem(new BottomNavigationItem(R.drawable.ic_user2, "我的").setInactiveIconResource(R.drawable.ic_user))
-                //    .setFirstSelectedPosition(lastSelectedPosition)
+                .setFirstSelectedPosition(0)
                 .initialise(); //initialise 一定要放在 所有设置的最后一项
 
         init();
@@ -84,10 +92,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
         chooseFragment = new ChooseFragment();
         chatroomFragment = new ChatroomFragment();
         userFragment = new UserFragment();
-        mSearchFragment = new SearchFragment();
+        searchFragment = new SearchFragment();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.frameLayout, homeFragment).add(R.id.frameLayout, chooseFragment).add(R.id.frameLayout, mSearchFragment).add(R.id.frameLayout, chatroomFragment).add(R.id.frameLayout, userFragment);
-        fragmentTransaction.hide(chooseFragment).hide(mSearchFragment).hide(chatroomFragment).hide(userFragment);
+        fragmentTransaction.add(R.id.frameLayout, homeFragment).add(R.id.frameLayout, chooseFragment).add(R.id.frameLayout, searchFragment).add(R.id.frameLayout, chatroomFragment).add(R.id.frameLayout, userFragment);
+        fragmentTransaction.hide(chooseFragment).hide(searchFragment).hide(chatroomFragment).hide(userFragment);
         //fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
@@ -101,31 +109,31 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
         FragmentTransaction beginTransaction = getSupportFragmentManager().beginTransaction();
         switch (position) {
             case 0:
-                beginTransaction.hide(chooseFragment).hide(mSearchFragment).hide(chatroomFragment).hide(userFragment);
+                beginTransaction.hide(chooseFragment).hide(searchFragment).hide(chatroomFragment).hide(userFragment);
                 beginTransaction.show(homeFragment);
                 //beginTransaction.addToBackStack(null);
                 beginTransaction.commit();
                 break;
             case 1:
-                beginTransaction.hide(homeFragment).hide(mSearchFragment).hide(chatroomFragment).hide(userFragment);
+                beginTransaction.hide(homeFragment).hide(searchFragment).hide(chatroomFragment).hide(userFragment);
                 beginTransaction.show(chooseFragment);
                 //  beginTransaction.addToBackStack(null);
                 beginTransaction.commit();
                 break;
             case 2:
                 beginTransaction.hide(homeFragment).hide(chooseFragment).hide(chatroomFragment).hide(userFragment);
-                beginTransaction.show(mSearchFragment);
+                beginTransaction.show(searchFragment);
                 // beginTransaction.addToBackStack(null);
                 beginTransaction.commit();
                 break;
             case 3:
-                beginTransaction.hide(homeFragment).hide(chooseFragment).hide(mSearchFragment).hide(userFragment);
+                beginTransaction.hide(homeFragment).hide(chooseFragment).hide(searchFragment).hide(userFragment);
                 beginTransaction.show(chatroomFragment);
                 // beginTransaction.addToBackStack(null);
                 beginTransaction.commit();
                 break;
             case 4:
-                beginTransaction.hide(homeFragment).hide(chooseFragment).hide(mSearchFragment).hide(chatroomFragment);
+                beginTransaction.hide(homeFragment).hide(chooseFragment).hide(searchFragment).hide(chatroomFragment);
                 beginTransaction.show(userFragment);
                 // beginTransaction.addToBackStack(null);
                 beginTransaction.commit();
