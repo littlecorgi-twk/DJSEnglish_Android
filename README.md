@@ -8,11 +8,11 @@
 于是，我们诞生了！我们通过美文阅读、选词造句、VR情景式学习、游戏式学习来为用户创造一个学习英语的良好环境，来激发用户学习英语的兴趣。
 
 ## 使用的框架
-网络请求：Retrofit
-图片加载：Glide
-异步操作：RxJava
-流动式布局：FlowLayout
-圆形图片显示：CircleImageView
-时间选择器：Android-PickerView
-绑定布局：butterknife
-语言：Kotlin、Kotlin Anko
+网络请求：Retrofit  
+图片加载：Glide  
+异步操作：RxJava  
+流动式布局：FlowLayout  
+圆形图片显示：CircleImageView  
+时间选择器：Android-PickerView  
+绑定布局：butterknife  
+语言：Kotlin、Kotlin Anko  
