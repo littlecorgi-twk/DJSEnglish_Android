@@ -186,8 +186,9 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
                         .isCenterLabel(true)
                         .build();
                 myView4.setRightText(time);
-                oneItem.removeViewAt(3);
-                oneItem.addView(myView4, 3);
+//                oneItem.removeViewAt(3);
+//                oneItem.addView(myView4, 3);
+                oneItem.invalidate();
                 pickerView.show();
                 break;
 

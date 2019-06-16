@@ -106,6 +106,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+        
     }
 
     @Override
@@ -125,8 +126,7 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         public void onComplete(Object o) {
             initOpenIdAndToken(o);
-            getUserInfo();
-            Toast.makeText(getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
+            //getUserInfo();
         }
 
         @Override
@@ -149,11 +149,15 @@ public class LoginActivity extends AppCompatActivity {
                 try {
                     user_name = ((JSONObject) o).getString("nickname");
                     user_photo = ((JSONObject) o).getString("figureurl_qq_2");
-                    Intent intent = new Intent();
-                    intent.putExtra("user_name", user_name);
-                    intent.putExtra("user_photo", user_photo);
-                    setResult(RESULT_OK, intent);
+                    //
+                    Intent intent = new Intent(LoginActivity.this, PhoneActivity.class);
+                    startActivity(intent);
                     finish();
+//                    Intent intent = new Intent();
+//                    intent.putExtra("user_name", user_name);
+//                    intent.putExtra("user_photo", user_photo);
+//                    setResult(RESULT_OK, intent);
+//                    finish();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -179,6 +183,7 @@ public class LoginActivity extends AppCompatActivity {
         try {
             String openID = jb.getString("openid");  //openid用户唯一标识
             Log.d("7264653", openID);
+            requestQQLogin(openID);
             String access_token = jb.getString("access_token");
             String expires = jb.getString("expires_in");
             mTencent.setOpenId(openID);
@@ -207,6 +212,11 @@ public class LoginActivity extends AppCompatActivity {
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("token", token);
                         editor.commit();
+//                        SharedPreferences sharedPreferences2 = getSharedPreferences("data", Context.MODE_PRIVATE);
+//                        SharedPreferences.Editor editor2 = sharedPreferences2.edit();
+//                        editor2.putString("user_name", loginMessage.getData().getUser().getName());
+//                        editor2.putString("user_photo", loginMessage.getData().getUser().getImg());
+//                        editor2.commit();
                         Intent intent = new Intent();
                         intent.putExtra("user_name", loginMessage.getData().getUser().getName());
                         intent.putExtra("user_photo", loginMessage.getData().getUser().getImg());
@@ -221,6 +231,54 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<LoginMessage> call, Throwable t) {
                 t.printStackTrace();
+                Log.d("898989",t.toString());
+                Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void requestQQLogin(final String id) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://www.zhangshuo.fun/user/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
+        Call<LoginMessage> call = request.getQQLoginCall(id);
+        call.enqueue(new Callback<LoginMessage>() {
+          @Override
+            public void onResponse(Call<LoginMessage> call, Response<LoginMessage> response) {
+                LoginMessage loginMessage = response.body();
+                if(loginMessage != null) {
+                    if(loginMessage.getStatus() == 0 && loginMessage.getMsg().equals("登录成功")) {
+                        Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+                        token = loginMessage.getData().getToken();
+                        SharedPreferences sharedPreferences = getSharedPreferences("user_token", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("token", token);
+                        editor.commit();
+//                        SharedPreferences sharedPreferences2 = getSharedPreferences("data", Context.MODE_PRIVATE);
+//                        SharedPreferences.Editor editor2 = sharedPreferences2.edit();
+//                        editor2.putString("user_name", loginMessage.getData().getUser().getName());
+//                        editor2.putString("user_photo", loginMessage.getData().getUser().getImg());
+//                        editor2.commit();
+                        Intent intent = new Intent();
+                        intent.putExtra("user_name", loginMessage.getData().getUser().getName());
+                        intent.putExtra("user_photo", loginMessage.getData().getUser().getImg());
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    } else if(loginMessage.getStatus() == 1) {
+                        Log.d("784636", loginMessage.getMsg());
+                        Toast.makeText(LoginActivity.this, loginMessage.getMsg(), Toast.LENGTH_SHORT).show();
+                    } else if(loginMessage.getStatus() == 20) {
+                        getUserInfo();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<LoginMessage> call, Throwable t) {
+                t.printStackTrace();
+                Log.d("898989",t.toString());
                 Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
             }
         });
