@@ -26,22 +26,20 @@
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ClientActivity" />
-        <activity android:name=".FindPasswordActivity" />
-        <activity android:name=".SettingActivity" />
-        <activity android:name=".SetNameActivity" />
-        <activity android:name=".MessageActivity" />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".WordSuggestDetailActivity" />
-        <activity android:name=".UserActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".ChooseHistoryActivity" />
-        <activity android:name=".WordsDetailActivity" />
-
+        <activity android:name=".activity.ClientActivity" />
+        <activity android:name=".activity.FindPasswordActivity" />
+        <activity android:name=".activity.SettingActivity" />
+        <activity android:name=".activity.SetNameActivity" />
+        <activity android:name=".activity.MessageActivity" />
+        <activity android:name=".activity.RegisterActivity" />
+        <activity android:name=".activity.WordSuggestDetailActivity" />
+        <activity android:name=".activity.UserActivity" />
+        <activity android:name=".activity.LoginActivity" />
+        <activity android:name=".activity.ChooseHistoryActivity" />
+        <activity android:name=".activity.WordsDetailActivity" />
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
@@ -63,7 +61,6 @@
             android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.example.lenovo.englishstudy.fileprovider"

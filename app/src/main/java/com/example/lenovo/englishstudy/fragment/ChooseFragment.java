@@ -29,7 +29,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.lenovo.englishstudy.ChooseHistoryActivity;
+import com.example.lenovo.englishstudy.activity.ChooseHistoryActivity;
 import com.example.lenovo.englishstudy.R;
 import com.example.lenovo.englishstudy.Util.GetRequest_Interface;
 import com.example.lenovo.englishstudy.animation.ExplosionField;

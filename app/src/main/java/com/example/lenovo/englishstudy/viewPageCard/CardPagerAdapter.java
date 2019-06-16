@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.lenovo.englishstudy.R;
-import com.example.lenovo.englishstudy.WordsDetailActivity;
+import com.example.lenovo.englishstudy.activity.WordsDetailActivity;
 import com.example.lenovo.englishstudy.bean.SexagenaryCycle;
 import com.example.lenovo.englishstudy.view.ColorText;
 
