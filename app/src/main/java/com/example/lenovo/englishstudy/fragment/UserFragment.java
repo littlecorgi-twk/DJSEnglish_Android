@@ -16,10 +16,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.lenovo.englishstudy.LoginActivity;
+import com.example.lenovo.englishstudy.activity.LoginActivity;
 import com.example.lenovo.englishstudy.R;
-import com.example.lenovo.englishstudy.SettingActivity;
-import com.example.lenovo.englishstudy.UserActivity;
+import com.example.lenovo.englishstudy.activity.SettingActivity;
+import com.example.lenovo.englishstudy.activity.UserActivity;
 import com.example.lenovo.englishstudy.userdefined.MyView;
 
 import de.hdodenhof.circleimageview.CircleImageView;

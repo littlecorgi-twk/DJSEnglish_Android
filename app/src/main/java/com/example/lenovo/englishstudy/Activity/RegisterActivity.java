@@ -1,4 +1,4 @@
-package com.example.lenovo.englishstudy;
+package com.example.lenovo.englishstudy.activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.example.lenovo.englishstudy.R;
 import com.example.lenovo.englishstudy.Util.GetRequest_Interface;
 import com.example.lenovo.englishstudy.bean.MessageVerify;
 

@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/lin_refresh"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
 
     <com.example.lenovo.englishstudy.pullextend.VerticalScrollView
         android:id="@+id/sv_scrollView"
@@ -22,16 +23,20 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/tb_home_fragment"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:navigationIcon="?attr/homeAsUpIndicator"/>
+                android:layout_height="?attr/actionBarSize" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#45ababab" />
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/vp_WordCard"
                 android:layout_gravity="bottom"
                 android:clipToPadding="false"
                 android:overScrollMode="never"
-                android:paddingTop="30dp"
                 android:paddingStart="@dimen/card_padding"
+                android:paddingTop="30dp"
                 android:paddingEnd="@dimen/card_padding"
                 android:paddingBottom="30dp"
                 app:layout_aspectRatio="@fraction/circle_article_aspectRatio"

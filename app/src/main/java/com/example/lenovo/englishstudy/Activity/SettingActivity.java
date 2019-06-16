@@ -1,4 +1,4 @@
-package com.example.lenovo.englishstudy;
+package com.example.lenovo.englishstudy.activity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.lenovo.englishstudy.R;
 import com.example.lenovo.englishstudy.userdefined.MyView;
 
 public class SettingActivity extends AppCompatActivity implements MyView.OnRootClickListener{

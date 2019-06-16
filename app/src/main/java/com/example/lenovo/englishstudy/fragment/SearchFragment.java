@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.example.lenovo.englishstudy.R;
 import com.example.lenovo.englishstudy.Util.GetRequest_Interface;
-import com.example.lenovo.englishstudy.WordSuggestDetailActivity;
+import com.example.lenovo.englishstudy.activity.WordSuggestDetailActivity;
 import com.example.lenovo.englishstudy.adapter.WordSuggestAdapter;
 import com.example.lenovo.englishstudy.bean.WordSuggest;
 import com.example.lenovo.englishstudy.searchHistory.SearchHistoryModel;

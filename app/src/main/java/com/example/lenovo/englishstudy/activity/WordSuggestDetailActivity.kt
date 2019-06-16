@@ -1,6 +1,5 @@
 package com.example.lenovo.englishstudy.activity
 
-import android.content.Intent
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -13,20 +12,17 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-
+import butterknife.BindView
+import butterknife.ButterKnife
 import com.example.lenovo.englishstudy.R
 import com.example.lenovo.englishstudy.Util.GetRequest_Interface
 import com.example.lenovo.englishstudy.bean.WordSuggestDetail
-
-import java.io.IOException
-
-import butterknife.BindView
-import butterknife.ButterKnife
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.IOException
 
 class WordSuggestDetailActivity : AppCompatActivity() {
 

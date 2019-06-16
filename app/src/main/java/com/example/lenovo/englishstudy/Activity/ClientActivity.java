@@ -1,4 +1,4 @@
-package com.example.lenovo.englishstudy;
+package com.example.lenovo.englishstudy.activity;
 
 import android.content.Intent;
 import android.os.Handler;
@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.lenovo.englishstudy.R;
 import com.example.lenovo.englishstudy.chatlist.ClientThread;
 import com.example.lenovo.englishstudy.chatlist.Msg;
 import com.example.lenovo.englishstudy.chatlist.MsgAdapter;

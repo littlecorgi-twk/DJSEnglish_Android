@@ -1,4 +1,4 @@
-package com.example.lenovo.englishstudy;
+package com.example.lenovo.englishstudy.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -24,7 +23,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
+import com.example.lenovo.englishstudy.R;
 import com.example.lenovo.englishstudy.Util.GetRequest_Interface;
 import com.example.lenovo.englishstudy.bean.ArticleDetail;
 import com.example.lenovo.englishstudy.bean.MessageVerify;
@@ -49,10 +48,6 @@ public class WordsDetailActivity extends AppCompatActivity {
     Toolbar tbWordsDetail;
     @BindView(R.id.fl_wordDetail)
     FlowLayout flWordDetail;
-    @BindView(R.id.iv_words_detail_headImage)
-    ImageView ivWordsDetailHeadImage;
-    @BindView(R.id.collapsing_toolbar_layout)
-    CollapsingToolbarLayout collapsingToolbarLayout;
     private PopupWindow popupWindow;
     private TextView mWord;
     private TextView mPhoneticSymbol;
@@ -129,9 +124,6 @@ public class WordsDetailActivity extends AppCompatActivity {
                 return true;
             }
         });
-        collapsingToolbarLayout.setTitle("独角兽英语-享受阅读的乐趣");
-        collapsingToolbarLayout.setCollapsedTitleTextColor(Color.WHITE);
-        collapsingToolbarLayout.setExpandedTitleColor(Color.WHITE);
     }
 
     @Override
@@ -219,9 +211,6 @@ public class WordsDetailActivity extends AppCompatActivity {
     }
 
     void initChildViews(ArticleDetail articleDetail) {
-        Glide.with(WordsDetailActivity.this)
-                .load(articleDetail.getData().getImg())
-                .into(ivWordsDetailHeadImage);
         ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         lp.leftMargin = 10;
         lp.rightMargin = 10;
