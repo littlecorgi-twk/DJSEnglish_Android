@@ -18,11 +18,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PhoneActivity"></activity>
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name"
             android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/app_name"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,6 +29,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.ClientActivity" />
+        <activity android:name=".activity.PhoneActivity" />
         <activity android:name=".activity.FindPasswordActivity" />
         <activity android:name=".activity.SettingActivity" />
         <activity android:name=".activity.SetNameActivity" />
@@ -40,6 +40,7 @@
         <activity android:name=".activity.LoginActivity" />
         <activity android:name=".activity.ChooseHistoryActivity" />
         <activity android:name=".activity.WordsDetailActivity" />
+
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
@@ -61,6 +62,7 @@
             android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.example.lenovo.englishstudy.fileprovider"
