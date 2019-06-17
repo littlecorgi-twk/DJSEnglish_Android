@@ -16,8 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.lenovo.englishstudy.activity.LoginActivity;
 import com.example.lenovo.englishstudy.R;
+import com.example.lenovo.englishstudy.activity.LoginActivity;
 import com.example.lenovo.englishstudy.activity.SettingActivity;
 import com.example.lenovo.englishstudy.activity.UserActivity;
 import com.example.lenovo.englishstudy.userdefined.MyView;
@@ -47,15 +47,15 @@ public class UserFragment extends Fragment implements MyView.OnRootClickListener
         login_msg = view.findViewById(R.id.login_msg);
         photo = view.findViewById(R.id.photo);
         log = view.findViewById(R.id.log);
-        SharedPreferences sharedPreferences3 = getActivity().getSharedPreferences("data1", Context.MODE_PRIVATE);
-        String imageUrl1 = sharedPreferences3.getString("user_photo", "");
-        String name1 = sharedPreferences3.getString("user_name", "");
+//        SharedPreferences sharedPreferences3 = getActivity().getSharedPreferences("data1", Context.MODE_PRIVATE);
+//        String imageUrl1 = sharedPreferences3.getString("user_photo", "");
+//        String name1 = sharedPreferences3.getString("user_name", "");
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("data", Context.MODE_PRIVATE);
         final String user_name = sharedPreferences.getString("user_name", "");
         final String user_photo = sharedPreferences.getString("user_photo", "");
 
-        if (!user_name.equals("null") && !user_photo.equals("") && !name1.equals("null")) {
+        if (!user_name.equals("") && !user_photo.equals("")) {
             login.setText(user_name);
             login_msg.setText("点击查看个人主页");
             Glide.with(getContext()).load(user_photo).into(photo);
@@ -85,31 +85,20 @@ public class UserFragment extends Fragment implements MyView.OnRootClickListener
     @Override
     public void onStart() {
         super.onStart();
-        SharedPreferences sharedPreferences2 = getActivity().getSharedPreferences("user_info", Context.MODE_PRIVATE);
-        String imageUrl = sharedPreferences2.getString("user_photo", "");
-        String name = sharedPreferences2.getString("user_name", "");
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("data", Context.MODE_PRIVATE);
+        String imageUrl = sharedPreferences.getString("user_photo", "");
+        String name = sharedPreferences.getString("user_name", "");
+
         if (!name.equals("")) {
             Log.d("12345", name);
             login.setText(name);
+            login_msg.setText("点击查看个人主页");
+            iflogin = true;
         }
         if (!imageUrl.equals("")) {
             Glide.with(getContext()).load(imageUrl).into(photo);
         }
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("data", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        if(!name.equals("")) {
-            editor.putString("user_name", name);
-        }
-        if(!imageUrl.equals("")) {
-            editor.putString("user_photo", imageUrl);
-        }
-        editor.commit();
-
-//
-        SharedPreferences sharedPreferences3 = getActivity().getSharedPreferences("data1", Context.MODE_PRIVATE);
-        String imageUrl1 = sharedPreferences3.getString("user_photo", "");
-        String name1 = sharedPreferences3.getString("user_name", "");
-        if(imageUrl1.equals("") && name1.equals("null")) {
+        if(imageUrl.equals("") && name.equals("")) {
             //把资源文件中的图片转换成bitmap
             Resources resources = getContext().getResources();
             Bitmap bitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_photo);
@@ -120,6 +109,32 @@ public class UserFragment extends Fragment implements MyView.OnRootClickListener
             Log.d("343434","2");
             iflogin = false;
         }
+
+//        SharedPreferences sharedPreferences2 = getActivity().getSharedPreferences("data", Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        if(!name.equals("")) {
+//            editor.putString("user_name", name);
+//        }
+//        if(!imageUrl.equals("")) {
+//            editor.putString("user_photo", imageUrl);
+//        }
+//        editor.commit();
+
+//
+//        SharedPreferences sharedPreferences3 = getActivity().getSharedPreferences("data1", Context.MODE_PRIVATE);
+//        String imageUrl1 = sharedPreferences3.getString("user_photo", "");
+//        String name1 = sharedPreferences3.getString("user_name", "");
+//        if(imageUrl1.equals("") && name1.equals("null")) {
+//            //把资源文件中的图片转换成bitmap
+//            Resources resources = getContext().getResources();
+//            Bitmap bitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_photo);
+//            photo.setImageBitmap(bitmap);
+//
+//            login.setText("未登录");
+//            login_msg.setText("登录收藏喜欢的美文");
+//            Log.d("343434","2");
+//            iflogin = false;
+//        }
     }
 
     @Override
@@ -131,12 +146,7 @@ public class UserFragment extends Fragment implements MyView.OnRootClickListener
                     login_msg.setText("点击查看个人主页");
                     Glide.with(getContext()).load(data.getStringExtra("user_photo")).into(photo);
                     iflogin = TRUE;
-                    SharedPreferences sharedPreferences2 = getActivity().getSharedPreferences("data1", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor2 = sharedPreferences2.edit();
-                    editor2.putString("user_name", data.getStringExtra("user_name"));
-                    editor2.putString("user_photo", data.getStringExtra("user_photo"));
-                    editor2.commit();
-                    Log.d("343434", "1");
+
                     SharedPreferences sharedPreferences = getActivity().getSharedPreferences("data", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("user_name", data.getStringExtra("user_name"));

@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -14,10 +15,13 @@ import com.example.lenovo.englishstudy.userdefined.MyView;
 public class SettingActivity extends AppCompatActivity implements MyView.OnRootClickListener{
     private LinearLayout oneItem;
     private LinearLayout exitLayout;
+    private ImageView back;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+        back = findViewById(R.id.s_back);
         initView();
     }
 
@@ -36,9 +40,9 @@ public class SettingActivity extends AppCompatActivity implements MyView.OnRootC
         exitLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences sharedPreferences = getSharedPreferences("data1", Context.MODE_PRIVATE);
+                SharedPreferences sharedPreferences = getSharedPreferences("data", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("user_name", "null");
+                editor.putString("user_name", "");
                 editor.putString("user_photo", "");
                 editor.commit();
                 finish();
@@ -46,12 +50,19 @@ public class SettingActivity extends AppCompatActivity implements MyView.OnRootC
             }
         });
 
-        SharedPreferences sharedPreferences = getSharedPreferences("data1", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences("data", Context.MODE_PRIVATE);
         final String user_name = sharedPreferences.getString("user_name", "");
         final String user_photo = sharedPreferences.getString("user_photo", "");
-        if(user_name.equals("null") && user_photo.equals("")) {
+        if(user_name.equals("") && user_photo.equals("")) {
             exitLayout.setVisibility(View.GONE);
         }
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     @Override

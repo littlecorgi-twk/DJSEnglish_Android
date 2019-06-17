@@ -6,6 +6,7 @@ import com.example.lenovo.englishstudy.bean.FriendList;
 import com.example.lenovo.englishstudy.bean.ImageMessage;
 import com.example.lenovo.englishstudy.bean.LoginMessage;
 import com.example.lenovo.englishstudy.bean.MessageVerify;
+import com.example.lenovo.englishstudy.bean.QQLogin;
 import com.example.lenovo.englishstudy.bean.SexagenaryCycle;
 import com.example.lenovo.englishstudy.bean.UserMessage;
 import com.example.lenovo.englishstudy.bean.WordList;
@@ -100,6 +101,10 @@ public interface GetRequest_Interface {
     @POST("qq_login.do")
     Call<LoginMessage> getQQLoginCall(@Field("qqId") String id);
 
+    @FormUrlEncoded
+    @Headers("Content-Type: application/x-www-form-urlencoded")
+    @POST("qq_register.do")
+    Call<QQLogin> getQQMessageCall(@Field("qqId") String id, @Field("name") String name, @Field("img") String img, @Field("phone") String phone, @Field("msgCode") String msgCode);
 
     @Headers("Content-Type: application/x-www-form-urlencoded")
     @POST("friend/get_list.do")

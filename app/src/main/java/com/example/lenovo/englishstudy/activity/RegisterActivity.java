@@ -1,5 +1,6 @@
 package com.example.lenovo.englishstudy.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -108,6 +109,9 @@ public class RegisterActivity extends AppCompatActivity {
                 if (messageVerify != null) {
                     if (messageVerify.getStatus() == 0 && messageVerify.getMsg().equals("注册成功")) {
                         Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
                     } else if (!flag3 && messageVerify.getStatus() == 1) {
                         Log.d("00000","3");
                         Toast.makeText(RegisterActivity.this, messageVerify.getMsg(), Toast.LENGTH_SHORT).show();

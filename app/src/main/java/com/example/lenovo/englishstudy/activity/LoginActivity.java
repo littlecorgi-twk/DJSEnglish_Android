@@ -17,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.example.lenovo.englishstudy.PhoneActivity;
 import com.example.lenovo.englishstudy.R;
 import com.example.lenovo.englishstudy.Util.GetRequest_Interface;
 import com.example.lenovo.englishstudy.bean.LoginMessage;
@@ -43,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
     private ImageView qq;
     private Tencent mTencent;
     //    private UserFragment userFragment = new UserFragment();
-    private String user_name = "null", user_photo = " ", token;
+    private String user_name = "", user_photo = "", token, openID;
     private TextView register, forget_password;
     private EditText login_phone, login_password;
     private Button button_login;
@@ -151,15 +150,13 @@ public class LoginActivity extends AppCompatActivity {
                 try {
                     user_name = ((JSONObject) o).getString("nickname");
                     user_photo = ((JSONObject) o).getString("figureurl_qq_2");
-                    //
+
                     Intent intent = new Intent(LoginActivity.this, PhoneActivity.class);
+                    intent.putExtra("id", openID);
+                    intent.putExtra("name", user_name);
+                    intent.putExtra("photo", user_photo);
                     startActivity(intent);
                     finish();
-//                    Intent intent = new Intent();
-//                    intent.putExtra("user_name", user_name);
-//                    intent.putExtra("user_photo", user_photo);
-//                    setResult(RESULT_OK, intent);
-//                    finish();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -183,7 +180,7 @@ public class LoginActivity extends AppCompatActivity {
     private void initOpenIdAndToken(Object object) {
         JSONObject jb = (JSONObject) object;
         try {
-            String openID = jb.getString("openid");  //openid用户唯一标识
+            openID = jb.getString("openid");  //openid用户唯一标识
             Log.d("7264653", openID);
             requestQQLogin(openID);
             String access_token = jb.getString("access_token");

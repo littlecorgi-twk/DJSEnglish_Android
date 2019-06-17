@@ -108,12 +108,11 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
             @Override
             public void onClick(View view) {
                 updateMessage(name,"",sex1,stage1,token);
-                SharedPreferences sharedPreferences = getSharedPreferences("user_info", Context.MODE_PRIVATE);
+                SharedPreferences sharedPreferences = getSharedPreferences("data", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("user_name", name);
                 editor.commit();
-                SharedPreferences sharedPreferences2 = getSharedPreferences("user_info", Context.MODE_PRIVATE);
-                imageUrl = sharedPreferences2.getString("user_photo", "");
+                imageUrl = sharedPreferences.getString("user_photo", "");
                 Intent intent = new Intent();
                 if(imageUrl!="") {
                     intent.putExtra("user_photo", imageUrl);
@@ -376,7 +375,7 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
                         Log.d("878787", "1");
                         Log.d("878787", imageMessage.getData().getUrl());
                         imageUrl = imageMessage.getData().getUrl();
-                        SharedPreferences sharedPreferences = getSharedPreferences("user_info", Context.MODE_PRIVATE);
+                        SharedPreferences sharedPreferences = getSharedPreferences("data", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("user_photo", imageUrl);
                         editor.commit();
