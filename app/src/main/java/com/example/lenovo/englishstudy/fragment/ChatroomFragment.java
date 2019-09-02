@@ -14,13 +14,11 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.lenovo.englishstudy.ClientActivity;
+import com.example.lenovo.englishstudy.activity.ClientActivity;
 import com.example.lenovo.englishstudy.R;
 import com.example.lenovo.englishstudy.Util.GetRequest_Interface;
 import com.example.lenovo.englishstudy.adapter.ChatListAdapter;
-import com.example.lenovo.englishstudy.adapter.WordSuggestAdapter;
 import com.example.lenovo.englishstudy.bean.FriendList;
-import com.example.lenovo.englishstudy.bean.WordSuggest;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.example.lenovo.englishstudy;
+package com.example.lenovo.englishstudy.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +20,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.lenovo.englishstudy.R;
 import com.example.lenovo.englishstudy.adapter.FragmentAdpter;
 import com.example.lenovo.englishstudy.fragment.ListFragment;
 import com.example.lenovo.englishstudy.userdefined.ObservableScrollView;
@@ -67,7 +68,6 @@ public class UserActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("data", Context.MODE_PRIVATE);
         user_name = sharedPreferences.getString("user_name", "");
         user_photo = sharedPreferences.getString("user_photo", "");
-
         u_name.setText(user_name);
         t_name.setText(user_name);
         Glide.with(getContext()).load(user_photo).into(u_photo);
@@ -170,8 +170,8 @@ public class UserActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK) {
-            switch(requestCode) {
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
                 case REFRESH_CODE:
                     String name = data.getStringExtra("user_name");
                     user_photo = data.getStringExtra("user_photo");
@@ -180,5 +180,6 @@ public class UserActivity extends AppCompatActivity {
                     Glide.with(getContext()).load(user_photo).into(u_photo);
             }
         }
+
     }
 }

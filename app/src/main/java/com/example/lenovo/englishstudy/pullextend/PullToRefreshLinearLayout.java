@@ -197,13 +197,11 @@ public class PullToRefreshLinearLayout extends LinearLayout {
     private void addHeaderView() {
         // header view
         mHeaderView = mInflater.inflate(R.layout.refresh_header, this, false);
-
         mWeixcView = mHeaderView.findViewById(R.id.lin_wxxc);
         mHeaderTextView = mHeaderView.findViewById(R.id.pull_to_refresh_text);
         mHeaderProgressBar = mHeaderView.findViewById(R.id.pull_to_refresh_progress);
         // header layout
         measureView(mHeaderView);
-
         mHeaderViewHeight = mHeaderView.getMeasuredHeight();
         LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, mHeaderViewHeight);
         // 设置topMargin的值为负的header View高度，即将其隐藏在最上方
@@ -217,6 +215,7 @@ public class PullToRefreshLinearLayout extends LinearLayout {
         mFooterView = mInflater.inflate(R.layout.refresh_footer, this, false);
         mFooterImageView = mFooterView.findViewById(R.id.pull_to_load_image);
         mFooterTextView = mFooterView.findViewById(R.id.pull_to_load_text);
+        mFooterProgressBar = mFooterView.findViewById(R.id.pull_to_load_progress);
         // footer layout
         measureView(mFooterView);
         mFooterViewHeight = mFooterView.getMeasuredHeight();

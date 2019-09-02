@@ -1,11 +1,10 @@
 package com.example.lenovo.englishstudy.bean;
 
 public class LoginMessage {
-
     /**
      * status : 0
      * msg : 登录成功
-     * data : {"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjIsImV4cCI6MTU1NjM1NDU1MiwiaWF0IjoxNTU1NzQ5NzUyfQ.Wz4bW7dCBoUBbMkKhDTxNWrTPB5AX-KS0PRgkfuZ-y0","user":{"id":22,"name":"小张","msg":"后台工作人员","img":"ftp://47.102.206.19/4fd3662b-0c8b-4caf-8d8d-9344ec5f12b6.png","email":"9447331421@qq.com","phone":"13227769909"}}
+     * data : {"user":{"id":22,"name":"手机用户18066877585","stage":"尚未填写","sex":"尚未填写","msg":"此人很懒, 尚未填写个人信息.","img":"http://www.zhangshuo.fun/images/default.jpg","phone":"18066877585"},"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjIsImV4cCI6MTU1NzU3NzA1NiwiaWF0IjoxNTU2OTcyMjU2fQ.2LShkqTBNT7N18mw-c30_3C7zUpRmnQSYbPGvWYXH2s"}
      */
 
     private int status;
@@ -38,20 +37,12 @@ public class LoginMessage {
 
     public static class DataBean {
         /**
-         * token : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjIsImV4cCI6MTU1NjM1NDU1MiwiaWF0IjoxNTU1NzQ5NzUyfQ.Wz4bW7dCBoUBbMkKhDTxNWrTPB5AX-KS0PRgkfuZ-y0
-         * user : {"id":22,"name":"小张","msg":"后台工作人员","img":"ftp://47.102.206.19/4fd3662b-0c8b-4caf-8d8d-9344ec5f12b6.png","email":"9447331421@qq.com","phone":"13227769909"}
+         * user : {"id":22,"name":"手机用户18066877585","stage":"尚未填写","sex":"尚未填写","msg":"此人很懒, 尚未填写个人信息.","img":"http://www.zhangshuo.fun/images/default.jpg","phone":"18066877585"}
+         * token : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjIsImV4cCI6MTU1NzU3NzA1NiwiaWF0IjoxNTU2OTcyMjU2fQ.2LShkqTBNT7N18mw-c30_3C7zUpRmnQSYbPGvWYXH2s
          */
 
-        private String token;
         private UserBean user;
-
-        public String getToken() {
-            return token;
-        }
-
-        public void setToken(String token) {
-            this.token = token;
-        }
+        private String token;
 
         public UserBean getUser() {
             return user;
@@ -61,21 +52,31 @@ public class LoginMessage {
             this.user = user;
         }
 
+        public String getToken() {
+            return token;
+        }
+
+        public void setToken(String token) {
+            this.token = token;
+        }
+
         public static class UserBean {
             /**
              * id : 22
-             * name : 小张
-             * msg : 后台工作人员
-             * img : ftp://47.102.206.19/4fd3662b-0c8b-4caf-8d8d-9344ec5f12b6.png
-             * email : 9447331421@qq.com
-             * phone : 13227769909
+             * name : 手机用户18066877585
+             * stage : 尚未填写
+             * sex : 尚未填写
+             * msg : 此人很懒, 尚未填写个人信息.
+             * img : http://www.zhangshuo.fun/images/default.jpg
+             * phone : 18066877585
              */
 
             private int id;
             private String name;
+            private String stage;
+            private String sex;
             private String msg;
             private String img;
-            private String email;
             private String phone;
 
             public int getId() {
@@ -94,6 +95,22 @@ public class LoginMessage {
                 this.name = name;
             }
 
+            public String getStage() {
+                return stage;
+            }
+
+            public void setStage(String stage) {
+                this.stage = stage;
+            }
+
+            public String getSex() {
+                return sex;
+            }
+
+            public void setSex(String sex) {
+                this.sex = sex;
+            }
+
             public String getMsg() {
                 return msg;
             }
@@ -110,14 +127,6 @@ public class LoginMessage {
                 this.img = img;
             }
 
-            public String getEmail() {
-                return email;
-            }
-
-            public void setEmail(String email) {
-                this.email = email;
-            }
-
             public String getPhone() {
                 return phone;
             }
@@ -127,4 +136,7 @@ public class LoginMessage {
             }
         }
     }
+
+
+
 }

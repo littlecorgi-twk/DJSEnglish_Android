@@ -6,7 +6,7 @@
 
     <dimen name="fixed_label_active">14dp</dimen>
     <dimen name="fixed_label_inactive">14dp</dimen>
-    <dimen name="card_padding">60dp</dimen>
+    <dimen name="card_padding">30dp</dimen>
 
     <dimen name="d_40">40dp</dimen>
     <dimen name="d_20">20dp</dimen>

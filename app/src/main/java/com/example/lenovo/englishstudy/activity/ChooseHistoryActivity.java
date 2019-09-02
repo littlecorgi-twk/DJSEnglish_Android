@@ -1,4 +1,4 @@
-package com.example.lenovo.englishstudy;
+package com.example.lenovo.englishstudy.activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.example.lenovo.englishstudy.R;
 import com.example.lenovo.englishstudy.animation.ExplosionField;
 import com.example.lenovo.englishstudy.db.Sentence;
 import com.example.lenovo.englishstudy.userdefined.FlowLayout;
@@ -149,6 +150,8 @@ public class ChooseHistoryActivity extends AppCompatActivity {
         final WindowManager.LayoutParams wBackground = getWindow().getAttributes();
         wBackground.alpha = 0.4f;
         getWindow().setAttributes(wBackground);
+
+
 
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override

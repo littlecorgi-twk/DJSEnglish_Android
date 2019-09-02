@@ -29,7 +29,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.lenovo.englishstudy.ChooseHistoryActivity;
+import com.example.lenovo.englishstudy.activity.ChooseHistoryActivity;
 import com.example.lenovo.englishstudy.R;
 import com.example.lenovo.englishstudy.Util.GetRequest_Interface;
 import com.example.lenovo.englishstudy.animation.ExplosionField;
@@ -370,14 +370,10 @@ public class ChooseFragment extends Fragment {
         call.enqueue(new Callback<WordList>() {
             @Override
             public void onResponse(Call<WordList> call, Response<WordList> response) {
-                Log.d("999999", "2");
                 final WordList wordList = response.body();
-                Log.d("999999", response.toString());
                 if (wordList != null) {
-                    Log.d("999999", wordList.toString());
                     if (wordList.getStatus() == 0) {
                         for (WordList.DataBean word : wordList.getData()) {
-                            Log.d("666666", word.getWord());
                             mNames.add(word.getWord());
                         }
                         initChildViews(view);

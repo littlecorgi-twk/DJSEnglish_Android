@@ -1,4 +1,4 @@
-package com.example.lenovo.englishstudy;
+package com.example.lenovo.englishstudy.activity;
 
 import android.Manifest;
 import android.content.Context;
@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bigkoo.pickerview.TimePickerView;
+import com.example.lenovo.englishstudy.R;
 import com.example.lenovo.englishstudy.Util.GetRequest_Interface;
 import com.example.lenovo.englishstudy.bean.ImageMessage;
 import com.example.lenovo.englishstudy.bean.MessageVerify;
@@ -107,12 +108,11 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
             @Override
             public void onClick(View view) {
                 updateMessage(name,"",sex1,stage1,token);
-                SharedPreferences sharedPreferences = getSharedPreferences("user_info", Context.MODE_PRIVATE);
+                SharedPreferences sharedPreferences = getSharedPreferences("data", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("user_name", name);
                 editor.commit();
-                SharedPreferences sharedPreferences2 = getSharedPreferences("user_info", Context.MODE_PRIVATE);
-                imageUrl = sharedPreferences2.getString("user_photo", "");
+                imageUrl = sharedPreferences.getString("user_photo", "");
                 Intent intent = new Intent();
                 if(imageUrl!="") {
                     intent.putExtra("user_photo", imageUrl);
@@ -186,8 +186,9 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
                         .isCenterLabel(true)
                         .build();
                 myView4.setRightText(time);
-                oneItem.removeViewAt(3);
-                oneItem.addView(myView4, 3);
+//                oneItem.removeViewAt(3);
+//                oneItem.addView(myView4, 3);
+                oneItem.invalidate();
                 pickerView.show();
                 break;
 
@@ -374,7 +375,7 @@ public class MessageActivity extends AppCompatActivity implements MyView.OnRootC
                         Log.d("878787", "1");
                         Log.d("878787", imageMessage.getData().getUrl());
                         imageUrl = imageMessage.getData().getUrl();
-                        SharedPreferences sharedPreferences = getSharedPreferences("user_info", Context.MODE_PRIVATE);
+                        SharedPreferences sharedPreferences = getSharedPreferences("data", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("user_photo", imageUrl);
                         editor.commit();
