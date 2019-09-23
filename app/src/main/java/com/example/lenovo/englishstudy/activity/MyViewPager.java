@@ -31,8 +31,5 @@ public class MyViewPager extends ViewPager {
         heightMeasureSpec = MeasureSpec.makeMeasureSpec(height,MeasureSpec.EXACTLY);
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
-
-
-
 }
 

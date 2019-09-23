@@ -1,5 +1,6 @@
 package com.example.lenovo.englishstudy.activity;
 
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -38,6 +39,7 @@ public class FindPasswordActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_find_password);
         changePassword = findViewById(R.id.button_change_password);
         e_phoneNumber = findViewById(R.id.f_phoneNumber);

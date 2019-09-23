@@ -3,12 +3,18 @@ package com.example.lenovo.englishstudy.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.OrientationHelper;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
@@ -48,6 +54,8 @@ public class WordsDetailActivity extends AppCompatActivity {
     Toolbar tbWordsDetail;
     @BindView(R.id.fl_wordDetail)
     FlowLayout flWordDetail;
+    @BindView(R.id.rv_words_detail)
+    RecyclerView rvWordsDetail;
     private PopupWindow popupWindow;
     private TextView mWord;
     private TextView mPhoneticSymbol;
@@ -65,6 +73,7 @@ public class WordsDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_words_detail);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -124,6 +133,18 @@ public class WordsDetailActivity extends AppCompatActivity {
                 return true;
             }
         });
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        // 设置布局管理器
+        rvWordsDetail.setLayoutManager(layoutManager);
+        // 设置为垂直布局
+        layoutManager.setOrientation(OrientationHelper.VERTICAL);
+        // 设置Adapter
+        // rvWordsDetail.setAdapter(recyclerAdapter);
+        // 设置item增加、删除动画
+        rvWordsDetail.setItemAnimator(new DefaultItemAnimator());
+        // 添加分割线
+        rvWordsDetail.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL));
+
     }
 
     @Override

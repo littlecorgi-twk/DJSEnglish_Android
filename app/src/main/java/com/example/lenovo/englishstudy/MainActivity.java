@@ -1,17 +1,17 @@
 package com.example.lenovo.englishstudy;
 
+import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
-import com.example.lenovo.englishstudy.fragment.ChatroomFragment;
+import com.example.lenovo.englishstudy.fragment.ChatRoomFragment;
 import com.example.lenovo.englishstudy.fragment.ChooseFragment;
 import com.example.lenovo.englishstudy.fragment.HomeFragment;
 import com.example.lenovo.englishstudy.fragment.SearchFragment;
@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
     private BottomNavigationBar bottomNavigationBar;
     private HomeFragment homeFragment;
     private ChooseFragment chooseFragment;
-    private ChatroomFragment chatroomFragment;
+    private ChatRoomFragment chatroomFragment;
     private UserFragment userFragment;
     private SearchFragment searchFragment;
     private static final String HOME_FRAGMENT_KEY = "homeFragment";
@@ -29,19 +29,19 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
     private static final String CHATROOM_FRAGMENT_KEY = "chatroomFragment";
     private static final String USER_FRAGMENT_KEY = "userFragment";
     private static final String SEARCH_FRAGMENT_KEY = "searchFragment";
-    private int  lastSelectedPosition = 0;
+    private int lastSelectedPosition = 0;
 
 
     //不保留活动
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        Log.d("123456","3");
-    //    super.onSaveInstanceState(outState);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
     private void init() {
         homeFragment = new HomeFragment();
         chooseFragment = new ChooseFragment();
-        chatroomFragment = new ChatroomFragment();
+        chatroomFragment = new ChatRoomFragment();
         userFragment = new UserFragment();
         searchFragment = new SearchFragment();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();

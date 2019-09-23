@@ -1,5 +1,6 @@
 package com.example.lenovo.englishstudy.activity
 
+import android.content.pm.ActivityInfo
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -12,7 +13,6 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import butterknife.BindView
 import butterknife.ButterKnife
 import com.example.lenovo.englishstudy.R
 import com.example.lenovo.englishstudy.Util.GetRequest_Interface
@@ -26,44 +26,25 @@ import java.io.IOException
 
 class WordSuggestDetailActivity : AppCompatActivity() {
 
-    @BindView(R.id.tv_wordSuggestDetail_content)
-    internal var tvWordSuggestDetailContent: TextView? = null
-    @BindView(R.id.tv_wordSuggestDetail_ukphone)
-    internal var tvWordSuggestDetailUkphone: TextView? = null
-    @BindView(R.id.tv_wordSuggestDetail_usphone)
-    internal var tvWordSuggestDetailUsphone: TextView? = null
-    @BindView(R.id.tv_wordSuggestDetail_web_trans)
-    internal var tvWordSuggestDetailWebTrans: TextView? = null
-    @BindView(R.id.tv_wordSuggestDetail_meaningList)
-    internal var tvWordSuggestDetailMeaningList: TextView? = null
-    @BindView(R.id.tv_wordSuggestDetail_blng_sents_part_sentenceEng)
-    internal var tvWordSuggestDetailBlngSentsPartSentenceEng: TextView? = null
-    @BindView(R.id.tv_wordSuggestDetail_blng_sents_part_sentenceTranslation)
-    internal var tvWordSuggestDetailBlngSentsPartSentenceTranslation: TextView? = null
-    @BindView(R.id.tv_wordSuggestDetail_auth_sents_part_foreign)
-    internal var tvWordSuggestDetailAuthSentsPartForeign: TextView? = null
-    @BindView(R.id.tv_wordSuggestDetail_auth_sents_part_source)
-    internal var tvWordSuggestDetailAuthSentsPartSource: TextView? = null
-    @BindView(R.id.tv_wordSuggestDetail_media_sents_part_eng)
-    internal var tvWordSuggestDetailMediaSentsPartEng: TextView? = null
-    @BindView(R.id.tv_wordSuggestDetail_media_sents_part_source)
-    internal var tvWordSuggestDetailMediaSentsPartSource: TextView? = null
-    @BindView(R.id.button_wordSuggestDetail_ukspeech)
-    internal var buttonWordSuggestDetailUkspeech: Button? = null
-    @BindView(R.id.button_wordSuggestDetail_usspeech)
-    internal var buttonWordSuggestDetailUsspeech: Button? = null
-    @BindView(R.id.tv_wordDetail_webTran)
-    internal var tvWordDetailWebTran: TextView? = null
-    @BindView(R.id.tv_wordSuggestDetail_exam_type)
-    internal var tvWordSuggestDetailExamType: TextView? = null
-    @BindView(R.id.parts_layout)
-    internal var partsLayout: LinearLayout? = null
-    @BindView(R.id.tv_wordSuggestDetail_blng_sents)
-    internal var tvWordSuggestDetailBlngSents: TextView? = null
-    @BindView(R.id.tv_wordSuggestDetail_auth_sents)
-    internal var tvWordSuggestDetailAuthSents: TextView? = null
-    @BindView(R.id.tv_wordSuggestDetail_media_sents)
-    internal var tvWordSuggestDetailMediaSents: TextView? = null
+    private var tvWordSuggestDetailContent: TextView? = null
+    private var tvWordSuggestDetailUkphone: TextView? = null
+    private var tvWordSuggestDetailUsphone: TextView? = null
+    private var tvWordSuggestDetailWebTrans: TextView? = null
+    private var tvWordSuggestDetailMeaningList: TextView? = null
+    private var tvWordSuggestDetailBlngSentsPartSentenceEng: TextView? = null
+    private var tvWordSuggestDetailBlngSentsPartSentenceTranslation: TextView? = null
+    private var tvWordSuggestDetailAuthSentsPartForeign: TextView? = null
+    private var tvWordSuggestDetailAuthSentsPartSource: TextView? = null
+    private var tvWordSuggestDetailMediaSentsPartEng: TextView? = null
+    private var tvWordSuggestDetailMediaSentsPartSource: TextView? = null
+    private var buttonWordSuggestDetailUkspeech: Button? = null
+    private var buttonWordSuggestDetailUsspeech: Button? = null
+    private var tvWordDetailWebTran: TextView? = null
+    private var tvWordSuggestDetailExamType: TextView? = null
+    private var partsLayout: LinearLayout? = null
+    private var tvWordSuggestDetailBlngSents: TextView? = null
+    private var tvWordSuggestDetailAuthSents: TextView? = null
+    private var tvWordSuggestDetailMediaSents: TextView? = null
 
     private var mMediaPlayer_en: MediaPlayer? = null
     private var mMediaPlayer_us = MediaPlayer()
@@ -72,8 +53,11 @@ class WordSuggestDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         setContentView(R.layout.activity_word_suggest_detail)
         ButterKnife.bind(this)
+
+        initView()
 
         val intent = intent
         val word = intent.getStringExtra("Word")
@@ -112,7 +96,29 @@ class WordSuggestDetailActivity : AppCompatActivity() {
         }
     }
 
-    fun requestWordSuggestDetail(word: String) {
+    private fun initView() {
+        tvWordSuggestDetailContent = findViewById(R.id.tv_wordSuggestDetail_content)
+        tvWordSuggestDetailUkphone = findViewById(R.id.tv_wordSuggestDetail_ukphone)
+        tvWordSuggestDetailUsphone = findViewById(R.id.tv_wordSuggestDetail_usphone)
+        tvWordSuggestDetailWebTrans = findViewById(R.id.tv_wordSuggestDetail_web_trans)
+        tvWordSuggestDetailMeaningList = findViewById(R.id.tv_wordSuggestDetail_meaningList)
+        tvWordSuggestDetailBlngSentsPartSentenceEng = findViewById(R.id.tv_wordSuggestDetail_blng_sents_part_sentenceEng)
+        tvWordSuggestDetailBlngSentsPartSentenceTranslation = findViewById(R.id.tv_wordSuggestDetail_blng_sents_part_sentenceTranslation)
+        tvWordSuggestDetailAuthSentsPartForeign = findViewById(R.id.tv_wordSuggestDetail_auth_sents_part_foreign)
+        tvWordSuggestDetailAuthSentsPartSource = findViewById(R.id.tv_wordSuggestDetail_auth_sents_part_source)
+        tvWordSuggestDetailMediaSentsPartEng = findViewById(R.id.tv_wordSuggestDetail_media_sents_part_eng)
+        tvWordSuggestDetailMediaSentsPartSource = findViewById(R.id.tv_wordSuggestDetail_media_sents_part_source)
+        buttonWordSuggestDetailUkspeech = findViewById(R.id.button_wordSuggestDetail_ukspeech)
+        buttonWordSuggestDetailUsspeech = findViewById(R.id.button_wordSuggestDetail_usspeech)
+        tvWordDetailWebTran = findViewById(R.id.tv_wordDetail_webTran)
+        tvWordSuggestDetailExamType = findViewById(R.id.tv_wordSuggestDetail_exam_type)
+        partsLayout = findViewById(R.id.parts_layout)
+        tvWordSuggestDetailBlngSents = findViewById(R.id.tv_wordSuggestDetail_blng_sents)
+        tvWordSuggestDetailAuthSents = findViewById(R.id.tv_wordSuggestDetail_auth_sents)
+        tvWordSuggestDetailMediaSents = findViewById(R.id.tv_wordSuggestDetail_media_sents)
+    }
+
+    private fun requestWordSuggestDetail(word: String) {
         val retrofit = Retrofit.Builder()
                 .baseUrl("http://dict.youdao.com/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -149,7 +155,7 @@ class WordSuggestDetailActivity : AppCompatActivity() {
             }
             wordMeaningContent = wordMeaningContent.substring(0, wordMeaningContent.length - 2)
             tvWordSuggestDetailMeaningList!!.text = wordMeaningContent
-            if (!wordSuggestDetail.blng_sents_part.sentencepair.isEmpty()) {
+            if (wordSuggestDetail.blng_sents_part.sentencepair.isNotEmpty()) {
                 tvWordSuggestDetailBlngSentsPartSentenceEng!!.text = Html.fromHtml(wordSuggestDetail.blng_sents_part.sentencepair[0].sentenceeng)
                 tvWordSuggestDetailBlngSentsPartSentenceTranslation!!.text = wordSuggestDetail.blng_sents_part.sentencepair[0].sentencetranslation
             } else {
@@ -157,7 +163,7 @@ class WordSuggestDetailActivity : AppCompatActivity() {
                 tvWordSuggestDetailBlngSentsPartSentenceTranslation!!.visibility = View.GONE
                 tvWordSuggestDetailBlngSents!!.visibility = View.GONE
             }
-            if (!wordSuggestDetail.auth_sents_part.sent.isEmpty()) {
+            if (wordSuggestDetail.auth_sents_part.sent.isNotEmpty()) {
                 tvWordSuggestDetailAuthSentsPartForeign!!.text = Html.fromHtml(wordSuggestDetail.auth_sents_part.sent[0].foreign)
                 tvWordSuggestDetailAuthSentsPartSource!!.text = Html.fromHtml(wordSuggestDetail.auth_sents_part.sent[0].source)
             } else {
@@ -165,7 +171,7 @@ class WordSuggestDetailActivity : AppCompatActivity() {
                 tvWordSuggestDetailAuthSentsPartSource!!.visibility = View.GONE
                 tvWordSuggestDetailAuthSents!!.visibility = View.GONE
             }
-            if (!wordSuggestDetail.media_sents_part.sent.isEmpty()) {
+            if (wordSuggestDetail.media_sents_part.sent.isNotEmpty()) {
                 tvWordSuggestDetailMediaSentsPartEng!!.text = Html.fromHtml(wordSuggestDetail.media_sents_part.sent[0].eng)
                 tvWordSuggestDetailMediaSentsPartSource!!.text = wordSuggestDetail.media_sents_part.sent[0].snippets.snippet[0].source + wordSuggestDetail.media_sents_part.sent[0].snippets.snippet[0].name
             } else {

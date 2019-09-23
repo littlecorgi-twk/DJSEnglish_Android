@@ -3,6 +3,7 @@ package com.example.lenovo.englishstudy.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.HideReturnsTransformationMethod;
@@ -51,6 +52,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_login);
         forget_password = findViewById(R.id.forget_password);
         forget_password.setOnClickListener(new View.OnClickListener() {
@@ -207,10 +209,12 @@ public class LoginActivity extends AppCompatActivity {
                     if(loginMessage.getStatus() == 0 && loginMessage.getMsg().equals("登录成功")) {
                         Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
                         token = loginMessage.getData().getToken();
+                        int userID = loginMessage.getData().getUser().getId();
                         SharedPreferences sharedPreferences = getSharedPreferences("user_token", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("token", token);
-                        editor.commit();
+                        editor.putInt("userID", userID);
+                        editor.apply();
 //                        SharedPreferences sharedPreferences2 = getSharedPreferences("data", Context.MODE_PRIVATE);
 //                        SharedPreferences.Editor editor2 = sharedPreferences2.edit();
 //                        editor2.putString("user_name", loginMessage.getData().getUser().getName());
