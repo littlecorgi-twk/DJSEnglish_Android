@@ -2,12 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.lenovo.englishstudy">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
         android:name="org.litepal.LitePalApplication"
@@ -18,32 +18,30 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ClientActivity"></activity>
-        <activity android:name=".FindPasswordActivity"></activity>
-        <activity android:name=".SettingActivity"></activity>
-        <activity android:name=".SetNameActivity" />
-
-        <uses-library
-            android:name="org.apache.http.legacy"
-            android:required="false" />
-
-        <activity android:name=".MessageActivity" />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".WordSuggestDetailActivity" />
-        <activity android:name=".UserActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".ChooseHistoryActivity" />
-        <activity android:name=".WordsDetailActivity" />
         <activity
             android:name=".MainActivity"
-            android:label=""
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.ClientActivity" />
+        <activity android:name=".activity.PhoneActivity" />
+        <activity android:name=".activity.FindPasswordActivity" />
+        <activity android:name=".activity.SettingActivity" />
+        <activity android:name=".activity.SetNameActivity" />
+        <activity android:name=".activity.MessageActivity" />
+        <activity android:name=".activity.RegisterActivity" />
+        <activity android:name=".activity.WordSuggestDetailActivity" />
+        <activity android:name=".activity.UserActivity" />
+        <activity android:name=".activity.LoginActivity" />
+        <activity android:name=".activity.ChooseHistoryActivity" />
+        <activity android:name=".activity.WordsDetailActivity" />
+        <activity android:name="android.support.multidex.MultiDexApplication" />
         <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"
@@ -61,16 +59,24 @@
             android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        
+
         <provider
-            android:authorities="com.example.lenovo.englishstudy.fileprovider"
             android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.example.lenovo.englishstudy.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"/>
+                android:resource="@xml/file_paths" />
         </provider>
-    </application>
 
+        <service
+            android:name=".chatlist.SocketService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+    </application>
 </manifest>

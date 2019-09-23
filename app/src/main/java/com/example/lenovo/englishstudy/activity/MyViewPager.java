@@ -1,4 +1,4 @@
-package com.example.lenovo.englishstudy;
+package com.example.lenovo.englishstudy.activity;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;
@@ -31,8 +31,5 @@ public class MyViewPager extends ViewPager {
         heightMeasureSpec = MeasureSpec.makeMeasureSpec(height,MeasureSpec.EXACTLY);
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
-
-
-
 }
 

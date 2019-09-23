@@ -1,6 +1,7 @@
 package com.example.lenovo.englishstudy.viewPageCard;
 
 import com.example.lenovo.englishstudy.bean.ArticleList;
+import com.example.lenovo.englishstudy.bean.SexagenaryCycle;
 
 /**
  * @author littlecorgi
@@ -10,6 +11,10 @@ import com.example.lenovo.englishstudy.bean.ArticleList;
 public class CardItem {
     private ArticleList.DataBean.ListBean mArticle;
 
+    public CardItem(ArticleList.DataBean.ListBean mArticle) {
+        this.mArticle = mArticle;
+    }
+
     public ArticleList.DataBean.ListBean getmArticle() {
         return mArticle;
     }
@@ -18,7 +23,4 @@ public class CardItem {
         this.mArticle = mArticle;
     }
 
-    public CardItem(ArticleList.DataBean.ListBean mArticle) {
-        this.mArticle = mArticle;
-    }
 }

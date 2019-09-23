@@ -113,6 +113,7 @@
                             android:scaleType="centerCrop" />
 
                     </LinearLayout>
+
                     <include layout="@layout/answerlayout" />
 
                 </FrameLayout>

@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context=".WordsDetailActivity">
+    tools:context=".activity.WordsDetailActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/tb_words_detail"
@@ -13,10 +14,22 @@
         android:layout_height="?attr/actionBarSize"
         app:navigationIcon="?attr/homeAsUpIndicator" />
 
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="#45ababab" />
+
     <com.example.lenovo.englishstudy.userdefined.FlowLayout
         android:id="@+id/fl_wordDetail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_words_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.RecyclerView>
 
 </LinearLayout>

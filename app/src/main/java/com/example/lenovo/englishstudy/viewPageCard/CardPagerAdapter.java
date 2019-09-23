@@ -2,20 +2,19 @@ package com.example.lenovo.englishstudy.viewPageCard;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.lenovo.englishstudy.R;
-import com.example.lenovo.englishstudy.WordsDetailActivity;
+import com.example.lenovo.englishstudy.activity.WordsDetailActivity;
+import com.example.lenovo.englishstudy.bean.SexagenaryCycle;
+import com.example.lenovo.englishstudy.view.ColorText;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +31,9 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
     private float mBaseElevation;
     private Context context;
     private CardView cardView;
+    private String sexagenaryCycleYear;
+    private String lunarCalendar;
+    private SexagenaryCycle mSexagenaryCycle;
 
     public CardPagerAdapter(Context context) {
         mData = new ArrayList<>();
@@ -100,33 +102,22 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
         ImageView imageView = view.findViewById(R.id.iv_adapter_background);
         contentTextView.setText(item.getmArticle().getText());
         Glide.with(context)
-                .load(item.getmArticle().getImg())
+                // .load(item.getmArticle().getImg())
+                .load("https://i0.hdslb.com/bfs/album/9e3b2580c20decba17a1065aa8f66baf11bc2032.jpg")
                 .into(imageView);
-        final Button button = view.findViewById(R.id.button_adapter_collection);
-        if (item.getmArticle().isIsCollection()) {
-            button.setBackgroundResource(R.drawable.ic_bookmark_24dp);
-        } else {
-            button.setBackgroundResource(R.drawable.ic_bookmart_un_24dp);
+        ColorText colorText = view.findViewById(R.id.colorText_adapter);
+        colorText.setText(item.getmArticle().getUpdateTime().substring(8, 10));
+        TextView tv_sexagenary_cycle_year = view.findViewById(R.id.tv_sexagenary_cycle_year);
+        int year = Integer.parseInt(item.getmArticle().getUpdateTime().substring(0, 4));
+        String resultYear = TianGanDiZhiShengXiao.getTianGanName(year) + TianGanDiZhiShengXiao.getDiZhiName(year) + TianGanDiZhiShengXiao.getAnimalYearName(year) + "年";
+        tv_sexagenary_cycle_year.setText(resultYear);
+        TextView tv_lunar_calendar = view.findViewById(R.id.tv_lunar_calendar);
+        String data = item.getmArticle().getUpdateTime().substring(0, 10);
+        data = data.replace("-", "");
+        try {
+            tv_lunar_calendar.setText(LunarCalendar.INSTANCE.solarToLunar(data));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean flag = item.getmArticle().isIsCollection();
-                // 判断当前flag是点赞还是取消赞,是的话就给bean值减1，否则就加1
-                if (flag) {
-                    item.getmArticle().setIsCollection(false);
-                    Toast.makeText(context, "取消收藏", Toast.LENGTH_SHORT).show();
-                    AnimationTools.scale(button);
-                    button.setBackgroundResource(R.drawable.ic_bookmart_un_24dp);
-                } else {
-                    item.getmArticle().setIsCollection(true);
-                    Toast.makeText(context, "收藏", Toast.LENGTH_SHORT).show();
-                    AnimationTools.scale(button);
-                    button.setBackgroundResource(R.drawable.ic_bookmark_24dp);
-                }
-                notifyDataSetChanged();
-            }
-        });
     }
-
 }

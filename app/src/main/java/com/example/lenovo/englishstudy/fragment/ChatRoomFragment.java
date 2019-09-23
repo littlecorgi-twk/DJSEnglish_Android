@@ -14,16 +14,15 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.lenovo.englishstudy.ClientActivity;
+import com.example.lenovo.englishstudy.activity.ClientActivity;
 import com.example.lenovo.englishstudy.R;
 import com.example.lenovo.englishstudy.Util.GetRequest_Interface;
 import com.example.lenovo.englishstudy.adapter.ChatListAdapter;
-import com.example.lenovo.englishstudy.adapter.WordSuggestAdapter;
 import com.example.lenovo.englishstudy.bean.FriendList;
-import com.example.lenovo.englishstudy.bean.WordSuggest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,7 +33,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ChatroomFragment extends Fragment {
+public class ChatRoomFragment extends Fragment {
 
     private ChatListAdapter chatListAdapter;
     private List<FriendList.DataBean> mFriendList = new ArrayList<>();
@@ -51,6 +50,13 @@ public class ChatroomFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
 //        requestFriendList();
         mFriendList.add(new FriendList.DataBean(1, "123", "ads"));
+        mFriendList.add(new FriendList.DataBean(2, "234", "ads"));
+        mFriendList.add(new FriendList.DataBean(3, "345", "ads"));
+        mFriendList.add(new FriendList.DataBean(4, "456", "ads"));
+        mFriendList.add(new FriendList.DataBean(5, "567", "ads"));
+        mFriendList.add(new FriendList.DataBean(6, "678", "ads"));
+        mFriendList.add(new FriendList.DataBean(7, "789", "ads"));
+        mFriendList.add(new FriendList.DataBean(8, "890", "ads"));
         chatListAdapter = new ChatListAdapter(mFriendList, getContext());
         lvChatRoomChatList.setAdapter(chatListAdapter);
         lvChatRoomChatList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -65,7 +71,7 @@ public class ChatroomFragment extends Fragment {
     }
 
     public void requestFriendList() {
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user_token", Activity.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = Objects.requireNonNull(getActivity()).getSharedPreferences("user_token", Activity.MODE_PRIVATE);
         String token = sharedPreferences.getString("token", "");
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://47.102.206.19:8080/")

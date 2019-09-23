@@ -1,5 +1,6 @@
-package com.example.lenovo.englishstudy;
+package com.example.lenovo.englishstudy.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.example.lenovo.englishstudy.R;
 import com.example.lenovo.englishstudy.Util.GetRequest_Interface;
 import com.example.lenovo.englishstudy.bean.MessageVerify;
 
@@ -107,6 +109,9 @@ public class RegisterActivity extends AppCompatActivity {
                 if (messageVerify != null) {
                     if (messageVerify.getStatus() == 0 && messageVerify.getMsg().equals("注册成功")) {
                         Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
                     } else if (!flag3 && messageVerify.getStatus() == 1) {
                         Log.d("00000","3");
                         Toast.makeText(RegisterActivity.this, messageVerify.getMsg(), Toast.LENGTH_SHORT).show();
